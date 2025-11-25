@@ -38,7 +38,7 @@
 - Added natural, organic background patterns
 
 ### Branding
-- `Attendance AI` → `SAMS`
+- `School Management System` → `SAMS`
 - `Cyberpunk`/`Futuristic` → `Nature`/`Organic`
 
 ## Backup Information

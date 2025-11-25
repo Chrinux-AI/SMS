@@ -125,7 +125,7 @@ function lti_handle_launch($launch_params, $lti_config_id)
             return ['success' => false, 'error' => 'Missing user information'];
         }
 
-        // Find or create user in Attendance AI
+        // Find or create user in School Management System
         $user = db()->fetchOne("SELECT * FROM users WHERE email = ?", [$email]);
 
         if (!$user) {
@@ -312,7 +312,7 @@ function lti_grade_passback($user_id, $lti_config_id, $lms_context_id, $grade_va
 }
 
 /**
- * Create deep link for embedding Attendance AI resource in LMS
+ * Create deep link for embedding School Management System resource in LMS
  *
  * @param int $lti_config_id LTI configuration ID
  * @param string $resource_type Resource type (attendance, grades, etc.)

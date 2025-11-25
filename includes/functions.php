@@ -444,7 +444,7 @@ function send_email($to, $subject, $message, $from_name = null)
 {
     // Use from_name from config if not provided
     if ($from_name === null) {
-        $from_name = defined('SMTP_FROM_NAME') ? SMTP_FROM_NAME : 'School Attendance System';
+        $from_name = defined('SMTP_FROM_NAME') ? SMTP_FROM_NAME : 'School Management System';
     }
 
     // Check if PHPMailer is installed
@@ -510,13 +510,13 @@ function send_email($to, $subject, $message, $from_name = null)
         <body>
             <div class='container'>
                 <div class='header'>
-                    <h1>School Attendance System</h1>
+                    <h1>School Management System</h1>
                 </div>
                 <div class='content'>
                     $message
                 </div>
                 <div class='footer'>
-                    <p>&copy; " . date('Y') . " School Attendance System. All rights reserved.</p>
+                    <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
                     <p>This is an automated message, please do not reply.</p>
                 </div>
             </div>
@@ -538,7 +538,7 @@ function send_email($to, $subject, $message, $from_name = null)
 /**
  * Fallback email function using basic PHP mail() if PHPMailer not available
  */
-function send_email_basic($to, $subject, $message, $from_name = 'School Attendance System')
+function send_email_basic($to, $subject, $message, $from_name = 'School Management System')
 {
     $headers = [
         'MIME-Version: 1.0',
@@ -565,13 +565,13 @@ function send_email_basic($to, $subject, $message, $from_name = 'School Attendan
     <body>
         <div class='container'>
             <div class='header'>
-                <h1>School Attendance System</h1>
+                <h1>School Management System</h1>
             </div>
             <div class='content'>
                 $message
             </div>
             <div class='footer'>
-                <p>&copy; " . date('Y') . " School Attendance System. All rights reserved.</p>
+                <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
             </div>
         </div>
     </body>
@@ -712,7 +712,7 @@ function send_registration_notification($user_id, $email, $name, $role)
     $subject = "Registration Received - Awaiting Approval";
     $message = "
         <h2>Hello $name,</h2>
-        <p>Thank you for registering with the School Attendance System.</p>
+        <p>Thank you for registering with the School Management System.</p>
         <div class='info-box'>
             <strong>Your registration details:</strong><br>
             Name: $name<br>
@@ -903,7 +903,7 @@ function send_verification_email($email, $name, $verification_token, $assigned_i
         ";
     }
 
-    $subject = "Verify Your Email - Attendance System";
+    $subject = "Verify Your Email - School Management System";
     $message = "
         <div style='max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;'>
             <div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;'>
@@ -927,7 +927,7 @@ function send_verification_email($email, $name, $verification_token, $assigned_i
             </div>
             <div style='background: #f9f9f9; padding: 20px; text-align: center; color: #666; font-size: 12px; border-radius: 0 0 10px 10px;'>
                 <p style='margin: 0;'>If you didn't register for this account, please ignore this email.</p>
-                <p style='margin: 10px 0 0 0;'>&copy; " . date('Y') . " Attendance System. All rights reserved.</p>
+                <p style='margin: 10px 0 0 0;'>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
             </div>
         </div>
     ";

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * School Attendance System - Configuration File
+ * School Management System - Configuration File
  */
 
 // Base Paths
@@ -16,7 +16,7 @@ define('DB_NAME', 'attendance_system');
 define('DB_CHARSET', 'utf8mb4');
 
 // Application Settings
-define('APP_NAME', 'School Attendance System');
+define('APP_NAME', 'School Management System');
 define('APP_VERSION', '1.0.0');
 define('APP_URL', 'http://localhost/attendance');
 define('TIMEZONE', 'America/New_York');
@@ -38,20 +38,20 @@ define('CHRONIC_ABSENTEEISM_THRESHOLD', 10); // percentage
 
 // Email Settings - Gmail SMTP Configuration
 // IMPORTANT: You must set up Gmail App Password first! See EMAIL-SMTP-SETUP.md for instructions
-define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_PORT', 587);
-define('SMTP_USERNAME', 'christolabiyi35@gmail.com');
-define('SMTP_PASSWORD', 'pgzoahiaxzsuersg');  // Gmail App Password configured
-define('SMTP_FROM_EMAIL', 'christolabiyi35@gmail.com');
-define('SMTP_FROM_NAME', 'School Attendance System');
+define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
+define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
+define('SMTP_USERNAME', getenv('SMTP_USERNAME') ?: 'your-email@gmail.com');
+define('SMTP_PASSWORD', getenv('SMTP_PASSWORD') ?: 'your-app-password');  // Gmail App Password - use .env file
+define('SMTP_FROM_EMAIL', getenv('SMTP_FROM_EMAIL') ?: 'your-email@gmail.com');
+define('SMTP_FROM_NAME', getenv('SMTP_FROM_NAME') ?: 'School Management System');
 define('SMTP_ENCRYPTION', 'tls');  // Use 'tls' for port 587, or 'ssl' for port 465
 
 // WhatsApp Configuration (Twilio)
 // See WHATSAPP-API-SETUP.md for setup instructions
-define('TWILIO_ACCOUNT_SID', 'your_twilio_account_sid');
-define('TWILIO_AUTH_TOKEN', 'your_twilio_auth_token');  // Updated token
-define('TWILIO_WHATSAPP_FROM', 'whatsapp:+14155238886');  // Twilio sandbox number
-define('ADMIN_WHATSAPP_NUMBER', 'whatsapp:+2348167714860');
+define('TWILIO_ACCOUNT_SID', getenv('TWILIO_ACCOUNT_SID') ?: 'your_twilio_account_sid');
+define('TWILIO_AUTH_TOKEN', getenv('TWILIO_AUTH_TOKEN') ?: 'your_twilio_auth_token');  // Use .env file
+define('TWILIO_WHATSAPP_FROM', getenv('TWILIO_WHATSAPP_FROM') ?: 'whatsapp:+14155238886');
+define('ADMIN_WHATSAPP_NUMBER', getenv('ADMIN_WHATSAPP_NUMBER') ?: 'whatsapp:+1234567890');
 
 // Set timezone
 date_default_timezone_set(TIMEZONE);

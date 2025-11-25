@@ -116,7 +116,7 @@ $page_icon = 'user-circle';
                 <div class="logo-wrapper">
                     <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
                     <div class="logo-text">
-                        <div class="app-name">Attendance AI</div>
+                        <div class="app-name">School Management System</div>
                         <div class="app-tagline">STUDENT PANEL</div>
                     </div>
                 </div>

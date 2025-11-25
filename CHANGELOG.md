@@ -344,7 +344,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Account approval workflow
 - Logout with session cleanup
 
-#### Attendance System
+#### School Management System
 
 - Multiple attendance marking methods:
   - Manual entry by teachers

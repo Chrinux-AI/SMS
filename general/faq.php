@@ -96,7 +96,7 @@ include '../includes/cyber-header.php';
         <div class="card-body">
             <p>If you couldn't find the answer you're looking for:</p>
             <ul>
-                <li>Use the <strong>Attendance AI Bot</strong> (bottom-right corner) for instant AI assistance</li>
+                <li>Use the <strong>School Management System Bot</strong> (bottom-right corner) for instant AI assistance</li>
                 <li>Contact our support team at <a href="mailto:support@sams.edu">support@sams.edu</a></li>
                 <li>Call us at (555) 123-4567</li>
                 <li>Visit the Help Center for detailed guides</li>

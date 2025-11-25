@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
             );
 
             // Send OTP via email
-            $subject = "Password Reset OTP - Attendance System";
+            $subject = "Password Reset OTP - School Management System";
             $email_body = "
             <html>
             <head>
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
                     </div>
                     <div class='footer'>
                         <p>This is an automated message from the Attendance Management System.</p>
-                        <p>&copy; " . date('Y') . " Attendance System. All rights reserved.</p>
+                        <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
                     </div>
                 </div>
 

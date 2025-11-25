@@ -234,7 +234,7 @@ Fill in the registration form:
 
 | Field                  | Value                                              |
 | ---------------------- | -------------------------------------------------- |
-| **Tool name**          | Student Attendance System                          |
+| **Tool name**          | Student School Management System                          |
 | **Tool URL**           | `https://yourdomain.com/api/lti.php?action=launch` |
 | **LTI version**        | LTI 1.3                                            |
 | **Public key type**    | RSA key                                            |
@@ -305,10 +305,10 @@ Configure the LTI key:
 
 | Field                             | Value                                              |
 | --------------------------------- | -------------------------------------------------- |
-| **Key Name**                      | Student Attendance System                          |
+| **Key Name**                      | Student School Management System                          |
 | **Redirect URIs**                 | `https://yourdomain.com/lti-redirect.php`          |
 | **Method**                        | Manual Entry                                       |
-| **Title**                         | Student Attendance System                          |
+| **Title**                         | Student School Management System                          |
 | **Description**                   | Attendance tracking and management                 |
 | **Target Link URI**               | `https://yourdomain.com/api/lti.php?action=launch` |
 | **OpenID Connect Initiation Url** | `https://yourdomain.com/lti-login.php`             |
@@ -412,7 +412,7 @@ Embed specific SAMS features directly in LMS courses.
 1. In Moodle course, turn editing on
 2. Click **"Add an activity or resource"**
 3. Select **"External tool"**
-4. Choose **"Student Attendance System"**
+4. Choose **"Student School Management System"**
 5. Select resource type (e.g., "Class Attendance")
 6. Save
 

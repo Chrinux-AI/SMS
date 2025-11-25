@@ -2,7 +2,7 @@
 
 /**
  * Logger Class
- * Centralized logging for Attendance AI
+ * Centralized logging for School Management System
  */
 
 class Logger

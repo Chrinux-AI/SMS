@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($admin_id) {
                 // Send welcome email to admin
                 $to = $email;
-                $subject = "Admin Account Created - Attendance System";
+                $subject = "Admin Account Created - School Management System";
                 $email_message = "
                 <html>
                 <head>
@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             <div class='footer'>
                                 <p>This is an automated message from the Attendance Management System.</p>
-                                <p>&copy; " . date('Y') . " Attendance System. All rights reserved.</p>
+                                <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-                $headers .= "From: Attendance System <noreply@" . $_SERVER['HTTP_HOST'] . ">" . "\r\n";
+                $headers .= "From: School Management System <noreply@" . $_SERVER['HTTP_HOST'] . ">" . "\r\n";
 
                 @mail($to, $subject, $email_message, $headers);
 
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setup Admin Account - Attendance System</title>
+    <title>Setup Admin Account - School Management System</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
@@ -431,7 +431,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="fas fa-user-shield"></i>
                 </div>
                 <h1 class="setup-title">Setup Admin Account</h1>
-                <p class="setup-subtitle">Initialize the Attendance System</p>
+                <p class="setup-subtitle">Initialize the School Management System</p>
             </div>
 
             <div class="warning-box">

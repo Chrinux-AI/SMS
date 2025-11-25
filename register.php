@@ -118,7 +118,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
                 $verification_link = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/verify-email.php?token=" . $verification_token;
 
                 $to = $email;
-                $subject = "Verify Your Email - Attendance System";
+                $subject = "Verify Your Email - School Management System";
                 $email_message = "
                 <html>
                 <head>
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
                         </div>
                         <div class='footer'>
                             <p>If you didn't register for this account, please ignore this email.</p>
-                            <p>&copy; " . date('Y') . " Attendance System. All rights reserved.</p>
+                            <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
                         </div>
                     </div>
                 
@@ -433,7 +433,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
         <div class="register-card">
             <div class="register-header">
                 <h1><i class="fas fa-user-plus"></i> Create Account</h1>
-                <p>Register for Attendance System Access</p>
+                <p>Register for School Management System Access</p>
             </div>
             <?php if ($message): ?>
                 <div class="cyber-alert <?php echo $message_type === 'success' ? 'success' : 'error'; ?>">

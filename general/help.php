@@ -46,7 +46,7 @@ include '../includes/cyber-header.php';
 <div class="cyber-content">
     <div class="content-header">
         <h1><i class="fas fa-life-ring"></i> Help Center</h1>
-        <p class="subtitle">Comprehensive guides for all Attendance AI features</p>
+        <p class="subtitle">Comprehensive guides for all School Management System features</p>
     </div>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:30px;">
@@ -70,7 +70,7 @@ include '../includes/cyber-header.php';
         <div class="card-body">
             <p>Watch our comprehensive video guides:</p>
             <ul>
-                <li><a href="#">Attendance AI Overview (5 minutes)</a></li>
+                <li><a href="#">School Management System Overview (5 minutes)</a></li>
                 <li><a href="#">Quick Start Guide (10 minutes)</a></li>
                 <li><a href="#">Advanced Features Tour (15 minutes)</a></li>
             </ul>

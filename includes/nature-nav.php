@@ -175,7 +175,7 @@ if ($user_role === 'admin') {
         <div class="sidebar-logo">
             <i class="fas fa-leaf"></i>
         </div>
-        <h2 class="sidebar-brand-name" style="font-family: var(--font-serif); color: var(--nature-green-800); margin-bottom: var(--space-1);">Attendance AI</h2>
+        <h2 class="sidebar-brand-name" style="font-family: var(--font-serif); color: var(--nature-green-800); margin-bottom: var(--space-1);">School Management System</h2>
         <p class="sidebar-brand-tagline" style="font-size: var(--text-sm); color: var(--gray-600); text-transform: uppercase; letter-spacing: 1px;">Attendance Management</p>
     </div>
 

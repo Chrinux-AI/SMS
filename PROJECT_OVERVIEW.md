@@ -495,7 +495,7 @@ fetch('manage-ids.php', {
 
 ---
 
-### 4. **Attendance System**
+### 4. **School Management System**
 
 **Types**:
 1. **Teacher Marked**: Teacher selects class → marks students
@@ -852,7 +852,7 @@ $mail->Username = 'your-email@gmail.com';
 $mail->Password = 'your-app-password';  // Use App Password, not regular password
 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 $mail->Port = 587;
-$mail->setFrom('your-email@gmail.com', 'Attendance System');
+$mail->setFrom('your-email@gmail.com', 'School Management System');
 ```
 
 ### Step 5: Set Permissions

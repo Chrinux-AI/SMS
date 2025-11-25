@@ -118,7 +118,7 @@ $nav_sections = [
         <div class="brand-orb">
             <i class="fas fa-graduation-cap"></i>
         </div>
-        <h2 class="brand-title">Attendance AI</h2>
+        <h2 class="brand-title">School Management System</h2>
         <p class="brand-subtitle">STUDENT PANEL</p>
     </div>
 
@@ -188,7 +188,7 @@ $nav_sections = [
     <!-- AI Chatbot Button -->
     <div class="chatbot-launcher">
         <button class="cyber-btn cyan" id="openChatbot" style="width:100%;">
-            <i class="fas fa-robot"></i> Attendance AI Bot
+            <i class="fas fa-robot"></i> School Management System Bot
         </button>
     </div>
 
@@ -205,7 +205,7 @@ $nav_sections = [
 <!-- Chatbot Integration Script -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Open Attendance AI Bot chatbot
+        // Open School Management System Bot chatbot
         const chatbotBtn = document.getElementById('openChatbot');
         if (chatbotBtn) {
             chatbotBtn.addEventListener('click', function() {

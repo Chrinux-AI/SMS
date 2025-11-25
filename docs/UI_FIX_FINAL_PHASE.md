@@ -89,10 +89,10 @@ include '../includes/cyber-footer.php';  // ❌ File doesn't exist
 
 ### 4. Branding Inconsistency
 
-**Problem**: Emergency alerts pages used "Attendance AI" in title
+**Problem**: Emergency alerts pages used "School Management System" in title
 
 ```html
-<title>Emergency Alerts - Attendance AI</title>
+<title>Emergency Alerts - School Management System</title>
 ```
 
 **Solution**: Changed to consistent "SAMS" branding

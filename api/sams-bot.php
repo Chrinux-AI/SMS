@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Attendance AI Bot API - AI Assistant Backend
+ * School Management System Bot API - AI Assistant Backend
  * Processes user queries with context-aware responses
  */
 

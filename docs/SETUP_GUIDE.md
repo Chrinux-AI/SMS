@@ -497,7 +497,7 @@ See detailed guide: `/docs/LMS_INTEGRATION_GUIDE.md`
 2. Go to: Site Administration → Plugins → External tool → Manage tools
 3. Click "Configure a tool manually"
 4. Enter SAMS details:
-   - Tool name: Student Attendance System
+   - Tool name: Student School Management System
    - Tool URL: `https://attendance.yourdomain.com/api/lti.php?action=launch`
    - LTI version: LTI 1.3
    - Public key: [Paste contents of lti_public_key.pem]

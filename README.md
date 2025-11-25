@@ -45,7 +45,7 @@ A comprehensive, enterprise-grade school management platform designed to manage 
 ### Core Modules
 
 - ✅ **Academic Management** - Complete academic lifecycle from admission to graduation
-- ✅ **Attendance System** - Biometric, manual, QR code, and geofence-based attendance
+- ✅ **School Management System** - Biometric, manual, QR code, and geofence-based attendance
 - ✅ **Finance & Fees** - Complete financial management with invoicing and reporting
 - ✅ **Examination System** - Exams, grading, mark sheets, progress cards, certificates
 - ✅ **Library Management** - Digital library with issue/return and inventory tracking

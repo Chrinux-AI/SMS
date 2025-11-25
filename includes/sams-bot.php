@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Attendance AI Bot - AI Assistant Widget
+ * School Management System Bot - AI Assistant Widget
  * Context-aware chatbot with role-based responses
  * Floating widget available on all pages
  */
@@ -12,9 +12,9 @@ $user_role = $_SESSION['role'] ?? 'guest';
 $user_id = $_SESSION['user_id'] ?? 0;
 ?>
 
-<!-- Attendance AI Bot Floating Widget -->
+<!-- School Management System Bot Floating Widget -->
 <div id="samsBot" class="sams-bot-widget">
-    <button id="samsBotToggle" class="bot-toggle-btn" onclick="toggleSamsBot()" title="Open Attendance AI Assistant">
+    <button id="samsBotToggle" class="bot-toggle-btn" onclick="toggleSamsBot()" title="Open School Management System Assistant">
         <i class="fas fa-robot"></i>
         <span class="bot-pulse"></span>
     </button>
@@ -25,7 +25,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
                 <i class="fas fa-robot"></i>
             </div>
             <div class="bot-info">
-                <div class="bot-name">Attendance AI Assistant</div>
+                <div class="bot-name">School Management System Assistant</div>
                 <div class="bot-status">
                     <span class="status-dot"></span> Ready to Help
                 </div>
@@ -44,7 +44,7 @@ $user_id = $_SESSION['user_id'] ?? 0;
             <div class="bot-message bot">
                 <div class="message-avatar"><i class="fas fa-robot"></i></div>
                 <div class="message-content">
-                    <p>👋 Hi <?php echo htmlspecialchars(explode(' ', $user_name)[0]); ?>! I'm your Attendance AI Assistant.</p>
+                    <p>👋 Hi <?php echo htmlspecialchars(explode(' ', $user_name)[0]); ?>! I'm your School Management System Assistant.</p>
                     <p><strong>I can help you with:</strong></p>
                     <ul>
                         <?php if ($user_role === 'student'): ?>

@@ -670,7 +670,7 @@ function exportToCalendar()
         // Generate iCal content
         $ical = "BEGIN:VCALENDAR\r\n";
         $ical .= "VERSION:2.0\r\n";
-        $ical .= "PRODID:-//Student Attendance System//EN\r\n";
+        $ical .= "PRODID:-//Student School Management System//EN\r\n";
         $ical .= "CALSCALE:GREGORIAN\r\n";
         $ical .= "METHOD:PUBLISH\r\n";
 

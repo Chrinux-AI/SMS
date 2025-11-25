@@ -585,4 +585,4 @@ For issues or feature requests:
 
 **Last Updated**: December 2024
 **Version**: 1.0.0
-**License**: Proprietary (SAMS Attendance System)
+**License**: Proprietary (SAMS School Management System)

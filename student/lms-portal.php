@@ -176,7 +176,7 @@ $unread_messages = db()->fetchOne(
                                             <?php endif; ?>
 
                                             <p style="margin:0;font-size:0.85rem;color:var(--text-muted);">
-                                                Launch Attendance AI from your <?php echo htmlspecialchars($lms['lms_platform']); ?> course to access attendance in LMS context.
+                                                Launch School Management System from your <?php echo htmlspecialchars($lms['lms_platform']); ?> course to access attendance in LMS context.
                                             </p>
                                         </div>
                                     </div>
@@ -267,20 +267,20 @@ $unread_messages = db()->fetchOne(
                     <!-- How to Use -->
                     <div class="holo-card" style="margin-top:30px;">
                         <div class="card-header">
-                            <div class="card-title"><i class="fas fa-question-circle"></i> How to Access Attendance AI via LMS</div>
+                            <div class="card-title"><i class="fas fa-question-circle"></i> How to Access School Management System via LMS</div>
                         </div>
                         <div class="card-body">
                             <ol style="line-height:2;color:var(--text-muted);">
                                 <li>Log in to your institution's <strong>Learning Management System</strong> (Moodle, Canvas, etc.)</li>
-                                <li>Navigate to any <strong>course that has Attendance AI integrated</strong></li>
-                                <li>Click on the <strong>Attendance AI Attendance Tool</strong> link in your course</li>
+                                <li>Navigate to any <strong>course that has School Management System integrated</strong></li>
+                                <li>Click on the <strong>School Management System Attendance Tool</strong> link in your course</li>
                                 <li>You'll be automatically authenticated via <strong>Single Sign-On (SSO)</strong></li>
                                 <li>View your <strong>attendance within the LMS interface</strong></li>
                                 <li>Your attendance data is <strong>synced as grades</strong> in the LMS gradebook</li>
                             </ol>
                             <div style="background:rgba(0,243,255,0.1);padding:15px;border-radius:8px;margin-top:15px;border-left:4px solid var(--cyber-cyan);">
                                 <p style="margin:0;color:var(--cyber-cyan);">
-                                    <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> You can also access Attendance AI directly at
+                                    <i class="fas fa-lightbulb"></i> <strong>Tip:</strong> You can also access School Management System directly at
                                     <code style="background:rgba(0,0,0,0.3);padding:2px 8px;border-radius:4px;"><?php echo APP_URL; ?></code>
                                 </p>
                             </div>

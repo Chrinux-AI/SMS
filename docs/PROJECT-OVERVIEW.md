@@ -129,7 +129,7 @@ Core Tables (15+):
 - ✅ Class capacity management
 - ✅ Generate class reports
 
-#### **Attendance System**
+#### **School Management System**
 
 - ✅ Mark attendance for any class
 - ✅ Bulk attendance marking
@@ -605,7 +605,7 @@ SMTP Settings (config.php):
 ├── SMTP_USERNAME: your-email@gmail.com
 ├── SMTP_PASSWORD: app-specific password
 ├── SMTP_ENCRYPTION: tls
-└── SMTP_FROM_NAME: Attendance System
+└── SMTP_FROM_NAME: School Management System
 
 Features:
 ├── HTML email support
@@ -1568,10 +1568,10 @@ define('SMTP_PORT', 587);
 define('SMTP_USERNAME', 'your-email@gmail.com');
 define('SMTP_PASSWORD', 'your-app-password'); // Not regular password
 define('SMTP_ENCRYPTION', 'tls');
-define('SMTP_FROM_NAME', 'School Attendance System');
+define('SMTP_FROM_NAME', 'School Management System');
 
 // System Configuration
-define('APP_NAME', 'Attendance AI');
+define('APP_NAME', 'School Management System');
 define('BASE_URL', 'http://localhost/attendance');
 define('BASE_PATH', '/opt/lampp/htdocs/attendance');
 define('TIMEZONE', 'Africa/Lagos');

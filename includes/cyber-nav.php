@@ -221,14 +221,22 @@ if ($user_role === 'admin') {
 }
 ?>
 
+<!-- Hamburger Menu Button -->
+<button class="hamburger-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Sidebar Overlay for Mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- Cyberpunk Sidebar -->
-<aside class="cyber-sidebar slide-in">
+<aside class="cyber-sidebar slide-in" id="cyberSidebar">
     <!-- Brand Section -->
     <div class="sidebar-brand">
         <div class="brand-orb">
             <i class="fas fa-graduation-cap"></i>
         </div>
-        <h2 class="brand-title">Attendance AI</h2>
+        <h2 class="brand-title">School Management System</h2>
         <p class="brand-subtitle">Management System</p>
     </div>
 
@@ -272,7 +280,41 @@ if ($user_role === 'admin') {
     </div>
 </aside>
 
+<!-- Sidebar Toggle Script -->
+<script>
+(function() {
+    const sidebar = document.getElementById('cyberSidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebarToggle && sidebar && sidebarOverlay) {
+        // Toggle sidebar
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+        
+        // Close sidebar when clicking overlay
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+        
+        // Close sidebar on mobile when clicking a link
+        const menuItems = sidebar.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                if (window.innerWidth <= 1024) {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                }
+            });
+        });
+    }
+})();
+</script>
+
 <?php
-// Include Attendance AI Bot widget on all pages
+// Include School Management System Bot widget on all pages
 include __DIR__ . '/sams-bot.php';
 ?>

@@ -2,7 +2,7 @@
 
 /**
  * Parent-Student Linking with Verification System
- * As specified in Attendance AI Complete Project Overview - Parent Linking Process
+ * As specified in School Management System Complete Project Overview - Parent Linking Process
  *
  * Features:
  * - Secure linking via Student ID validation

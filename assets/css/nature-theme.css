@@ -130,6 +130,8 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scroll-behavior: smooth;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 body {
@@ -678,7 +680,68 @@ a:hover {
 
 /* ============================================
    12. RESPONSIVE DESIGN
-   ============================================ */
+   ======================================== ==== */
+
+/* Hamburger Menu Button */
+.hamburger-btn {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: linear-gradient(135deg, var(--nature-green-600), var(--nature-green-800));
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-lg);
+}
+
+.hamburger-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+.hamburger-btn i {
+    color: var(--white);
+    font-size: 20px;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    backdrop-filter: blur(3px);
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+@media (max-width: 1024px) {
+    .hamburger-btn {
+        display: block;
+    }
+    
+    .nature-sidebar,
+    .cyber-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .nature-sidebar.active,
+    .cyber-sidebar.active {
+        transform: translateX(0);
+    }
+}
+
 @media (max-width: 768px) {
     :root {
         --text-5xl: 2rem;
@@ -699,6 +762,21 @@ a:hover {
 
     .nature-card {
         padding: var(--space-4);
+    }
+    
+    .btn {
+        padding: var(--space-2) var(--space-4);
+        font-size: var(--text-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .nature-card {
+        padding: var(--space-3);
+    }
+    
+    .grid-cols-1 {
+        gap: var(--space-3);
     }
 }
 

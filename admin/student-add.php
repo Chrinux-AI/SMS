@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Send welcome email
                 $to = $email;
-                $subject = "Welcome to Attendance System - Your Account Details";
+                $subject = "Welcome to School Management System - Your Account Details";
                 $email_message = "
                 <html>
                 <head>
@@ -117,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="manifest" href="/attendance/manifest.json">
     <meta name="theme-color" content="#00BFFF">
     <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
-                    <title>Welcome to Attendance System</title>
+                    <title>Welcome to School Management System</title>
                     <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
                         .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 10px; overflow: hidden; }
@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <div class='container'>
                         <div class='header'>
-                            <h1>🎓 Welcome to Attendance System!</h1>
+                            <h1>🎓 Welcome to School Management System!</h1>
                         </div>
                         <div class='content'>
                             <p>Hello <strong>{$first_name} {$last_name}</strong>,</p>
@@ -162,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </p>
                         </div>
                         <div class='footer'>
-                            <p>&copy; " . date('Y') . " Attendance System. All rights reserved.</p>
+                            <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
                         </div>
                     </div>
                 
@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-                $headers .= "From: Attendance System <christolabiyi35@gmail.com>" . "\r\n";
+                $headers .= "From: School Management System <christolabiyi35@gmail.com>" . "\r\n";
 
                 @mail($to, $subject, $email_message, $headers);
 

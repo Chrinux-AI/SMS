@@ -35,7 +35,7 @@ $dashboard_url = $dashboard_map[$user_role] ?? '../index.php';
             <div class="brand-orb">
                 <i class="fas fa-graduation-cap"></i>
             </div>
-            <h2>Attendance AI</h2>
+            <h2>School Management System</h2>
             <p class="brand-subtitle">MANAGEMENT SYSTEM</p>
         </div>
 
@@ -117,7 +117,7 @@ $dashboard_url = $dashboard_map[$user_role] ?? '../index.php';
 
         <!-- Sidebar Footer -->
         <div class="sidebar-footer">
-            <p>&copy; 2025 Attendance AI</p>
+            <p>&copy; 2025 School Management System</p>
             <p class="version">v2.0</p>
         </div>
     </aside>

@@ -102,7 +102,7 @@ try {
 
             $resource_type = $_POST['resource_type'] ?? '';
             $resource_id = $_POST['resource_id'] ?? 0;
-            $title = $_POST['title'] ?? 'Attendance AI Resource';
+            $title = $_POST['title'] ?? 'School Management System Resource';
             $lms_context_id = $_POST['lms_context_id'] ?? '';
             $lti_config_id = $_POST['lti_config_id'] ?? 1;
 

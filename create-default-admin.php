@@ -87,7 +87,7 @@ try {
         echo "\nStep 3: Sending welcome email...\n";
 
         $to = $email;
-        $subject = "Admin Account Created - Attendance System";
+        $subject = "Admin Account Created - School Management System";
         $email_message = "
         <html>
         <head>
@@ -142,7 +142,7 @@ try {
                 </div>
                 <div class='footer'>
                     <p>This is an automated message from the Attendance Management System.</p>
-                    <p>&copy; " . date('Y') . " Attendance System. All rights reserved.</p>
+                    <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
                 </div>
             </div>
         
