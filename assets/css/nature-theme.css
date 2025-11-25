@@ -684,7 +684,7 @@ a:hover {
 
 /* Hamburger Menu Button */
 .hamburger-btn {
-    display: none;
+    display: block; /* Always visible for sidebar toggle */
     position: fixed;
     top: 20px;
     left: 20px;

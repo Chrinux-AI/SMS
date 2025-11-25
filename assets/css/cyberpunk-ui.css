@@ -1072,7 +1072,7 @@ h1, h2, h3, h4, h5, h6 {
    HAMBURGER MENU & RESPONSIVE SIDEBAR
    ======================================== */
 .hamburger-btn {
-    display: none;
+    display: block; /* Always visible for sidebar toggle */
     position: fixed;
     top: 20px;
     left: 20px;
@@ -1084,6 +1084,7 @@ h1, h2, h3, h4, h5, h6 {
     cursor: pointer;
     transition: all var(--transition-smooth);
     box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+    border: none;
 }
 
 .hamburger-btn:hover {

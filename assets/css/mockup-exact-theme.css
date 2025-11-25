@@ -420,6 +420,53 @@ p {
 }
 
 /* ============================================
+   HAMBURGER MENU BUTTON
+   ============================================ */
+.hamburger-btn {
+    display: block; /* Always visible for sidebar toggle */
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: linear-gradient(135deg, var(--sage-primary), var(--sage-dark));
+    border: none;
+    border-radius: 8px;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(45, 95, 93, 0.3);
+}
+
+.hamburger-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(45, 95, 93, 0.5);
+    background: linear-gradient(135deg, var(--sage-light), var(--sage-primary));
+}
+
+.hamburger-btn i {
+    color: var(--text-white);
+    font-size: 20px;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 @media (max-width: 768px) {
