@@ -2,7 +2,14 @@
 
 ## Project Architecture
 
-This is a **PHP-based School ERP** (Enterprise Resource Planning) system with 42 modules managing academics, finance, library, transport, hostel, HR, and more. Built on LAMP stack with dual UI themes (Cyberpunk/Nature).
+This is a modern, PHP 8+ School ERP (42 modular modules) built on a LAMP stack and designed for maintainability, security and extensibility. Key traits:
+- Backend: PHP 8+ using PDO (no ORM) with a singleton db() helper for all DB access.
+- Modular design: 42 self-contained modules (academics, finance, library, transport, hostel, HR, etc.) with clear interfaces so modules can be added/disabled without breaking core.
+- Theming: Dual UI themes (Cyberpunk / Nature) implemented as CSS theme bundles + lightweight view helpers (no frontend frameworks).
+- Integrations: LTI 1.3, REST endpoints for external systems, PWA-ready (service worker + manifest).
+- Config & secrets: .env-driven config (getenv()), strict secret handling, and semantic versioning for releases.
+- Security & ops: Secure defaults (prepared statements, XSS escaping, CSRF tokens, file‑upload validation), uses unix socket for MySQL (/opt/lampp/var/mysql/mysql.sock), and includes PHPUnit hooks for testing.
+- Conventions: PSR-like coding style, single-entry auth boilerplate, and simple asset pipeline — intentionally framework-light to keep deployment simple on Apache/LAMPP.
 
 ### Core Technology Stack
 
