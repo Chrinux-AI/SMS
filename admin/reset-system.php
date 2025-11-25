@@ -34,6 +34,14 @@ echo "<!DOCTYPE html>
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
 
+    <div class="cyber-layout">
+        <?php include '../includes/cyber-nav.php'; ?>
+
+        <main class="cyber-main">
+
+    <div class="starfield"></div>
+    <div class="cyber-grid"></div>
+
         <div class="starfield"></div>
     <div class="cyber-grid"></div>
 

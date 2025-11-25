@@ -70,6 +70,9 @@ $page_icon = 'clipboard-check';
     <div class="cyber-grid"></div>
 
     <div class="cyber-layout">
+        <?php include '../includes/student-nav.php'; ?>
+
+        <!-- Main Content -->
         <aside class="cyber-sidebar">
             <div class="sidebar-header">
                 <div class="logo-wrapper">
