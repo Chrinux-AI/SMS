@@ -295,11 +295,7 @@ $security_settings = [
 <body class="mobile-dashboard cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <!-- API Status Indicator -->
+<!-- API Status Indicator -->
     <div class="api-indicator">
         <i class="fas fa-mobile-alt"></i> API Online
     </div>

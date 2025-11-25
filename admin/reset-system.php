@@ -41,14 +41,7 @@ echo "<!DOCTYPE html>
 
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-    <h1>🔧 System Reset & Database Clean Up</h1>
+<h1>🔧 System Reset & Database Clean Up</h1>
 <div id='log'>";
 
 try {

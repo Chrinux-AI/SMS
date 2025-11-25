@@ -266,11 +266,7 @@ $available_percentage = 100 - $used_percentage;
 <body class="cloud-dashboard cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <!-- Cloud Indicator -->
+<!-- Cloud Indicator -->
     <div class="cloud-indicator">
         <i class="fas fa-cloud"></i> Cloud Connected
     </div>

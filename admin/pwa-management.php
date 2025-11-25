@@ -266,14 +266,7 @@ $featureFlags = getFeatureFlags($db);
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <?php include '../includes/cyber-nav.php'; ?>
+<?php include '../includes/cyber-nav.php'; ?>
 
     <div class="container" style="padding: 40px 20px;">
         <div class="content-header">

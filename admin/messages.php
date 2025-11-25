@@ -63,14 +63,7 @@ $unread_count = db()->count('messages', 'receiver_id = ? AND is_read = 0', ['rec
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="cyber-bg">
+<div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

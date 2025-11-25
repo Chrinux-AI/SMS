@@ -203,14 +203,7 @@ $unread_messages = db()->fetchOne(
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        </div>
+</div>
     
     <div class="cyber-layout">
         <?php include '../includes/cyber-nav.php'; ?>

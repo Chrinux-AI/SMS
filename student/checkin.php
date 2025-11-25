@@ -253,14 +253,7 @@ if (isset($_SESSION['student_data'])) {
 
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        </div>
+</div>
     
 
     <div class="checkin-container">

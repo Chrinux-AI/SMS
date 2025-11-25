@@ -149,14 +149,7 @@ $unread_count = db()->fetchOne("SELECT COUNT(*) as count FROM message_recipients
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="cyber-bg">
+<div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

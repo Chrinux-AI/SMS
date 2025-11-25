@@ -278,11 +278,7 @@ $recent_activity = RealtimeSync::getRecentActivity();
 <body class="sync-dashboard cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <!-- Live Indicator -->
+<!-- Live Indicator -->
     <div class="live-indicator">
         <i class="fas fa-circle" style="color: #ef4444;"></i> LIVE
     </div>

@@ -250,14 +250,7 @@ $page_title = "My Reports";
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <?php include '../includes/cyber-nav.php'; ?>
+<?php include '../includes/cyber-nav.php'; ?>
 
     <div class="reports-container">
         <h1><i class="fas fa-chart-line"></i> My Academic Reports</h1>

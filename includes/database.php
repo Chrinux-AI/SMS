@@ -138,6 +138,23 @@ class Database
         $result = $this->fetch($sql, $params);
         return $result ? (int)$result['count'] : 0;
     }
+
+    /**
+     * Execute a query (INSERT, UPDATE, DELETE) without returning results
+     * Alias for query() method for compatibility
+     */
+    public function execute($sql, $params = [])
+    {
+        return $this->query($sql, $params) !== false;
+    }
+
+    /**
+     * Prepare a statement (for manual execution)
+     */
+    public function prepare($sql)
+    {
+        return $this->connection->prepare($sql);
+    }
 }
 
 // Helper function to get database instance

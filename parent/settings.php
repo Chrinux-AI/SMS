@@ -334,14 +334,7 @@ $page_title = "Settings";
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <?php include '../includes/cyber-nav.php'; ?>
+<?php include '../includes/cyber-nav.php'; ?>
 
     <div class="settings-container">
         <h1><i class="fas fa-cog"></i> Settings</h1>

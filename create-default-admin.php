@@ -110,14 +110,7 @@ try {
         <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-                <div class='container'>
+<div class='container'>
                 <div class='header'>
                     <h1>🎉 Admin Account Created!</h1>
                 </div>

@@ -235,14 +235,7 @@ if (is_dir($backup_dir)) {
 
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="header">
+<div class="header">
         <div class="header-content">
             <div>
                 <h1><i class="fas fa-tools"></i> System Management</h1>

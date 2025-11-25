@@ -170,14 +170,7 @@ $page_title = "AI Analytics";
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <?php include '../includes/cyber-nav.php'; ?>
+<?php include '../includes/cyber-nav.php'; ?>
 
     <div class="analytics-container">
         <h1>

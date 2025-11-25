@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Advanced Analytics Dashboard - Admin Panel
  * Real-time system analytics with charts and insights
@@ -29,7 +30,7 @@ $stats['total_students'] = db()->count('students');
 $stats['total_teachers'] = db()->count('teachers');
 $stats['total_parents'] = db()->count('guardians');
 
-// 2. Attendance Statistics  
+// 2. Attendance Statistics
 $total_attendance = db()->count('attendance', 'attendance_date >= ? AND attendance_date <= ?', [$start_date, $end_date]);
 $present_count = db()->count('attendance', 'status = ? AND attendance_date >= ? AND attendance_date <= ?', ['present', $start_date, $end_date]);
 $absent_count = db()->count('attendance', 'status = ? AND attendance_date >= ? AND attendance_date <= ?', ['absent', $start_date, $end_date]);
@@ -73,7 +74,7 @@ try {
 
 // 7. Get daily attendance trend for chart
 $attendance_trend = db()->query("
-    SELECT 
+    SELECT
         DATE(attendance_date) as date,
         COUNT(*) as total,
         SUM(CASE WHEN status = 'present' THEN 1 ELSE 0 END) as present,
@@ -96,7 +97,7 @@ $role_distribution = db()->query("
 
 // 9. Top performing students (by attendance)
 $top_students = db()->query("
-    SELECT 
+    SELECT
         s.id,
         u.first_name,
         u.last_name,
@@ -114,7 +115,7 @@ $top_students = db()->query("
 
 // 10. Recent activity logs
 $recent_activities = db()->query("
-    SELECT 
+    SELECT
         al.*,
         u.first_name,
         u.last_name,
@@ -127,6 +128,7 @@ $recent_activities = db()->query("
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -138,6 +140,7 @@ $recent_activities = db()->query("
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
@@ -255,21 +258,21 @@ $recent_activities = db()->query("
                                     </thead>
                                     <tbody>
                                         <?php foreach ($top_students as $index => $student): ?>
-                                        <tr>
-                                            <td><?php echo $index + 1; ?></td>
-                                            <td><?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></td>
-                                            <td><?php echo $student['present_days']; ?> / <?php echo $student['total_days']; ?></td>
-                                            <td>
-                                                <span class="cyber-badge badge-<?php echo $student['attendance_rate'] >= 95 ? 'success' : ($student['attendance_rate'] >= 85 ? 'warning' : 'danger'); ?>">
-                                                    <?php echo $student['attendance_rate']; ?>%
-                                                </span>
-                                            </td>
-                                        </tr>
+                                            <tr>
+                                                <td><?php echo $index + 1; ?></td>
+                                                <td><?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></td>
+                                                <td><?php echo $student['present_days']; ?> / <?php echo $student['total_days']; ?></td>
+                                                <td>
+                                                    <span class="cyber-badge badge-<?php echo $student['attendance_rate'] >= 95 ? 'success' : ($student['attendance_rate'] >= 85 ? 'warning' : 'danger'); ?>">
+                                                        <?php echo $student['attendance_rate']; ?>%
+                                                    </span>
+                                                </td>
+                                            </tr>
                                         <?php endforeach; ?>
                                         <?php if (empty($top_students)): ?>
-                                        <tr>
-                                            <td colspan="4" class="text-center text-muted">No attendance data available</td>
-                                        </tr>
+                                            <tr>
+                                                <td colspan="4" class="text-center text-muted">No attendance data available</td>
+                                            </tr>
                                         <?php endif; ?>
                                     </tbody>
                                 </table>
@@ -282,19 +285,19 @@ $recent_activities = db()->query("
                             <h3 class="card-title">Recent Activity</h3>
                             <div class="activity-feed">
                                 <?php foreach ($recent_activities as $activity): ?>
-                                <div class="activity-item">
-                                    <div class="activity-icon">
-                                        <i class="fas fa-circle"></i>
-                                    </div>
-                                    <div class="activity-content">
-                                        <div class="activity-title">
-                                            <strong><?php echo htmlspecialchars($activity['first_name'] . ' ' . $activity['last_name']); ?></strong>
-                                            <span class="cyber-badge badge-info"><?php echo htmlspecialchars($activity['role']); ?></span>
+                                    <div class="activity-item">
+                                        <div class="activity-icon">
+                                            <i class="fas fa-circle"></i>
                                         </div>
-                                        <div class="activity-description"><?php echo htmlspecialchars($activity['action']); ?></div>
-                                        <div class="activity-time"><?php echo date('M d, Y h:i A', strtotime($activity['created_at'])); ?></div>
+                                        <div class="activity-content">
+                                            <div class="activity-title">
+                                                <strong><?php echo htmlspecialchars($activity['first_name'] . ' ' . $activity['last_name']); ?></strong>
+                                                <span class="cyber-badge badge-info"><?php echo htmlspecialchars($activity['role']); ?></span>
+                                            </div>
+                                            <div class="activity-description"><?php echo htmlspecialchars($activity['action']); ?></div>
+                                            <div class="activity-time"><?php echo date('M d, Y h:i A', strtotime($activity['created_at'])); ?></div>
+                                        </div>
                                     </div>
-                                </div>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -357,89 +360,104 @@ $recent_activities = db()->query("
     <script src="../../assets/js/pwa-manager.js"></script>
 
     <script>
-    // Attendance Trend Chart
-    const attendanceTrendCtx = document.getElementById('attendanceTrendChart');
-    if (attendanceTrendCtx) {
-        const trendData = <?php echo json_encode($attendance_trend); ?>;
-        new Chart(attendanceTrendCtx, {
-            type: 'line',
-            data: {
-                labels: trendData.map(d => d.date),
-                datasets: [
-                    {
-                        label: 'Present',
-                        data: trendData.map(d => d.present),
-                        borderColor: '#00d9ff',
-                        backgroundColor: 'rgba(0, 217, 255, 0.1)',
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Absent',
-                        data: trendData.map(d => d.absent),
-                        borderColor: '#ff2d75',
-                        backgroundColor: 'rgba(255, 45, 117, 0.1)',
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Late',
-                        data: trendData.map(d => d.late),
-                        borderColor: '#ffd700',
-                        backgroundColor: 'rgba(255, 215, 0, 0.1)',
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: { color: '#00d9ff' }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { color: '#00d9ff' },
-                        grid: { color: 'rgba(0, 217, 255, 0.1)' }
-                    },
-                    x: {
-                        ticks: { color: '#00d9ff' },
-                        grid: { color: 'rgba(0, 217, 255, 0.1)' }
-                    }
-                }
-            }
-        });
-    }
-
-    // Role Distribution Chart
-    const roleDistCtx = document.getElementById('roleDistributionChart');
-    if (roleDistCtx) {
-        const roleData = <?php echo json_encode($role_distribution); ?>;
-        new Chart(roleDistCtx, {
-            type: 'doughnut',
-            data: {
-                labels: roleData.map(r => r.role),
-                datasets: [{
-                    data: roleData.map(r => r.count),
-                    backgroundColor: [
-                        '#00d9ff', '#ff2d75', '#ffd700', '#00ff88',
-                        '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'
+        // Attendance Trend Chart
+        const attendanceTrendCtx = document.getElementById('attendanceTrendChart');
+        if (attendanceTrendCtx) {
+            const trendData = <?php echo json_encode($attendance_trend); ?>;
+            new Chart(attendanceTrendCtx, {
+                type: 'line',
+                data: {
+                    labels: trendData.map(d => d.date),
+                    datasets: [{
+                            label: 'Present',
+                            data: trendData.map(d => d.present),
+                            borderColor: '#00d9ff',
+                            backgroundColor: 'rgba(0, 217, 255, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Absent',
+                            data: trendData.map(d => d.absent),
+                            borderColor: '#ff2d75',
+                            backgroundColor: 'rgba(255, 45, 117, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Late',
+                            data: trendData.map(d => d.late),
+                            borderColor: '#ffd700',
+                            backgroundColor: 'rgba(255, 215, 0, 0.1)',
+                            tension: 0.4
+                        }
                     ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { color: '#00d9ff', font: { size: 10 } }
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#00d9ff'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#00d9ff'
+                            },
+                            grid: {
+                                color: 'rgba(0, 217, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#00d9ff'
+                            },
+                            grid: {
+                                color: 'rgba(0, 217, 255, 0.1)'
+                            }
+                        }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
+
+        // Role Distribution Chart
+        const roleDistCtx = document.getElementById('roleDistributionChart');
+        if (roleDistCtx) {
+            const roleData = <?php echo json_encode($role_distribution); ?>;
+            new Chart(roleDistCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: roleData.map(r => r.role),
+                    datasets: [{
+                        data: roleData.map(r => r.count),
+                        backgroundColor: [
+                            '#00d9ff', '#ff2d75', '#ffd700', '#00ff88',
+                            '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#00d9ff',
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </body>
+
 </html>

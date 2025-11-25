@@ -122,11 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
                 $email_message = "
                 <html>
                 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/attendance/manifest.json">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
+                    <meta charset='UTF-8'>
                     <title>Email Verification</title>
                     <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
@@ -137,17 +133,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
                         .footer { background: #f9f9f9; padding: 20px; text-align: center; color: #666; font-size: 12px; }
                     </style>
                 </head>
-                <body class="cyber-bg">
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-                        <div class='container'>
+                <body>
+                    <div class='container'>
                         <div class='header'>
                             <h1>📧 Email Verification</h1>
                         </div>
@@ -168,11 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
                             <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
                         </div>
                     </div>
-                
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
-</body>
+                </body>
                 </html>
                 ";
 
@@ -418,14 +401,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

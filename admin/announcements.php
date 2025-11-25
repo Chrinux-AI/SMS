@@ -27,14 +27,7 @@ $announcements = db()->fetchAll("SELECT * FROM announcements ORDER BY created_at
 </head><body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-    <div class="cyber-layout"><?php include '../includes/cyber-nav.php'; ?>
+<div class="cyber-layout"><?php include '../includes/cyber-nav.php'; ?>
 <main class="cyber-main"><header class="cyber-header">
 <div class="page-title-section"><div class="page-icon-orb"><i class="fas fa-<?php echo $page_icon; ?>"></i></div>
 <h1 class="page-title"><?php echo $page_title; ?></h1></div>

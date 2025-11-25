@@ -364,14 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-    <!-- Cyberpunk Background -->
+<!-- Cyberpunk Background -->
     <div class="cyber-bg">
         <div class="starfield"></div>
     </div>

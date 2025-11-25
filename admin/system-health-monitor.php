@@ -1,4 +1,5 @@
 <?php
+
 /**
  * System Health Monitor & Diagnostics
  * Comprehensive system health check and troubleshooting tool
@@ -176,20 +177,25 @@ $healthy_count = count(array_filter($health_checks, fn($check) => $check['status
 $health_score = ($healthy_count / $total_checks) * 100;
 
 // Helper function
-function return_bytes($val) {
+function return_bytes($val)
+{
     $val = trim($val);
-    $last = strtolower($val[strlen($val)-1]);
+    $last = strtolower($val[strlen($val) - 1]);
     $val = (int)$val;
-    switch($last) {
-        case 'g': $val *= 1024;
-        case 'm': $val *= 1024;
-        case 'k': $val *= 1024;
+    switch ($last) {
+        case 'g':
+            $val *= 1024;
+        case 'm':
+            $val *= 1024;
+        case 'k':
+            $val *= 1024;
     }
     return $val;
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -198,6 +204,7 @@ function return_bytes($val) {
     <link rel="stylesheet" href="../assets/css/cyberpunk-ui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
@@ -239,43 +246,41 @@ function return_bytes($val) {
                 <!-- Health Checks Grid -->
                 <div class="row">
                     <?php foreach ($health_checks as $key => $check): ?>
-                    <div class="col-md-6 mb-3">
-                        <div class="holo-card health-check-card">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="flex-grow-1">
-                                    <h4 class="mb-2">
-                                        <?php
-                                        $icon = '';
-                                        switch ($check['status']) {
-                                            case 'healthy':
-                                                $icon = '<i class="fas fa-check-circle text-success"></i>';
-                                                break;
-                                            case 'warning':
-                                                $icon = '<i class="fas fa-exclamation-triangle text-warning"></i>';
-                                                break;
-                                            case 'critical':
-                                                $icon = '<i class="fas fa-times-circle text-danger"></i>';
-                                                break;
-                                            case 'info':
-                                                $icon = '<i class="fas fa-info-circle text-info"></i>';
-                                                break;
-                                        }
-                                        echo $icon;
-                                        ?>
-                                        <?php echo htmlspecialchars($check['message']); ?>
-                                    </h4>
-                                    <p class="text-muted mb-0"><?php echo htmlspecialchars($check['details']); ?></p>
+                        <div class="col-md-6 mb-3">
+                            <div class="holo-card health-check-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="flex-grow-1">
+                                        <h4 class="mb-2">
+                                            <?php
+                                            $icon = '';
+                                            switch ($check['status']) {
+                                                case 'healthy':
+                                                    $icon = '<i class="fas fa-check-circle text-success"></i>';
+                                                    break;
+                                                case 'warning':
+                                                    $icon = '<i class="fas fa-exclamation-triangle text-warning"></i>';
+                                                    break;
+                                                case 'critical':
+                                                    $icon = '<i class="fas fa-times-circle text-danger"></i>';
+                                                    break;
+                                                case 'info':
+                                                    $icon = '<i class="fas fa-info-circle text-info"></i>';
+                                                    break;
+                                            }
+                                            echo $icon;
+                                            ?>
+                                            <?php echo htmlspecialchars($check['message']); ?>
+                                        </h4>
+                                        <p class="text-muted mb-0"><?php echo htmlspecialchars($check['details']); ?></p>
+                                    </div>
+                                    <span class="cyber-badge badge-<?php
+                                                                    echo $check['status'] === 'healthy' ? 'success' : ($check['status'] === 'warning' ? 'warning' : ($check['status'] === 'critical' ? 'danger' : 'info'));
+                                                                    ?>">
+                                        <?php echo strtoupper($check['status']); ?>
+                                    </span>
                                 </div>
-                                <span class="cyber-badge badge-<?php 
-                                    echo $check['status'] === 'healthy' ? 'success' : 
-                                         ($check['status'] === 'warning' ? 'warning' : 
-                                          ($check['status'] === 'critical' ? 'danger' : 'info')); 
-                                ?>">
-                                    <?php echo strtoupper($check['status']); ?>
-                                </span>
                             </div>
                         </div>
-                    </div>
                     <?php endforeach; ?>
                 </div>
 
@@ -307,48 +312,52 @@ function return_bytes($val) {
 
     <?php include '../includes/sams-bot.php'; ?>
     <script src="../assets/js/main.js"></script>
-    
+
     <style>
-    .health-score-circle {
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: conic-gradient(
-            #00d9ff 0% calc(var(--score) * 1%),
-            rgba(0, 217, 255, 0.1) calc(var(--score) * 1%) 100%
-        );
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        position: relative;
-    }
-    .health-score-circle::before {
-        content: '';
-        position: absolute;
-        width: 170px;
-        height: 170px;
-        border-radius: 50%;
-        background: #0a0e27;
-    }
-    .score-value {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #00d9ff;
-        z-index: 1;
-    }
-    .score-label {
-        font-size: 1rem;
-        z-index: 1;
-    }
-    .health-check-card {
-        height: 100%;
-        transition: transform 0.3s ease;
-    }
-    .health-check-card:hover {
-        transform: translateY(-5px);
-    }
+        .health-score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(#00d9ff 0% calc(var(--score) * 1%),
+                    rgba(0, 217, 255, 0.1) calc(var(--score) * 1%) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .health-score-circle::before {
+            content: '';
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: #0a0e27;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00d9ff;
+            z-index: 1;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            z-index: 1;
+        }
+
+        .health-check-card {
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .health-check-card:hover {
+            transform: translateY(-5px);
+        }
     </style>
 </body>
+
 </html>

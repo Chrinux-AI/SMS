@@ -150,14 +150,7 @@ exit;
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <a href="logout.php" class="logout-btn">
+<a href="logout.php" class="logout-btn">
         <i class="fas fa-sign-out-alt"></i> Logout
     </a>
 

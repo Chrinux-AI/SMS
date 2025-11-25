@@ -74,14 +74,7 @@ $avg_attendance = $total_students > 0 ? round(array_sum($attendance_map) / $tota
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="cyber-bg"><div class="starfield"></div></div><div class="cyber-grid"></div>
+<div class="cyber-bg"><div class="starfield"></div></div><div class="cyber-grid"></div>
         
     </div>
     

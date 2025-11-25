@@ -327,14 +327,7 @@ $current_user = $_SESSION['full_name'] ?? 'Not logged in';
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="container">
+<div class="container">
         <div class="header">
             <h1>🚀 SAMS System Overview</h1>
             <p>Student Attendance Management System - Dashboard Links</p>

@@ -239,14 +239,7 @@ $users = db()->fetchAll("
 
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-
-        <div class="copy-notification" id="copyNotification">
+<div class="copy-notification" id="copyNotification">
         <i class="fas fa-check-circle"></i>
         <span id="copyText">ID copied to clipboard!</span>
     </div>
