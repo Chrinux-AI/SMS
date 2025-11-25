@@ -292,7 +292,7 @@ if ($user_role === 'admin') {
             // Toggle sidebar
             sidebarToggle.addEventListener('click', function() {
                 const isMobile = window.innerWidth <= 1024;
-                
+
                 if (isMobile) {
                     // Mobile: use .active class
                     sidebar.classList.toggle('active');

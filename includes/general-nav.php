@@ -138,11 +138,25 @@ $dashboard_url = $dashboard_map[$user_role] ?? '../index.php';
             const sidebar = document.getElementById('cyberSidebar');
             const toggle = document.getElementById('sidebarToggle');
             const overlay = document.getElementById('sidebarOverlay');
+            const hamburgerBtn = document.getElementById('sidebarToggle');
 
             if (toggle && sidebar && overlay) {
                 toggle.addEventListener('click', () => {
-                    sidebar.classList.toggle('active');
-                    overlay.classList.toggle('active');
+                    const isMobile = window.innerWidth <= 1024;
+
+                    if (isMobile) {
+                        // Mobile: use .active class
+                        sidebar.classList.toggle('active');
+                        overlay.classList.toggle('active');
+                    } else {
+                        // Desktop: use .hidden class and adjust hamburger position
+                        sidebar.classList.toggle('hidden');
+                        if (sidebar.classList.contains('hidden')) {
+                            hamburgerBtn.style.left = '20px';
+                        } else {
+                            hamburgerBtn.style.left = '300px';
+                        }
+                    }
                 });
 
                 overlay.addEventListener('click', () => {
