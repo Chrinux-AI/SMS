@@ -82,12 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Verify entrance ID exists and is valid
             try {
                 $entranceCheck = db()->fetchOne("
-                    SELECT ea.*, er.full_name as exam_name 
-                    FROM exam_attempts ea 
+                    SELECT ea.*, er.full_name as exam_name
+                    FROM exam_attempts ea
                     JOIN exam_registrations er ON ea.registration_id = er.id
                     WHERE ea.entrance_id = ? AND ea.passed = 1
                 ", [$form_data['entrance_id']]);
-                
+
                 if (!$entranceCheck) {
                     $errors[] = 'Invalid Entrance ID. Please ensure you have passed the entrance examination.';
                 } else {
