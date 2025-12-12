@@ -104,7 +104,8 @@ if ($user_role === 'admin') {
             'lms-settings.php' => ['icon' => 'graduation-cap', 'label' => 'LMS Integration', 'badge' => 'LTI'],
         ],
         'Management' => [
-            'users.php' => ['icon' => 'users-cog', 'label' => 'Users', 'badge' => null],
+            'account-management.php' => ['icon' => 'users-cog', 'label' => 'Account Management', 'badge' => 'NEW'],
+            'users.php' => ['icon' => 'users', 'label' => 'All Users', 'badge' => null],
             'registrations.php' => ['icon' => 'user-plus', 'label' => 'Registrations', 'badge' => null],
             'class-enrollment.php' => ['icon' => 'user-graduate', 'label' => 'Class Enrollment', 'badge' => null],
             'manage-ids.php' => ['icon' => 'id-card', 'label' => 'Manage IDs', 'badge' => null],
