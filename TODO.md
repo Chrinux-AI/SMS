@@ -103,6 +103,35 @@ Then create GitHub Release `v3.0-evergreen`
     - Create accounts for ANY role
     - Suspend/Delete any user
     - Access every module
+    - Manage all system settings
+    - Configure email/SMS notifications
+
+### CONTACT & COMMUNICATION SETTINGS
+- [ ] **Primary Contact Email:** `christolabiyi35@gmail.com`
+- [ ] **Primary Contact Phone:** `+2348167714860`
+- [ ] **OTP/Verification Sender Email:** `christolabiyi35@gmail.com`
+- [ ] Update `.env` file with:
+    ```env
+    SMTP_FROM_EMAIL=christolabiyi35@gmail.com
+    SMTP_FROM_NAME=Verdant School Management System
+    CONTACT_EMAIL=christolabiyi35@gmail.com
+    CONTACT_PHONE=+2348167714860
+    ```
+- [ ] Update `includes/config.php`:
+    ```php
+    define('SYSTEM_EMAIL', getenv('SMTP_FROM_EMAIL') ?: 'christolabiyi35@gmail.com');
+    define('CONTACT_EMAIL', getenv('CONTACT_EMAIL') ?: 'christolabiyi35@gmail.com');
+    define('CONTACT_PHONE', getenv('CONTACT_PHONE') ?: '+2348167714860');
+    ```
+- [ ] Configure PHPMailer in `includes/functions.php`:
+    - Set `$mail->setFrom('christolabiyi35@gmail.com', 'Verdant SMS')`
+    - All OTP emails sent FROM this address
+    - All verification links sent FROM this address
+    - All password reset emails FROM this address
+- [ ] Update footer/contact pages with:
+    - Email: `christolabibi35@gmail.com`
+    - Phone: `+2348167714860`
+    - WhatsApp link: `https://wa.me/2348167714860`
 
 ### 10. register.php — STUDENT ROLE ONLY
 - [ ] Remove role dropdown completely — hardcode `role = 'student'`
