@@ -14,6 +14,7 @@ https://github.com/Chrinux-AI/School_Management_System
 - [x] All other roles are sub-roles under Admin control
 - [x] Admin can create, approve, decline any account
 - [x] Admin account: `admin@verdant.edu / Verdant2025!`
+- [x] **DELETED:** `superadmin/` and `owner/` folders removed
 
 ### 2. REGISTRATION — STUDENT-ONLY WITH CREDENTIALS ✅
 
