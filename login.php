@@ -33,7 +33,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             if ($user && password_verify($password, $user['password_hash'])) {
                 // Check user status
                 if ($user['email_verified'] == 0) {
-                    $error = 'Please verify your email address before logging in. Check your inbox for the verification link.';
+                    // Generate OTP for verification
+                    $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+                    $expires = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+                    db()->query("UPDATE users SET otp_code = ?, otp_expires_at = ? WHERE id = ?", [$otp, $expires, $user['id']]);
+                    
+                    // Send OTP email
+                    send_email(
+                        $user['email'],
+                        'Your Verdant SMS Verification Code',
+                        "Hello " . ($user['first_name'] ?? 'User') . ",\n\n" .
+                        "Your verification code is: $otp\n\n" .
+                        "This code expires in 15 minutes.\n\n" .
+                        "Or click this link to verify: " . (getenv('APP_URL') ?: 'http://localhost/attendance') . "/verify.php?token=" . ($user['verification_token'] ?? '')
+                    );
+                    
+                    $error = 'Please verify your email address. A new verification code has been sent to your inbox. <a href="verify.php?email=' . urlencode($email) . '" style="color: #00ff88;">Click here to verify</a>';
                 } elseif ($user['approved'] == 0) {
                     $error = 'Your account is pending admin approval. You will receive an email once approved.';
                 } elseif ($user['status'] !== 'active') {
