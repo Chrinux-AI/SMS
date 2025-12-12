@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $page_title = "Mobile API Management";
 
@@ -297,7 +297,7 @@ $security_settings = [
 <body class="mobile-dashboard cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<!-- API Status Indicator -->
+    <!-- API Status Indicator -->
     <div class="api-indicator">
         <i class="fas fa-mobile-alt"></i> API Online
     </div>

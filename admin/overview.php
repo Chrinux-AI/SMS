@@ -9,7 +9,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_admin('../login.php');
+require_role('admin');
 
 $user_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];

@@ -10,7 +10,7 @@ require_once '../../includes/functions.php';
 require_once '../../includes/database.php';
 
 // Check if user is admin
-require_admin();
+require_role('admin');
 
 $page_title = "Subject Management";
 $current_page = "academics/subjects.php";

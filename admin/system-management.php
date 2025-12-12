@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -235,128 +235,128 @@ if (is_dir($backup_dir)) {
 
         <main class="cyber-main">
 
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class="header">
-        <div class="header-content">
-            <div>
-                <h1><i class="fas fa-tools"></i> System Management</h1>
-                <p>Advanced admin tools and system controls</p>
-            </div>
-            <a href="../logout.php" class="btn-logout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-    </div>
-
-    <div class="container">
-        <nav class="admin-nav">
-            <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="users.php"><i class="fas fa-users"></i> Users</a>
-            <a href="registrations.php"><i class="fas fa-user-clock"></i> Registrations</a>
-            <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
-            <a href="system-monitor.php"><i class="fas fa-heartbeat"></i> Monitor</a>
-            <a href="system-management.php" class="active"><i class="fas fa-tools"></i> System</a>
-            <a href="advanced-admin.php"><i class="fas fa-rocket"></i> Advanced</a>
-        </nav>
-
-        <?php if ($message): ?>
-            <div class="alert alert-<?php echo $message_type; ?>">
-                <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
-                <?php echo $message; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- System Statistics -->
-        <div class="card">
-            <div class="card-header">
-                <h2><i class="fas fa-chart-bar"></i> System Statistics</h2>
-            </div>
-            <div class="system-stats">
-                <div class="stat-orb">
-                    <div class="stat-number"><?php echo $stats['total_users']; ?></div>
-                    <div>Total Users</div>
-                </div>
-                <div class="stat-orb">
-                    <div class="stat-number"><?php echo $stats['total_students']; ?></div>
-                    <div>Students</div>
-                </div>
-                <div class="stat-orb">
-                    <div class="stat-number"><?php echo $stats['total_teachers']; ?></div>
-                    <div>Teachers</div>
-                </div>
-                <div class="stat-orb">
-                    <div class="stat-number"><?php echo $stats['total_classes']; ?></div>
-                    <div>Classes</div>
-                </div>
-                <div class="stat-orb">
-                    <div class="stat-number"><?php echo $stats['total_attendance']; ?></div>
-                    <div>Attendance Records</div>
+            <div class="starfield"></div>
+            <div class="cyber-grid"></div>
+            <div class="header">
+                <div class="header-content">
+                    <div>
+                        <h1><i class="fas fa-tools"></i> System Management</h1>
+                        <p>Advanced admin tools and system controls</p>
+                    </div>
+                    <a href="../logout.php" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </div>
             </div>
-        </div>
 
-        <!-- Backup Management -->
-        <div class="card">
-            <div class="card-header">
-                <h2><i class="fas fa-save"></i> Backup Management</h2>
-            </div>
+            <div class="container">
+                <nav class="admin-nav">
+                    <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="users.php"><i class="fas fa-users"></i> Users</a>
+                    <a href="registrations.php"><i class="fas fa-user-clock"></i> Registrations</a>
+                    <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
+                    <a href="system-monitor.php"><i class="fas fa-heartbeat"></i> Monitor</a>
+                    <a href="system-management.php" class="active"><i class="fas fa-tools"></i> System</a>
+                    <a href="advanced-admin.php"><i class="fas fa-rocket"></i> Advanced</a>
+                </nav>
 
-            <form method="POST" style="margin-bottom: 20px;">
-                <button type="submit" name="backup_system" class="btn btn-primary">
-                    <i class="fas fa-download"></i> Create Full Backup
-                </button>
-            </form>
-
-            <div class="backup-list">
-                <h4>Existing Backups (<?php echo count($stats['backup_files']); ?>)</h4>
-                <?php if (empty($stats['backup_files'])): ?>
-                    <p style="color: #64748b; text-align: center; padding: 20px;">No backups found</p>
-                <?php else: ?>
-                    <?php foreach ($stats['backup_files'] as $backup): ?>
-                        <div class="backup-item">
-                            <div>
-                                <strong><?php echo $backup['name']; ?></strong><br>
-                                <small><?php echo $backup['date']; ?> • <?php echo number_format($backup['size'] / 1024, 2); ?> KB</small>
-                            </div>
-                            <a href="../backups/<?php echo $backup['name']; ?>" class="btn btn-sm btn-primary">
-                                <i class="fas fa-download"></i> Download
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
+                <?php if ($message): ?>
+                    <div class="alert alert-<?php echo $message_type; ?>">
+                        <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
+                        <?php echo $message; ?>
+                    </div>
                 <?php endif; ?>
+
+                <!-- System Statistics -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> System Statistics</h2>
+                    </div>
+                    <div class="system-stats">
+                        <div class="stat-orb">
+                            <div class="stat-number"><?php echo $stats['total_users']; ?></div>
+                            <div>Total Users</div>
+                        </div>
+                        <div class="stat-orb">
+                            <div class="stat-number"><?php echo $stats['total_students']; ?></div>
+                            <div>Students</div>
+                        </div>
+                        <div class="stat-orb">
+                            <div class="stat-number"><?php echo $stats['total_teachers']; ?></div>
+                            <div>Teachers</div>
+                        </div>
+                        <div class="stat-orb">
+                            <div class="stat-number"><?php echo $stats['total_classes']; ?></div>
+                            <div>Classes</div>
+                        </div>
+                        <div class="stat-orb">
+                            <div class="stat-number"><?php echo $stats['total_attendance']; ?></div>
+                            <div>Attendance Records</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup Management -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-save"></i> Backup Management</h2>
+                    </div>
+
+                    <form method="POST" style="margin-bottom: 20px;">
+                        <button type="submit" name="backup_system" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Create Full Backup
+                        </button>
+                    </form>
+
+                    <div class="backup-list">
+                        <h4>Existing Backups (<?php echo count($stats['backup_files']); ?>)</h4>
+                        <?php if (empty($stats['backup_files'])): ?>
+                            <p style="color: #64748b; text-align: center; padding: 20px;">No backups found</p>
+                        <?php else: ?>
+                            <?php foreach ($stats['backup_files'] as $backup): ?>
+                                <div class="backup-item">
+                                    <div>
+                                        <strong><?php echo $backup['name']; ?></strong><br>
+                                        <small><?php echo $backup['date']; ?> • <?php echo number_format($backup['size'] / 1024, 2); ?> KB</small>
+                                    </div>
+                                    <a href="../backups/<?php echo $backup['name']; ?>" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-download"></i> Download
+                                    </a>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="danger-zone">
+                    <div class="danger-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Danger Zone
+                    </div>
+                    <p style="color: #7f1d1d; margin-bottom: 20px;">
+                        These actions are irreversible. Please create a backup before proceeding.
+                    </p>
+
+                    <div class="danger-actions">
+                        <form method="POST" onsubmit="return confirm('⚠️ WARNING: This will reset ALL ID sequences. Continue?')">
+                            <button type="submit" name="reset_ids" class="danger-btn">
+                                <i class="fas fa-sort-numeric-up"></i> Reset ID Sequences
+                            </button>
+                        </form>
+
+                        <form method="POST" onsubmit="return confirm('🚨 CRITICAL WARNING: This will DELETE ALL DATA except admin account! Type CONFIRM below to proceed.') && prompt('Type CONFIRM:') === 'CONFIRM'">
+                            <button type="submit" name="reset_system" class="danger-btn">
+                                <i class="fas fa-skull-crossbones"></i> Complete System Reset
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Danger Zone -->
-        <div class="danger-zone">
-            <div class="danger-header">
-                <i class="fas fa-exclamation-triangle"></i>
-                Danger Zone
-            </div>
-            <p style="color: #7f1d1d; margin-bottom: 20px;">
-                These actions are irreversible. Please create a backup before proceeding.
-            </p>
-
-            <div class="danger-actions">
-                <form method="POST" onsubmit="return confirm('⚠️ WARNING: This will reset ALL ID sequences. Continue?')">
-                    <button type="submit" name="reset_ids" class="danger-btn">
-                        <i class="fas fa-sort-numeric-up"></i> Reset ID Sequences
-                    </button>
-                </form>
-
-                <form method="POST" onsubmit="return confirm('🚨 CRITICAL WARNING: This will DELETE ALL DATA except admin account! Type CONFIRM below to proceed.') && prompt('Type CONFIRM:') === 'CONFIRM'">
-                    <button type="submit" name="reset_system" class="danger-btn">
-                        <i class="fas fa-skull-crossbones"></i> Complete System Reset
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+            <script src="../assets/js/main.js"></script>
+            <script src="../assets/js/pwa-manager.js"></script>
+            <script src="../assets/js/pwa-analytics.js"></script>
 </body>
 
 </html>

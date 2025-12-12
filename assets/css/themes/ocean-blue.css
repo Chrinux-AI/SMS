@@ -1,0 +1,195 @@
+/**
+ * Ocean Blue Theme
+ * Clean professional blue tones
+ * For admins & corporate feel
+ * Verdant SMS v3.0
+ */
+
+:root {
+    /* Primary Colors */
+    --theme-primary: #3b82f6;
+    --theme-primary-dark: #2563eb;
+    --theme-primary-light: #60a5fa;
+    --theme-primary-rgb: 59, 130, 246;
+
+    /* Secondary Colors */
+    --theme-secondary: #0ea5e9;
+    --theme-secondary-dark: #0284c7;
+    --theme-secondary-light: #38bdf8;
+
+    /* Accent Colors */
+    --theme-accent: #06b6d4;
+    --theme-accent-dark: #0891b2;
+    --theme-accent-light: #22d3ee;
+
+    /* Background Colors */
+    --theme-bg-primary: #0c1929;
+    --theme-bg-secondary: #132237;
+    --theme-bg-tertiary: #1a2d45;
+    --theme-bg-card: rgba(59, 130, 246, 0.08);
+    --theme-bg-glass: rgba(14, 165, 233, 0.05);
+
+    /* Text Colors */
+    --theme-text-primary: #f0f9ff;
+    --theme-text-secondary: #bae6fd;
+    --theme-text-muted: rgba(240, 249, 255, 0.6);
+    --theme-text-inverse: #0c1929;
+
+    /* Border & Shadow */
+    --theme-border: rgba(59, 130, 246, 0.2);
+    --theme-border-light: rgba(14, 165, 233, 0.15);
+    --theme-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+    --theme-glow: 0 0 25px rgba(59, 130, 246, 0.3);
+
+    /* Status Colors */
+    --theme-success: #10b981;
+    --theme-warning: #f59e0b;
+    --theme-danger: #ef4444;
+    --theme-info: #3b82f6;
+
+    /* Gradient */
+    --theme-gradient: linear-gradient(135deg, #3b82f6 0%, #0ea5e9 50%, #06b6d4 100%);
+    --theme-gradient-subtle: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(14, 165, 233, 0.05) 100%);
+
+    /* Animation */
+    --theme-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Body Background */
+body.theme-ocean-blue {
+    background: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+}
+
+body.theme-ocean-blue::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 30% 20%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Wave Animation */
+body.theme-ocean-blue::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 100px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(59, 130, 246, 0.05),
+        transparent);
+    animation: wave 8s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes wave {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Sidebar */
+body.theme-ocean-blue .cyber-sidebar {
+    background: linear-gradient(180deg, var(--theme-bg-secondary) 0%, var(--theme-bg-primary) 100%);
+    border-right: 1px solid var(--theme-border);
+}
+
+body.theme-ocean-blue .menu-item:hover,
+body.theme-ocean-blue .menu-item.active {
+    background: var(--theme-gradient-subtle);
+    border-left: 3px solid var(--theme-primary);
+}
+
+/* Cards */
+body.theme-ocean-blue .stat-orb,
+body.theme-ocean-blue .cyber-card,
+body.theme-ocean-blue .dashboard-card {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-ocean-blue .stat-orb:hover,
+body.theme-ocean-blue .cyber-card:hover {
+    border-color: var(--theme-primary);
+    box-shadow: var(--theme-glow);
+}
+
+/* Buttons */
+body.theme-ocean-blue .btn-primary,
+body.theme-ocean-blue .cyber-btn {
+    background: var(--theme-gradient);
+    color: white;
+    border: none;
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-ocean-blue .btn-primary:hover,
+body.theme-ocean-blue .cyber-btn:hover {
+    box-shadow: var(--theme-glow);
+    transform: translateY(-2px);
+}
+
+/* Form Elements */
+body.theme-ocean-blue input,
+body.theme-ocean-blue select,
+body.theme-ocean-blue textarea {
+    background: var(--theme-bg-tertiary);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text-primary);
+}
+
+body.theme-ocean-blue input:focus,
+body.theme-ocean-blue select:focus,
+body.theme-ocean-blue textarea:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Tables */
+body.theme-ocean-blue table {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+}
+
+body.theme-ocean-blue th {
+    background: var(--theme-bg-tertiary);
+    color: var(--theme-primary-light);
+}
+
+body.theme-ocean-blue tr:hover {
+    background: var(--theme-bg-glass);
+}
+
+/* Links */
+body.theme-ocean-blue a {
+    color: var(--theme-primary-light);
+}
+
+body.theme-ocean-blue a:hover {
+    color: var(--theme-accent);
+}
+
+/* Scrollbar */
+body.theme-ocean-blue ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.theme-ocean-blue ::-webkit-scrollbar-track {
+    background: var(--theme-bg-secondary);
+}
+
+body.theme-ocean-blue ::-webkit-scrollbar-thumb {
+    background: var(--theme-gradient);
+    border-radius: 4px;
+}

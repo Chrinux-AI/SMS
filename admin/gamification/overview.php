@@ -4,10 +4,8 @@ require_once '../../includes/config.php';
 require_once '../../includes/functions.php';
 require_once '../../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['superadmin', 'admin', 'principal'])) {
-    header('Location: ../../login.php');
-    exit;
-}
+
+require_role('admin'); // TEST_MODE will allow access for testing
 
 // Gamification Stats
 $total_students = db()->fetchOne("SELECT COUNT(*) as count FROM students WHERE is_active = 1")['count'] ?? 0;

@@ -9,7 +9,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_admin('../login.php');
+require_role('admin');
 
 $full_name = $_SESSION['full_name'];
 
@@ -212,7 +212,7 @@ $page_icon = 'heartbeat';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .health-gauge {
@@ -283,10 +283,11 @@ $page_icon = 'heartbeat';
         }
     </style>
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>
@@ -423,8 +424,8 @@ $page_icon = 'heartbeat';
                                 <i class="fas fa-<?php
                                                     echo $suggestion['type'] === 'success' ? 'check-circle' : ($suggestion['type'] === 'danger' ? 'exclamation-triangle' : ($suggestion['type'] === 'warning' ? 'exclamation-circle' : 'info-circle'));
                                                     ?>" style="font-size:1.5rem;color:<?php
-                                                                    echo $suggestion['type'] === 'success' ? 'var(--neon-green)' : ($suggestion['type'] === 'danger' ? 'var(--cyber-red)' : ($suggestion['type'] === 'warning' ? 'var(--golden-pulse)' : 'var(--cyber-cyan)'));
-                                                                    ?>;"></i>
+                                                                                        echo $suggestion['type'] === 'success' ? 'var(--neon-green)' : ($suggestion['type'] === 'danger' ? 'var(--cyber-red)' : ($suggestion['type'] === 'warning' ? 'var(--golden-pulse)' : 'var(--cyber-cyan)'));
+                                                                                        ?>;"></i>
                             </div>
                             <div style="flex:1;">
                                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">

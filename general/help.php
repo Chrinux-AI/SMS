@@ -40,7 +40,7 @@ $guides = [
 ];
 
 include '../includes/cyber-header.php';
-<?php include '../includes/cyber-nav.php'; ?>
+include '../includes/cyber-nav.php';
 ?>
 
 <div class="cyber-content">

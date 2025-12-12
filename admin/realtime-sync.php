@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $page_title = "Real-time Sync Dashboard";
 
@@ -280,7 +280,7 @@ $recent_activity = RealtimeSync::getRecentActivity();
 <body class="sync-dashboard cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<!-- Live Indicator -->
+    <!-- Live Indicator -->
     <div class="live-indicator">
         <i class="fas fa-circle" style="color: #ef4444;"></i> LIVE
     </div>

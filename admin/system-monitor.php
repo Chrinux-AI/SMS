@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 // Get system health metrics
 $health_metrics = [
@@ -392,355 +392,355 @@ foreach ($health_metrics as $metric) {
 
         <main class="cyber-main">
 
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class="header">
-        <div class="header-content">
-            <div>
-                <h1><i class="fas fa-heartbeat"></i> System Monitor</h1>
-                <p>Real-time system health and performance monitoring</p>
-            </div>
-            <a href="../logout.php" class="btn-logout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-    </div>
-
-    <div class="container">
-        <nav class="admin-nav">
-            <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="users.php"><i class="fas fa-users"></i> Users</a>
-            <a href="registrations.php"><i class="fas fa-user-clock"></i> Registrations</a>
-            <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
-            <a href="system-management.php"><i class="fas fa-tools"></i> System</a>
-            <a href="system-monitor.php" class="active"><i class="fas fa-heartbeat"></i> Monitor</a>
-            <a href="advanced-admin.php"><i class="fas fa-rocket"></i> Advanced</a>
-        </nav>
-
-        <!-- Overall Health Status -->
-        <div class="overall-health">
-            <h2 style="margin-bottom: 15px;">
-                <i class="fas fa-<?php echo $overall_status === 'healthy' ? 'check-circle' : ($overall_status === 'warning' ? 'exclamation-triangle' : 'times-circle'); ?>"></i>
-                System Status: <?php echo strtoupper($overall_status); ?>
-            </h2>
-            <p style="font-size: 1.1rem; opacity: 0.9;">
-                <?php echo $total_issues; ?> issue<?php echo $total_issues !== 1 ? 's' : ''; ?> detected
-                • Last updated: <?php echo date('Y-m-d H:i:s'); ?>
-            </p>
-        </div>
-
-        <!-- Health Metrics Grid -->
-        <div class="health-grid">
-            <!-- Database Health -->
-            <div class="health-card <?php echo $health_metrics['database']['status']; ?>">
-                <div class="health-header">
-                    <div class="health-icon <?php echo $health_metrics['database']['status']; ?>">
-                        <i class="fas fa-database"></i>
-                    </div>
+            <div class="starfield"></div>
+            <div class="cyber-grid"></div>
+            <div class="header">
+                <div class="header-content">
                     <div>
-                        <h3>Database Health</h3>
-                        <span class="status-badge <?php echo $health_metrics['database']['status']; ?>">
-                            <?php echo strtoupper($health_metrics['database']['status']); ?>
-                        </span>
+                        <h1><i class="fas fa-heartbeat"></i> System Monitor</h1>
+                        <p>Real-time system health and performance monitoring</p>
                     </div>
+                    <a href="../logout.php" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+
+            <div class="container">
+                <nav class="admin-nav">
+                    <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="users.php"><i class="fas fa-users"></i> Users</a>
+                    <a href="registrations.php"><i class="fas fa-user-clock"></i> Registrations</a>
+                    <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
+                    <a href="system-management.php"><i class="fas fa-tools"></i> System</a>
+                    <a href="system-monitor.php" class="active"><i class="fas fa-heartbeat"></i> Monitor</a>
+                    <a href="advanced-admin.php"><i class="fas fa-rocket"></i> Advanced</a>
+                </nav>
+
+                <!-- Overall Health Status -->
+                <div class="overall-health">
+                    <h2 style="margin-bottom: 15px;">
+                        <i class="fas fa-<?php echo $overall_status === 'healthy' ? 'check-circle' : ($overall_status === 'warning' ? 'exclamation-triangle' : 'times-circle'); ?>"></i>
+                        System Status: <?php echo strtoupper($overall_status); ?>
+                    </h2>
+                    <p style="font-size: 1.1rem; opacity: 0.9;">
+                        <?php echo $total_issues; ?> issue<?php echo $total_issues !== 1 ? 's' : ''; ?> detected
+                        • Last updated: <?php echo date('Y-m-d H:i:s'); ?>
+                    </p>
                 </div>
 
-                <div class="metrics">
-                    <?php if (isset($health_metrics['database']['response_time'])): ?>
-                        <div class="metric-item">
-                            <span>Response Time</span>
-                            <strong><?php echo $health_metrics['database']['response_time']; ?>ms</strong>
+                <!-- Health Metrics Grid -->
+                <div class="health-grid">
+                    <!-- Database Health -->
+                    <div class="health-card <?php echo $health_metrics['database']['status']; ?>">
+                        <div class="health-header">
+                            <div class="health-icon <?php echo $health_metrics['database']['status']; ?>">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div>
+                                <h3>Database Health</h3>
+                                <span class="status-badge <?php echo $health_metrics['database']['status']; ?>">
+                                    <?php echo strtoupper($health_metrics['database']['status']); ?>
+                                </span>
+                            </div>
                         </div>
-                        <div class="metric-item">
-                            <span>Total Users</span>
-                            <strong><?php echo $health_metrics['database']['total_users']; ?></strong>
+
+                        <div class="metrics">
+                            <?php if (isset($health_metrics['database']['response_time'])): ?>
+                                <div class="metric-item">
+                                    <span>Response Time</span>
+                                    <strong><?php echo $health_metrics['database']['response_time']; ?>ms</strong>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Total Users</span>
+                                    <strong><?php echo $health_metrics['database']['total_users']; ?></strong>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Recent Activity</span>
+                                    <strong><?php echo $health_metrics['database']['recent_activity']; ?></strong>
+                                </div>
+                                <?php if ($health_metrics['database']['orphaned_records'] > 0): ?>
+                                    <div class="metric-item">
+                                        <span>Orphaned Records</span>
+                                        <strong style="color: #ef4444;"><?php echo $health_metrics['database']['orphaned_records']; ?></strong>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
-                        <div class="metric-item">
-                            <span>Recent Activity</span>
-                            <strong><?php echo $health_metrics['database']['recent_activity']; ?></strong>
-                        </div>
-                        <?php if ($health_metrics['database']['orphaned_records'] > 0): ?>
-                            <div class="metric-item">
-                                <span>Orphaned Records</span>
-                                <strong style="color: #ef4444;"><?php echo $health_metrics['database']['orphaned_records']; ?></strong>
+
+                        <?php if (!empty($health_metrics['database']['issues'])): ?>
+                            <div class="issues-list">
+                                <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
+                                <ul style="margin: 5px 0 0 20px;">
+                                    <?php foreach ($health_metrics['database']['issues'] as $issue): ?>
+                                        <li><?php echo $issue; ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
                             </div>
                         <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-
-                <?php if (!empty($health_metrics['database']['issues'])): ?>
-                    <div class="issues-list">
-                        <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
-                        <ul style="margin: 5px 0 0 20px;">
-                            <?php foreach ($health_metrics['database']['issues'] as $issue): ?>
-                                <li><?php echo $issue; ?></li>
-                            <?php endforeach; ?>
-                        </ul>
                     </div>
-                <?php endif; ?>
-            </div>
 
-            <!-- Email System Health -->
-            <div class="health-card <?php echo $health_metrics['email']['status']; ?>">
-                <div class="health-header">
-                    <div class="health-icon <?php echo $health_metrics['email']['status']; ?>">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div>
-                        <h3>Email System</h3>
-                        <span class="status-badge <?php echo $health_metrics['email']['status']; ?>">
-                            <?php echo strtoupper($health_metrics['email']['status']); ?>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="metrics">
-                    <?php if (isset($health_metrics['email']['recent_emails'])): ?>
-                        <div class="metric-item">
-                            <span>Recent Emails (24h)</span>
-                            <strong><?php echo $health_metrics['email']['recent_emails']; ?></strong>
+                    <!-- Email System Health -->
+                    <div class="health-card <?php echo $health_metrics['email']['status']; ?>">
+                        <div class="health-header">
+                            <div class="health-icon <?php echo $health_metrics['email']['status']; ?>">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h3>Email System</h3>
+                                <span class="status-badge <?php echo $health_metrics['email']['status']; ?>">
+                                    <?php echo strtoupper($health_metrics['email']['status']); ?>
+                                </span>
+                            </div>
                         </div>
-                        <div class="metric-item">
-                            <span>Failed Emails</span>
-                            <strong><?php echo $health_metrics['email']['failed_emails']; ?></strong>
+
+                        <div class="metrics">
+                            <?php if (isset($health_metrics['email']['recent_emails'])): ?>
+                                <div class="metric-item">
+                                    <span>Recent Emails (24h)</span>
+                                    <strong><?php echo $health_metrics['email']['recent_emails']; ?></strong>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Failed Emails</span>
+                                    <strong><?php echo $health_metrics['email']['failed_emails']; ?></strong>
+                                </div>
+                                <div class="metric-item">
+                                    <span>Success Rate</span>
+                                    <strong style="color: <?php echo $health_metrics['email']['success_rate'] > 90 ? '#10b981' : ($health_metrics['email']['success_rate'] > 70 ? '#f59e0b' : '#ef4444'); ?>">
+                                        <?php echo $health_metrics['email']['success_rate']; ?>%
+                                    </strong>
+                                </div>
+                            <?php endif; ?>
                         </div>
-                        <div class="metric-item">
-                            <span>Success Rate</span>
-                            <strong style="color: <?php echo $health_metrics['email']['success_rate'] > 90 ? '#10b981' : ($health_metrics['email']['success_rate'] > 70 ? '#f59e0b' : '#ef4444'); ?>">
-                                <?php echo $health_metrics['email']['success_rate']; ?>%
-                            </strong>
+
+                        <?php if (!empty($health_metrics['email']['issues'])): ?>
+                            <div class="issues-list">
+                                <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
+                                <ul style="margin: 5px 0 0 20px;">
+                                    <?php foreach ($health_metrics['email']['issues'] as $issue): ?>
+                                        <li><?php echo $issue; ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Storage Health -->
+                    <div class="health-card <?php echo $health_metrics['storage']['status']; ?>">
+                        <div class="health-header">
+                            <div class="health-icon <?php echo $health_metrics['storage']['status']; ?>">
+                                <i class="fas fa-hdd"></i>
+                            </div>
+                            <div>
+                                <h3>Storage Space</h3>
+                                <span class="status-badge <?php echo $health_metrics['storage']['status']; ?>">
+                                    <?php echo strtoupper($health_metrics['storage']['status']); ?>
+                                </span>
+                            </div>
                         </div>
-                    <?php endif; ?>
+
+                        <div class="metrics">
+                            <div class="metric-item">
+                                <span>Total Space</span>
+                                <strong><?php echo $health_metrics['storage']['total_space']; ?></strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Used Space</span>
+                                <strong><?php echo $health_metrics['storage']['used_space']; ?></strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Free Space</span>
+                                <strong><?php echo $health_metrics['storage']['free_space']; ?></strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Usage</span>
+                                <strong style="color: <?php echo $health_metrics['storage']['usage_percent'] > 80 ? '#ef4444' : '#10b981'; ?>">
+                                    <?php echo $health_metrics['storage']['usage_percent']; ?>%
+                                </strong>
+                            </div>
+                        </div>
+
+                        <?php if (!empty($health_metrics['storage']['issues'])): ?>
+                            <div class="issues-list">
+                                <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
+                                <ul style="margin: 5px 0 0 20px;">
+                                    <?php foreach ($health_metrics['storage']['issues'] as $issue): ?>
+                                        <li><?php echo $issue; ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Performance Metrics -->
+                    <div class="health-card <?php echo $health_metrics['performance']['status']; ?>">
+                        <div class="health-header">
+                            <div class="health-icon <?php echo $health_metrics['performance']['status']; ?>">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div>
+                                <h3>Performance</h3>
+                                <span class="status-badge <?php echo $health_metrics['performance']['status']; ?>">
+                                    <?php echo strtoupper($health_metrics['performance']['status']); ?>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric-item">
+                                <span>Memory Usage</span>
+                                <strong><?php echo $health_metrics['performance']['memory_usage']; ?></strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Memory Peak</span>
+                                <strong><?php echo $health_metrics['performance']['memory_peak']; ?></strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Memory Limit</span>
+                                <strong><?php echo $health_metrics['performance']['memory_limit']; ?></strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Usage %</span>
+                                <strong style="color: <?php echo $health_metrics['performance']['memory_percent'] > 70 ? '#ef4444' : '#10b981'; ?>">
+                                    <?php echo $health_metrics['performance']['memory_percent']; ?>%
+                                </strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>PHP Version</span>
+                                <strong><?php echo $health_metrics['performance']['php_version']; ?></strong>
+                            </div>
+                        </div>
+
+                        <?php if (!empty($health_metrics['performance']['issues'])): ?>
+                            <div class="issues-list">
+                                <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
+                                <ul style="margin: 5px 0 0 20px;">
+                                    <?php foreach ($health_metrics['performance']['issues'] as $issue): ?>
+                                        <li><?php echo $issue; ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <!-- Security Status -->
+                    <div class="health-card <?php echo $health_metrics['security']['status']; ?>">
+                        <div class="health-header">
+                            <div class="health-icon <?php echo $health_metrics['security']['status']; ?>">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div>
+                                <h3>Security</h3>
+                                <span class="status-badge <?php echo $health_metrics['security']['status']; ?>">
+                                    <?php echo strtoupper($health_metrics['security']['status']); ?>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric-item">
+                                <span>Failed Logins (1h)</span>
+                                <strong style="color: <?php echo $health_metrics['security']['failed_logins'] > 10 ? '#ef4444' : '#10b981'; ?>">
+                                    <?php echo $health_metrics['security']['failed_logins']; ?>
+                                </strong>
+                            </div>
+                            <div class="metric-item">
+                                <span>Default Passwords</span>
+                                <strong style="color: <?php echo $health_metrics['security']['default_passwords'] > 0 ? '#ef4444' : '#10b981'; ?>">
+                                    <?php echo $health_metrics['security']['default_passwords']; ?>
+                                </strong>
+                            </div>
+                        </div>
+
+                        <?php if (!empty($health_metrics['security']['issues'])): ?>
+                            <div class="issues-list">
+                                <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
+                                <ul style="margin: 5px 0 0 20px;">
+                                    <?php foreach ($health_metrics['security']['issues'] as $issue): ?>
+                                        <li><?php echo $issue; ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
 
-                <?php if (!empty($health_metrics['email']['issues'])): ?>
-                    <div class="issues-list">
-                        <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
-                        <ul style="margin: 5px 0 0 20px;">
-                            <?php foreach ($health_metrics['email']['issues'] as $issue): ?>
-                                <li><?php echo $issue; ?></li>
-                            <?php endforeach; ?>
-                        </ul>
+                <!-- Quick Actions -->
+                <div style="background: white; border-radius: 15px; padding: 25px; margin-top: 25px;">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-tools"></i> Quick Actions</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        <button onclick="refreshMetrics()" class="btn btn-primary">
+                            <i class="fas fa-sync-alt"></i> Refresh Metrics
+                        </button>
+                        <a href="system-management.php" class="btn btn-warning">
+                            <i class="fas fa-tools"></i> System Management
+                        </a>
+                        <button onclick="exportHealthReport()" class="btn btn-info">
+                            <i class="fas fa-file-export"></i> Export Report
+                        </button>
+                        <button onclick="toggleAutoRefresh()" class="btn btn-secondary" id="autoRefreshBtn">
+                            <i class="fas fa-play"></i> Start Auto-Refresh
+                        </button>
                     </div>
-                <?php endif; ?>
+                </div>
             </div>
 
-            <!-- Storage Health -->
-            <div class="health-card <?php echo $health_metrics['storage']['status']; ?>">
-                <div class="health-header">
-                    <div class="health-icon <?php echo $health_metrics['storage']['status']; ?>">
-                        <i class="fas fa-hdd"></i>
-                    </div>
-                    <div>
-                        <h3>Storage Space</h3>
-                        <span class="status-badge <?php echo $health_metrics['storage']['status']; ?>">
-                            <?php echo strtoupper($health_metrics['storage']['status']); ?>
-                        </span>
-                    </div>
-                </div>
-
-                <div class="metrics">
-                    <div class="metric-item">
-                        <span>Total Space</span>
-                        <strong><?php echo $health_metrics['storage']['total_space']; ?></strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>Used Space</span>
-                        <strong><?php echo $health_metrics['storage']['used_space']; ?></strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>Free Space</span>
-                        <strong><?php echo $health_metrics['storage']['free_space']; ?></strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>Usage</span>
-                        <strong style="color: <?php echo $health_metrics['storage']['usage_percent'] > 80 ? '#ef4444' : '#10b981'; ?>">
-                            <?php echo $health_metrics['storage']['usage_percent']; ?>%
-                        </strong>
-                    </div>
-                </div>
-
-                <?php if (!empty($health_metrics['storage']['issues'])): ?>
-                    <div class="issues-list">
-                        <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
-                        <ul style="margin: 5px 0 0 20px;">
-                            <?php foreach ($health_metrics['storage']['issues'] as $issue): ?>
-                                <li><?php echo $issue; ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
+            <!-- Real-time Updates Indicator -->
+            <div class="real-time-updates" id="updateIndicator" style="display: none;">
+                <i class="fas fa-sync-alt fa-spin"></i> Auto-refreshing...
             </div>
 
-            <!-- Performance Metrics -->
-            <div class="health-card <?php echo $health_metrics['performance']['status']; ?>">
-                <div class="health-header">
-                    <div class="health-icon <?php echo $health_metrics['performance']['status']; ?>">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-                    <div>
-                        <h3>Performance</h3>
-                        <span class="status-badge <?php echo $health_metrics['performance']['status']; ?>">
-                            <?php echo strtoupper($health_metrics['performance']['status']); ?>
-                        </span>
-                    </div>
-                </div>
+            <script>
+                let autoRefreshInterval = null;
+                let isAutoRefreshEnabled = false;
 
-                <div class="metrics">
-                    <div class="metric-item">
-                        <span>Memory Usage</span>
-                        <strong><?php echo $health_metrics['performance']['memory_usage']; ?></strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>Memory Peak</span>
-                        <strong><?php echo $health_metrics['performance']['memory_peak']; ?></strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>Memory Limit</span>
-                        <strong><?php echo $health_metrics['performance']['memory_limit']; ?></strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>Usage %</span>
-                        <strong style="color: <?php echo $health_metrics['performance']['memory_percent'] > 70 ? '#ef4444' : '#10b981'; ?>">
-                            <?php echo $health_metrics['performance']['memory_percent']; ?>%
-                        </strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>PHP Version</span>
-                        <strong><?php echo $health_metrics['performance']['php_version']; ?></strong>
-                    </div>
-                </div>
+                function refreshMetrics() {
+                    window.location.reload();
+                }
 
-                <?php if (!empty($health_metrics['performance']['issues'])): ?>
-                    <div class="issues-list">
-                        <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
-                        <ul style="margin: 5px 0 0 20px;">
-                            <?php foreach ($health_metrics['performance']['issues'] as $issue): ?>
-                                <li><?php echo $issue; ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-            </div>
+                function toggleAutoRefresh() {
+                    const btn = document.getElementById('autoRefreshBtn');
+                    const indicator = document.getElementById('updateIndicator');
 
-            <!-- Security Status -->
-            <div class="health-card <?php echo $health_metrics['security']['status']; ?>">
-                <div class="health-header">
-                    <div class="health-icon <?php echo $health_metrics['security']['status']; ?>">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div>
-                        <h3>Security</h3>
-                        <span class="status-badge <?php echo $health_metrics['security']['status']; ?>">
-                            <?php echo strtoupper($health_metrics['security']['status']); ?>
-                        </span>
-                    </div>
-                </div>
+                    if (!isAutoRefreshEnabled) {
+                        autoRefreshInterval = setInterval(() => {
+                            refreshMetrics();
+                        }, 30000); // Refresh every 30 seconds
 
-                <div class="metrics">
-                    <div class="metric-item">
-                        <span>Failed Logins (1h)</span>
-                        <strong style="color: <?php echo $health_metrics['security']['failed_logins'] > 10 ? '#ef4444' : '#10b981'; ?>">
-                            <?php echo $health_metrics['security']['failed_logins']; ?>
-                        </strong>
-                    </div>
-                    <div class="metric-item">
-                        <span>Default Passwords</span>
-                        <strong style="color: <?php echo $health_metrics['security']['default_passwords'] > 0 ? '#ef4444' : '#10b981'; ?>">
-                            <?php echo $health_metrics['security']['default_passwords']; ?>
-                        </strong>
-                    </div>
-                </div>
+                        btn.innerHTML = '<i class="fas fa-stop"></i> Stop Auto-Refresh';
+                        indicator.style.display = 'block';
+                        isAutoRefreshEnabled = true;
+                    } else {
+                        clearInterval(autoRefreshInterval);
+                        btn.innerHTML = '<i class="fas fa-play"></i> Start Auto-Refresh';
+                        indicator.style.display = 'none';
+                        isAutoRefreshEnabled = false;
+                    }
+                }
 
-                <?php if (!empty($health_metrics['security']['issues'])): ?>
-                    <div class="issues-list">
-                        <strong><i class="fas fa-exclamation-triangle"></i> Issues:</strong>
-                        <ul style="margin: 5px 0 0 20px;">
-                            <?php foreach ($health_metrics['security']['issues'] as $issue): ?>
-                                <li><?php echo $issue; ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
+                function exportHealthReport() {
+                    const data = {
+                        timestamp: new Date().toISOString(),
+                        overall_status: '<?php echo $overall_status; ?>',
+                        total_issues: <?php echo $total_issues; ?>,
+                        metrics: <?php echo json_encode($health_metrics); ?>
+                    };
 
-        <!-- Quick Actions -->
-        <div style="background: white; border-radius: 15px; padding: 25px; margin-top: 25px;">
-            <h3 style="margin-bottom: 20px;"><i class="fas fa-tools"></i> Quick Actions</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                <button onclick="refreshMetrics()" class="btn btn-primary">
-                    <i class="fas fa-sync-alt"></i> Refresh Metrics
-                </button>
-                <a href="system-management.php" class="btn btn-warning">
-                    <i class="fas fa-tools"></i> System Management
-                </a>
-                <button onclick="exportHealthReport()" class="btn btn-info">
-                    <i class="fas fa-file-export"></i> Export Report
-                </button>
-                <button onclick="toggleAutoRefresh()" class="btn btn-secondary" id="autoRefreshBtn">
-                    <i class="fas fa-play"></i> Start Auto-Refresh
-                </button>
-            </div>
-        </div>
-    </div>
+                    const blob = new Blob([JSON.stringify(data, null, 2)], {
+                        type: 'application/json'
+                    });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'system_health_report_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.json';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+            </script>
 
-    <!-- Real-time Updates Indicator -->
-    <div class="real-time-updates" id="updateIndicator" style="display: none;">
-        <i class="fas fa-sync-alt fa-spin"></i> Auto-refreshing...
-    </div>
-
-    <script>
-        let autoRefreshInterval = null;
-        let isAutoRefreshEnabled = false;
-
-        function refreshMetrics() {
-            window.location.reload();
-        }
-
-        function toggleAutoRefresh() {
-            const btn = document.getElementById('autoRefreshBtn');
-            const indicator = document.getElementById('updateIndicator');
-
-            if (!isAutoRefreshEnabled) {
-                autoRefreshInterval = setInterval(() => {
-                    refreshMetrics();
-                }, 30000); // Refresh every 30 seconds
-
-                btn.innerHTML = '<i class="fas fa-stop"></i> Stop Auto-Refresh';
-                indicator.style.display = 'block';
-                isAutoRefreshEnabled = true;
-            } else {
-                clearInterval(autoRefreshInterval);
-                btn.innerHTML = '<i class="fas fa-play"></i> Start Auto-Refresh';
-                indicator.style.display = 'none';
-                isAutoRefreshEnabled = false;
-            }
-        }
-
-        function exportHealthReport() {
-            const data = {
-                timestamp: new Date().toISOString(),
-                overall_status: '<?php echo $overall_status; ?>',
-                total_issues: <?php echo $total_issues; ?>,
-                metrics: <?php echo json_encode($health_metrics); ?>
-            };
-
-            const blob = new Blob([JSON.stringify(data, null, 2)], {
-                type: 'application/json'
-            });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'system_health_report_' + new Date().toISOString().slice(0, 19).replace(/:/g, '-') + '.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-    </script>
-
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+            <script src="../assets/js/main.js"></script>
+            <script src="../assets/js/pwa-manager.js"></script>
+            <script src="../assets/js/pwa-analytics.js"></script>
 </body>
 
 </html>

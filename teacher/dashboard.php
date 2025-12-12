@@ -4,10 +4,8 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
-    header('Location: ../login.php');
-    exit;
-}
+// Use the standard require_teacher function (supports TEST_MODE)
+require_role('teacher');
 
 $teacher_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];
@@ -137,7 +135,7 @@ $page_title = 'Teacher Dashboard';
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

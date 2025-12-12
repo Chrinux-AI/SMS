@@ -1,0 +1,355 @@
+/**
+ * High Contrast Theme
+ * Black/white extreme contrast mode
+ * WCAG AAA compliant for visually impaired users
+ * Verdant SMS v3.0
+ */
+
+:root {
+    /* Primary Colors - High contrast yellow for focus */
+    --theme-primary: #ffff00;
+    --theme-primary-dark: #cccc00;
+    --theme-primary-light: #ffff66;
+    --theme-primary-rgb: 255, 255, 0;
+
+    /* Secondary Colors */
+    --theme-secondary: #00ffff;
+    --theme-secondary-dark: #00cccc;
+    --theme-secondary-light: #66ffff;
+
+    /* Accent Colors */
+    --theme-accent: #ff00ff;
+    --theme-accent-dark: #cc00cc;
+    --theme-accent-light: #ff66ff;
+
+    /* Background Colors - Pure black */
+    --theme-bg-primary: #000000;
+    --theme-bg-secondary: #000000;
+    --theme-bg-tertiary: #1a1a1a;
+    --theme-bg-card: #000000;
+    --theme-bg-glass: #0a0a0a;
+
+    /* Text Colors - Pure white */
+    --theme-text-primary: #ffffff;
+    --theme-text-secondary: #ffffff;
+    --theme-text-muted: #cccccc;
+    --theme-text-inverse: #000000;
+
+    /* Border & Shadow - High visibility */
+    --theme-border: #ffffff;
+    --theme-border-light: #cccccc;
+    --theme-shadow: none;
+    --theme-glow: 0 0 0 3px #ffff00;
+
+    /* Status Colors - Bright and distinct */
+    --theme-success: #00ff00;
+    --theme-warning: #ffff00;
+    --theme-danger: #ff0000;
+    --theme-info: #00ffff;
+
+    /* Gradient - Solid colors only */
+    --theme-gradient: #ffff00;
+    --theme-gradient-subtle: transparent;
+
+    /* Animation - Minimal for accessibility */
+    --theme-transition: 0.1s linear;
+}
+
+/* Disable all animations for accessibility */
+body.theme-high-contrast *,
+body.theme-high-contrast *::before,
+body.theme-high-contrast *::after {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Body Background */
+body.theme-high-contrast {
+    background: var(--theme-bg-primary) !important;
+    color: var(--theme-text-primary) !important;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Remove all decorative backgrounds */
+body.theme-high-contrast::before,
+body.theme-high-contrast::after {
+    display: none !important;
+}
+
+/* Ensure minimum text size */
+body.theme-high-contrast p,
+body.theme-high-contrast span,
+body.theme-high-contrast label,
+body.theme-high-contrast td,
+body.theme-high-contrast th {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+}
+
+/* Sidebar - High contrast */
+body.theme-high-contrast .cyber-sidebar {
+    background: var(--theme-bg-primary) !important;
+    border-right: 3px solid var(--theme-border) !important;
+}
+
+body.theme-high-contrast .brand-title,
+body.theme-high-contrast .brand-subtitle,
+body.theme-high-contrast .menu-section-title,
+body.theme-high-contrast .menu-label,
+body.theme-high-contrast .menu-icon {
+    color: var(--theme-text-primary) !important;
+}
+
+body.theme-high-contrast .menu-item {
+    border: 2px solid transparent !important;
+    margin: 2px 0 !important;
+}
+
+body.theme-high-contrast .menu-item:hover,
+body.theme-high-contrast .menu-item:focus {
+    background: var(--theme-primary) !important;
+    color: var(--theme-bg-primary) !important;
+    border-color: var(--theme-primary) !important;
+    outline: 3px solid var(--theme-primary) !important;
+}
+
+body.theme-high-contrast .menu-item:hover *,
+body.theme-high-contrast .menu-item:focus * {
+    color: var(--theme-bg-primary) !important;
+}
+
+body.theme-high-contrast .menu-item.active {
+    background: var(--theme-secondary) !important;
+    color: var(--theme-bg-primary) !important;
+    border: 2px solid var(--theme-secondary) !important;
+}
+
+body.theme-high-contrast .menu-item.active * {
+    color: var(--theme-bg-primary) !important;
+}
+
+/* Cards - Simple borders */
+body.theme-high-contrast .stat-orb,
+body.theme-high-contrast .cyber-card,
+body.theme-high-contrast .dashboard-card {
+    background: var(--theme-bg-card) !important;
+    border: 3px solid var(--theme-border) !important;
+    box-shadow: none !important;
+}
+
+body.theme-high-contrast .stat-orb:hover,
+body.theme-high-contrast .cyber-card:hover,
+body.theme-high-contrast .stat-orb:focus-within,
+body.theme-high-contrast .cyber-card:focus-within {
+    border-color: var(--theme-primary) !important;
+    outline: 3px solid var(--theme-primary) !important;
+}
+
+body.theme-high-contrast .orb-value,
+body.theme-high-contrast .orb-label,
+body.theme-high-contrast .card-title {
+    color: var(--theme-text-primary) !important;
+}
+
+/* Buttons - High visibility */
+body.theme-high-contrast .btn-primary,
+body.theme-high-contrast .cyber-btn,
+body.theme-high-contrast button {
+    background: var(--theme-primary) !important;
+    color: var(--theme-bg-primary) !important;
+    border: 3px solid var(--theme-primary) !important;
+    font-weight: bold !important;
+    text-decoration: underline !important;
+    padding: 12px 24px !important;
+    min-height: 44px !important; /* Touch target size */
+}
+
+body.theme-high-contrast .btn-primary:hover,
+body.theme-high-contrast .cyber-btn:hover,
+body.theme-high-contrast button:hover,
+body.theme-high-contrast .btn-primary:focus,
+body.theme-high-contrast .cyber-btn:focus,
+body.theme-high-contrast button:focus {
+    background: var(--theme-bg-primary) !important;
+    color: var(--theme-primary) !important;
+    outline: 4px solid var(--theme-primary) !important;
+    outline-offset: 2px !important;
+}
+
+/* Form Elements - Clear focus states */
+body.theme-high-contrast input,
+body.theme-high-contrast select,
+body.theme-high-contrast textarea {
+    background: var(--theme-bg-primary) !important;
+    border: 3px solid var(--theme-border) !important;
+    color: var(--theme-text-primary) !important;
+    font-size: 1rem !important;
+    padding: 12px !important;
+    min-height: 44px !important;
+}
+
+body.theme-high-contrast input:focus,
+body.theme-high-contrast select:focus,
+body.theme-high-contrast textarea:focus {
+    border-color: var(--theme-primary) !important;
+    outline: 4px solid var(--theme-primary) !important;
+    outline-offset: 2px !important;
+}
+
+body.theme-high-contrast input::placeholder {
+    color: var(--theme-text-muted) !important;
+}
+
+body.theme-high-contrast label {
+    font-weight: bold !important;
+    color: var(--theme-text-primary) !important;
+}
+
+/* Tables - Clear borders */
+body.theme-high-contrast table {
+    background: var(--theme-bg-card) !important;
+    border: 3px solid var(--theme-border) !important;
+    border-collapse: collapse !important;
+}
+
+body.theme-high-contrast th,
+body.theme-high-contrast td {
+    border: 2px solid var(--theme-border) !important;
+    padding: 12px !important;
+    color: var(--theme-text-primary) !important;
+}
+
+body.theme-high-contrast th {
+    background: var(--theme-primary) !important;
+    color: var(--theme-bg-primary) !important;
+    font-weight: bold !important;
+}
+
+body.theme-high-contrast tr:hover td {
+    background: var(--theme-bg-tertiary) !important;
+}
+
+/* Links - Underlined and high contrast */
+body.theme-high-contrast a {
+    color: var(--theme-secondary) !important;
+    text-decoration: underline !important;
+    text-underline-offset: 3px !important;
+}
+
+body.theme-high-contrast a:hover,
+body.theme-high-contrast a:focus {
+    color: var(--theme-primary) !important;
+    outline: 3px solid var(--theme-primary) !important;
+    outline-offset: 2px !important;
+}
+
+body.theme-high-contrast a:visited {
+    color: var(--theme-accent) !important;
+}
+
+/* Skip link for accessibility */
+body.theme-high-contrast .skip-link {
+    position: absolute !important;
+    top: -100px !important;
+    left: 0 !important;
+    background: var(--theme-primary) !important;
+    color: var(--theme-bg-primary) !important;
+    padding: 16px !important;
+    z-index: 10000 !important;
+}
+
+body.theme-high-contrast .skip-link:focus {
+    top: 0 !important;
+}
+
+/* Scrollbar - High visibility */
+body.theme-high-contrast ::-webkit-scrollbar {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+body.theme-high-contrast ::-webkit-scrollbar-track {
+    background: var(--theme-bg-primary) !important;
+    border: 2px solid var(--theme-border) !important;
+}
+
+body.theme-high-contrast ::-webkit-scrollbar-thumb {
+    background: var(--theme-border) !important;
+    border: 2px solid var(--theme-bg-primary) !important;
+}
+
+body.theme-high-contrast ::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-primary) !important;
+}
+
+/* Page headers */
+body.theme-high-contrast .page-header h1,
+body.theme-high-contrast h1,
+body.theme-high-contrast h2,
+body.theme-high-contrast h3 {
+    color: var(--theme-text-primary) !important;
+    text-shadow: none !important;
+}
+
+/* User card */
+body.theme-high-contrast .sidebar-user {
+    border-top: 3px solid var(--theme-border) !important;
+}
+
+body.theme-high-contrast .user-name,
+body.theme-high-contrast .user-role {
+    color: var(--theme-text-primary) !important;
+}
+
+body.theme-high-contrast .user-avatar {
+    border: 3px solid var(--theme-border) !important;
+}
+
+/* Icons - Ensure visibility */
+body.theme-high-contrast i,
+body.theme-high-contrast .fa,
+body.theme-high-contrast .fas,
+body.theme-high-contrast .far,
+body.theme-high-contrast .fab {
+    color: inherit !important;
+}
+
+/* Badges */
+body.theme-high-contrast .menu-badge,
+body.theme-high-contrast .badge {
+    background: var(--theme-danger) !important;
+    color: var(--theme-text-primary) !important;
+    border: 2px solid var(--theme-text-primary) !important;
+    font-weight: bold !important;
+}
+
+/* Alerts */
+body.theme-high-contrast .alert {
+    border: 3px solid !important;
+    font-weight: bold !important;
+}
+
+body.theme-high-contrast .alert-success {
+    background: var(--theme-bg-primary) !important;
+    border-color: var(--theme-success) !important;
+    color: var(--theme-success) !important;
+}
+
+body.theme-high-contrast .alert-danger {
+    background: var(--theme-bg-primary) !important;
+    border-color: var(--theme-danger) !important;
+    color: var(--theme-danger) !important;
+}
+
+body.theme-high-contrast .alert-warning {
+    background: var(--theme-bg-primary) !important;
+    border-color: var(--theme-warning) !important;
+    color: var(--theme-warning) !important;
+}
+
+body.theme-high-contrast .alert-info {
+    background: var(--theme-bg-primary) !important;
+    border-color: var(--theme-info) !important;
+    color: var(--theme-info) !important;
+}

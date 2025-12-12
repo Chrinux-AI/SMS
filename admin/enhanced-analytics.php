@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $page_title = "AI Analytics Dashboard";
 
@@ -274,7 +274,7 @@ $smart_recommendations = [
 <body class="ai-dashboard cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<!-- Real-time Indicator -->
+    <!-- Real-time Indicator -->
     <div class="realtime-indicator">
         <i class="fas fa-broadcast-tower"></i> Live AI Processing
     </div>

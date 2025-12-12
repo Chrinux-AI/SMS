@@ -1,195 +1,163 @@
 <?php
+
+/**
+ * Verdant SMS - Cyberpunk Registration Portal
+ * Pure neon. Pure art. Zero white backgrounds.
+ * @version 3.0-evergreen
+ */
 session_start();
 require_once '../includes/config.php';
-require_once '../includes/database.php';
 require_once '../includes/functions.php';
+require_once '../includes/database.php';
 
-$message = '';
-$message_type = '';
+$errors = [];
+$success = '';
+$form_data = [
+    'first_name' => '',
+    'last_name' => '',
+    'email' => '',
+    'phone' => '',
+    'role' => 'student',
+    'student_id' => '',
+    'grade_level' => '',
+    'department' => '',
+    'subject' => ''
+];
 
-// Check if registration is enabled
-$setting = db()->fetch("SELECT setting_value FROM system_settings WHERE setting_key = 'registration_enabled'");
-$registration_enabled = $setting ? (bool)$setting['setting_value'] : true;
+// Process registration
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Sanitize inputs
+    $form_data = [
+        'first_name' => trim($_POST['first_name'] ?? ''),
+        'last_name' => trim($_POST['last_name'] ?? ''),
+        'email' => trim($_POST['email'] ?? ''),
+        'phone' => trim($_POST['phone'] ?? ''),
+        'role' => $_POST['role'] ?? 'student',
+        'student_id' => trim($_POST['student_id'] ?? ''),
+        'grade_level' => trim($_POST['grade_level'] ?? ''),
+        'department' => trim($_POST['department'] ?? ''),
+        'subject' => trim($_POST['subject'] ?? '')
+    ];
+    $password = $_POST['password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
 
-if (!$registration_enabled) {
-    $message = 'Registration is currently disabled. Please contact the administrator.';
-    $message_type = 'error';
-}
+    // Validation
+    if (empty($form_data['first_name'])) {
+        $errors[] = 'First name is required';
+    }
+    if (empty($form_data['last_name'])) {
+        $errors[] = 'Last name is required';
+    }
+    if (empty($form_data['email']) || !filter_var($form_data['email'], FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Valid email is required';
+    }
+    if (strlen($password) < 8) {
+        $errors[] = 'Password must be at least 8 characters';
+    }
+    if ($password !== $confirm_password) {
+        $errors[] = 'Passwords do not match';
+    }
 
-// Handle registration submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $registration_enabled) {
-    $errors = [];
+    // Role-specific validation
+    $allowed_roles = ['student', 'teacher', 'parent', 'alumni'];
+    if (!in_array($form_data['role'], $allowed_roles)) {
+        $errors[] = 'Invalid role selected';
+    }
 
-    try {
-        $username = sanitize($_POST['username'] ?? '');
-        $email = sanitize($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
-        $confirm_password = $_POST['confirm_password'] ?? '';
-        $first_name = sanitize($_POST['first_name'] ?? '');
-        $last_name = sanitize($_POST['last_name'] ?? '');
-        $role = sanitize($_POST['role'] ?? '');
-
-        // Block admin role registration
-        if ($role === 'admin') {
-            $errors[] = 'Admin registration is not allowed. Contact system administrator.';
+    if ($form_data['role'] === 'student') {
+        if (empty($form_data['student_id'])) {
+            $errors[] = 'Student ID is required';
         }
-        $phone = sanitize($_POST['phone'] ?? '');
-
-        if (empty($username)) $errors[] = 'Username is required';
-        if (empty($email)) $errors[] = 'Email is required';
-        if (empty($password)) $errors[] = 'Password is required';
-        if (empty($first_name)) $errors[] = 'First name is required';
-        if (empty($last_name)) $errors[] = 'Last name is required';
-        if (empty($role)) $errors[] = 'Role is required';
-
-        if (strlen($username) < 3) $errors[] = 'Username must be at least 3 characters';
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email address';
-        if (strlen($password) < 8) $errors[] = 'Password must be at least 8 characters';
-        if ($password !== $confirm_password) $errors[] = 'Passwords do not match';
-        if (!in_array($role, ['student', 'parent', 'teacher'])) $errors[] = 'Invalid role selected';
-
-        if ($role === 'student') {
-            if (empty($_POST['date_of_birth'])) $errors[] = 'Date of birth is required for students';
-            if (empty($_POST['grade_level'])) $errors[] = 'Grade level is required for students';
+        if (empty($form_data['grade_level'])) {
+            $errors[] = 'Grade level is required';
         }
+    }
 
-        $existing = db()->fetch("SELECT id FROM users WHERE username = ?", [$username]);
-        if ($existing) $errors[] = 'Username already exists';
+    if ($form_data['role'] === 'teacher') {
+        if (empty($form_data['department'])) {
+            $errors[] = 'Department is required';
+        }
+        if (empty($form_data['subject'])) {
+            $errors[] = 'Subject specialization is required';
+        }
+    }
 
-        $existing = db()->fetch("SELECT id FROM users WHERE email = ?", [$email]);
-        if ($existing) $errors[] = 'Email already registered';
+    // Check for existing email
+    if (empty($errors)) {
+        try {
+            $existing = db()->fetchOne("SELECT id FROM users WHERE email = ?", [$form_data['email']]);
+            if ($existing) {
+                $errors[] = 'Email is already registered';
+            }
+        } catch (Exception $e) {
+            $errors[] = 'Database error. Please try again.';
+        }
+    }
 
-        if (empty($errors)) {
-            // Generate verification token with 10-minute expiration
+    // Create user
+    if (empty($errors)) {
+        try {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $verification_token = bin2hex(random_bytes(32));
-            $token_expires_at = date('Y-m-d H:i:s', strtotime('+10 minutes'));
 
             $user_data = [
-                'username' => $username,
-                'email' => $email,
-                'password_hash' => password_hash($password, PASSWORD_DEFAULT),
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'role' => $role,
-                'phone' => $phone,
+                'first_name' => $form_data['first_name'],
+                'last_name' => $form_data['last_name'],
+                'email' => $form_data['email'],
+                'phone' => $form_data['phone'],
+                'password' => $hashed_password,
+                'role' => $form_data['role'],
                 'status' => 'pending',
                 'email_verified' => 0,
-                'email_verification_token' => $verification_token,
-                'token_expires_at' => $token_expires_at,
-                'approved' => 0
+                'verification_token' => $verification_token,
+                'created_at' => date('Y-m-d H:i:s')
             ];
 
             $user_id = db()->insert('users', $user_data);
 
-            if ($user_id) {
-                // Generate student ID with YEAR+sequential format
-                $assigned_id = null; // Initialize assigned ID variable
-
-                if ($role === 'student') {
-                    $year = date('Y');
-                    $count = db()->count('students') + 1;
-                    $student_id = $year . str_pad($count, 4, '0', STR_PAD_LEFT);
-                    $assigned_id = 'STU' . $student_id; // Format for display
-
-                    $student_data = [
-                        'user_id' => $user_id,
-                        'student_id' => $student_id,
-                        'assigned_student_id' => $student_id,
-                        'first_name' => $first_name,
-                        'last_name' => $last_name,
-                        'email' => $email,
-                        'phone' => $phone,
-                        'date_of_birth' => $_POST['date_of_birth'],
-                        'grade_level' => (int)$_POST['grade_level'],
-                        'status' => 'pending'
-                    ];
-                    db()->insert('students', $student_data);
-                } elseif ($role === 'teacher') {
-                    // Generate teacher employee ID
-                    $year = date('Y');
-                    $count = db()->count('teachers') + 1;
-                    $teacher_id = $year . str_pad($count, 4, '0', STR_PAD_LEFT);
-                    $assigned_id = 'EMP' . $teacher_id; // Format for display
-
-                    // Teachers table insert would happen here (if exists)
-                }
-
-                // Send verification email
-                $verification_link = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/verify-email.php?token=" . $verification_token;
-
-                $to = $email;
-                $subject = "Verify Your Email - School Management System";
-                $email_message = "
-                <html>
-                <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/attendance/manifest.json">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
-                    <title>Email Verification</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
-                        .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 10px; overflow: hidden; }
-                        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }
-                        .content { padding: 30px; }
-                        .button { display: inline-block; background: #00BFFF; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-                        .footer { background: #f9f9f9; padding: 20px; text-align: center; color: #666; font-size: 12px; }
-                    </style>
-                </head>
-                <body class="cyber-bg">
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class='container'>
-                        <div class='header'>
-                            <h1>📧 Email Verification</h1>
-                        </div>
-                        <div class='content'>
-                            <p>Hello <strong>{$first_name} {$last_name}</strong>,</p>
-                            <p>Thank you for registering with the Attendance Management System!</p>
-                            <p>Please verify your email address by clicking the button below:</p>
-                            <p style='text-align: center;'>
-                                <a href='{$verification_link}' class='button'>Verify My Email</a>
-                            </p>
-                            <p>Or copy and paste this link into your browser:</p>
-                            <p style='background: #f9f9f9; padding: 10px; border-radius: 5px; word-break: break-all; font-size: 12px;'>{$verification_link}</p>
-                            <p><strong>⏱️ This link expires in 10 minutes.</strong> Please verify soon!</p>
-                            <p><strong>⚠️ Important:</strong> After email verification, your account must be approved by an administrator before you can login.</p>
-                        </div>
-                        <div class='footer'>
-                            <p>If you didn't register for this account, please ignore this email.</p>
-                            <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
-                        </div>
-                    </div>
-
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
-</body>
-                </html>
-                ";
-
-                // Send verification email using proper function
-                $email_sent = send_verification_email($email, $first_name . ' ' . $last_name, $verification_token, $assigned_id, $role);
-
-                if ($email_sent) {
-                    $message = 'Registration successful! Please check your email (' . $email . ') to verify your account. ⏱️ Verification link expires in 10 minutes.';
-                    $message_type = 'success';
-                } else {
-                    $message = 'Registration successful but verification email failed to send. Please contact administrator.';
-                    $message_type = 'warning';
-                }
-            } else {
-                $errors[] = 'Registration failed. Please try again.';
+            // Create role-specific record
+            if ($form_data['role'] === 'student' && $user_id) {
+                db()->insert('students', [
+                    'user_id' => $user_id,
+                    'student_id' => $form_data['student_id'],
+                    'grade_level' => $form_data['grade_level'],
+                    'enrollment_date' => date('Y-m-d'),
+                    'status' => 'pending'
+                ]);
+            } elseif ($form_data['role'] === 'teacher' && $user_id) {
+                db()->insert('teachers', [
+                    'user_id' => $user_id,
+                    'department' => $form_data['department'],
+                    'subject_specialization' => $form_data['subject'],
+                    'join_date' => date('Y-m-d'),
+                    'status' => 'pending'
+                ]);
             }
-        }
-    } catch (Exception $e) {
-        $errors[] = 'An error occurred: ' . $e->getMessage();
-    }
 
-    if (!empty($errors)) {
-        $message = implode('<br>', $errors);
-        $message_type = 'error';
+            // Send verification email
+            $verify_url = getenv('APP_URL') . "/verify-email.php?token=" . $verification_token;
+            $email_sent = send_email(
+                $form_data['email'],
+                'Verify Your Verdant SMS Account',
+                "Welcome to Verdant SMS!\n\nPlease verify your email by clicking:\n{$verify_url}\n\nThis link expires in 24 hours."
+            );
+
+            $success = 'Account created! Check your email to verify your account.';
+            $form_data = [
+                'first_name' => '',
+                'last_name' => '',
+                'email' => '',
+                'phone' => '',
+                'role' => 'student',
+                'student_id' => '',
+                'grade_level' => '',
+                'department' => '',
+                'subject' => ''
+            ];
+        } catch (Exception $e) {
+            $errors[] = 'Registration failed. Please try again.';
+            error_log("Registration error: " . $e->getMessage());
+        }
     }
 }
 ?>
@@ -199,366 +167,1205 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - <?php echo APP_NAME; ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>Join Verdant SMS | Cyberpunk Registration</title>
+    <link rel="icon" type="image/png" href="../assets/images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="assets/css/cyberpunk-ui.css" rel="stylesheet">
     <style>
-        .register-wrapper {
+        /* ═══════════════════════════════════════════════════════════════
+           VERDANT SMS - CYBERPUNK REGISTRATION
+           No white. No boring. Pure neon art.
+           ═══════════════════════════════════════════════════════════════ */
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-cyan: #00f5ff;
+            --neon-purple: #bf00ff;
+            --neon-pink: #ff006e;
+            --neon-green: #00ff88;
+            --neon-orange: #ff9500;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --card-bg: rgba(10, 10, 20, 0.85);
+            --glass-border: rgba(0, 245, 255, 0.2);
+            --text-primary: #e0e0ff;
+            --text-secondary: #8888aa;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--darker-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ═══ Animated Grid Background ═══ */
+        .cyber-grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .cyber-grid-bg::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background:
+                linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px) 0 0 / 60px 60px,
+                linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px) 0 0 / 60px 60px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        .cyber-grid-bg::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(191, 0, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(0, 245, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 70%);
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(60px, 60px);
+            }
+        }
+
+        /* ═══ Floating Particles ═══ */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .particle:nth-child(2n) {
+            background: var(--neon-purple);
+            box-shadow: 0 0 10px var(--neon-purple);
+        }
+
+        .particle:nth-child(3n) {
+            background: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        .particle:nth-child(5n) {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* ═══ Main Container ═══ */
+        .register-container {
+            position: relative;
+            z-index: 10;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 2rem 1rem;
         }
 
+        /* ═══ Glassmorphic Form Card ═══ */
         .register-card {
-            max-width: 700px;
             width: 100%;
-            background: rgba(10, 10, 10, 0.9);
-            border: 1px solid rgba(0, 191, 255, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 0 50px rgba(0, 191, 255, 0.2);
+            max-width: 680px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 0 60px rgba(0, 245, 255, 0.1),
+                0 0 100px rgba(191, 0, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .register-header {
+        /* Animated border glow */
+        .register-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg,
+                    var(--neon-cyan), var(--neon-purple), var(--neon-pink),
+                    var(--neon-green), var(--neon-cyan));
+            background-size: 400% 400%;
+            border-radius: 26px;
+            z-index: -1;
+            animation: borderGlow 8s ease infinite;
+            opacity: 0.7;
+        }
+
+        .register-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--card-bg);
+            border-radius: 24px;
+            z-index: -1;
+        }
+
+        @keyframes borderGlow {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* ═══ Logo & Title ═══ */
+        .brand-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 2.5rem;
         }
 
-        .register-header h1 {
-            color: var(--cyber-cyan);
-            font-family: Orbitron;
-            font-size: 2rem;
-            margin-bottom: 10px;
+        .brand-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--dark-bg);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+            animation: logoPulse 3s ease-in-out infinite;
         }
 
-        .register-header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+        @keyframes logoPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 50px rgba(0, 245, 255, 0.6);
+            }
         }
 
+        .brand-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleShine 3s linear infinite;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        @keyframes titleShine {
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .brand-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        /* ═══ Alerts ═══ */
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            animation: alertSlide 0.4s ease;
+        }
+
+        @keyframes alertSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-error {
+            background: rgba(255, 0, 110, 0.15);
+            border: 1px solid var(--neon-pink);
+            color: #ff6b9d;
+        }
+
+        .alert-success {
+            background: rgba(0, 255, 136, 0.15);
+            border: 1px solid var(--neon-green);
+            color: #00ff88;
+        }
+
+        .alert i {
+            font-size: 1.25rem;
+            margin-top: 2px;
+        }
+
+        .alert ul {
+            margin: 0;
+            padding-left: 1rem;
+        }
+
+        .alert li {
+            margin: 0.25rem 0;
+        }
+
+        /* ═══ Role Selector ═══ */
         .role-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 2rem;
         }
 
-        .role-option {
+        .role-selector-label {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .role-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .role-card {
             position: relative;
         }
 
-        .role-option input[type="radio"] {
+        .role-card input {
             position: absolute;
             opacity: 0;
+            pointer-events: none;
         }
 
-        .role-label {
+        .role-card label {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
-            padding: 20px;
-            background: rgba(10, 10, 10, 0.6);
-            border: 2px solid rgba(100, 100, 100, 0.3);
-            border-radius: 12px;
+            padding: 1.25rem 0.75rem;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .role-label:hover {
-            border-color: var(--cyber-cyan);
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+        .role-card label:hover {
+            border-color: rgba(0, 245, 255, 0.5);
+            background: rgba(0, 245, 255, 0.05);
         }
 
-        .role-option input:checked+.role-label {
-            border-color: var(--neon-green);
-            background: rgba(0, 255, 127, 0.1);
-            box-shadow: 0 0 30px rgba(0, 255, 127, 0.4);
+        .role-card input:checked+label {
+            border-color: var(--neon-cyan);
+            background: rgba(0, 245, 255, 0.1);
+            box-shadow: 0 0 25px rgba(0, 245, 255, 0.3), inset 0 0 20px rgba(0, 245, 255, 0.05);
         }
 
-        .role-label i {
-            font-size: 2.5rem;
-            color: var(--cyber-cyan);
+        .role-card .role-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
         }
 
-        .role-label span {
-            color: var(--text-primary);
+        .role-card.student .role-icon {
+            background: linear-gradient(135deg, #00f5ff, #0088ff);
+            color: #000;
+        }
+
+        .role-card.teacher .role-icon {
+            background: linear-gradient(135deg, #bf00ff, #8000ff);
+            color: #fff;
+        }
+
+        .role-card.parent .role-icon {
+            background: linear-gradient(135deg, #ff006e, #ff4d94);
+            color: #fff;
+        }
+
+        .role-card.alumni .role-icon {
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            color: #000;
+        }
+
+        .role-card input:checked+label .role-icon {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .role-card .role-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
+            color: var(--text-secondary);
+            transition: color 0.3s;
         }
 
-        .form-grid {
+        .role-card input:checked+label .role-name {
+            color: var(--neon-cyan);
+        }
+
+        /* ═══ Form Groups ═══ */
+        .form-row {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (max-width: 500px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         .form-group {
-            margin-bottom: 0;
+            margin-bottom: 1.25rem;
+            position: relative;
         }
 
         .form-group.full-width {
-            grid-column: span 2;
+            grid-column: 1 / -1;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
-            color: var(--cyber-cyan);
             font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 8px;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            transition: color 0.3s;
         }
 
-        .form-group input,
-        .form-group select {
+        .form-group:focus-within .form-label {
+            color: var(--neon-cyan);
+        }
+
+        .form-input {
             width: 100%;
-            padding: 12px 15px;
-            background: rgba(0, 191, 255, 0.05);
-            border: 1px solid var(--cyber-cyan);
-            border-radius: 8px;
-            color: var(--cyber-cyan);
-            font-family: Rajdhani;
+            padding: 0.9rem 1rem;
+            padding-left: 2.75rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
             font-size: 1rem;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-input:focus {
             outline: none;
-            border-color: var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 127, 0.3);
-            background: rgba(0, 255, 127, 0.05);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.2), inset 0 0 10px rgba(0, 245, 255, 0.05);
+            background: rgba(0, 245, 255, 0.05);
         }
 
-        .conditional-fields {
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            bottom: 0.95rem;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .form-group:focus-within .input-icon {
+            color: var(--neon-cyan);
+        }
+
+        /* ═══ Role-Specific Fields ═══ */
+        .role-fields {
             display: none;
-            grid-column: span 2;
+            animation: fadeIn 0.4s ease;
         }
 
-        .conditional-fields.active {
+        .role-fields.active {
             display: block;
         }
 
-        .btn-submit {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, var(--cyber-cyan), var(--hologram-purple));
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-family: Orbitron;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            gap: 1rem;
+        }
+
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+        }
+
+        .section-divider span {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.75rem;
+            color: var(--neon-purple);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        .btn-submit:hover {
+        /* ═══ Select Dropdown ═══ */
+        .form-select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            padding-left: 2.75rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2300f5ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.2);
+        }
+
+        .form-select option {
+            background: #1a1a2e;
+            color: var(--text-primary);
+        }
+
+        /* ═══ Password Strength ═══ */
+        .password-strength {
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 4px;
+        }
+
+        .strength-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .strength-bar.weak {
+            background: #ff006e;
+        }
+
+        .strength-bar.medium {
+            background: #ff9500;
+        }
+
+        .strength-bar.strong {
+            background: #00ff88;
+        }
+
+        /* ═══ Submit Button ═══ */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 30px rgba(0, 191, 255, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 245, 255, 0.4);
         }
 
-        .login-link {
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn i {
+            margin-left: 0.5rem;
+        }
+
+        /* ═══ Footer Links ═══ */
+        .form-footer {
             text-align: center;
-            margin-top: 20px;
-            color: var(--text-muted);
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
         }
 
-        .login-link a {
-            color: var(--cyber-cyan);
+        .form-footer p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-footer a {
+            color: var(--neon-cyan);
             text-decoration: none;
             font-weight: 600;
+            transition: all 0.3s;
         }
 
-        .login-link a:hover {
-            color: var(--neon-green);
+        .form-footer a:hover {
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
         }
 
-        .cyber-alert {
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+        /* ═══ Success Animation ═══ */
+        .success-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-family: Rajdhani;
-            font-weight: 600;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.5s ease;
         }
 
-        .cyber-alert.success {
-            background: rgba(0, 255, 127, 0.1);
-            border: 1px solid var(--neon-green);
+        .success-content {
+            text-align: center;
+            animation: scaleIn 0.5s ease 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #000;
+            animation: successPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes successPulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 0 30px rgba(0, 255, 136, 0);
+            }
+        }
+
+        .success-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
             color: var(--neon-green);
+            margin-bottom: 1rem;
         }
 
-        .cyber-alert.error {
-            background: rgba(255, 69, 0, 0.1);
-            border: 1px solid var(--cyber-red);
-            color: var(--cyber-red);
+        .success-message {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .success-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            border-radius: 12px;
+            color: #000;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .success-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        /* ═══ Decorative Elements ═══ */
+        .corner-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 2px solid transparent;
+        }
+
+        .corner-decoration.top-left {
+            top: -1px;
+            left: -1px;
+            border-top-color: var(--neon-cyan);
+            border-left-color: var(--neon-cyan);
+            border-radius: 24px 0 0 0;
+        }
+
+        .corner-decoration.top-right {
+            top: -1px;
+            right: -1px;
+            border-top-color: var(--neon-purple);
+            border-right-color: var(--neon-purple);
+            border-radius: 0 24px 0 0;
+        }
+
+        .corner-decoration.bottom-left {
+            bottom: -1px;
+            left: -1px;
+            border-bottom-color: var(--neon-pink);
+            border-left-color: var(--neon-pink);
+            border-radius: 0 0 0 24px;
+        }
+
+        .corner-decoration.bottom-right {
+            bottom: -1px;
+            right: -1px;
+            border-bottom-color: var(--neon-green);
+            border-right-color: var(--neon-green);
+            border-radius: 0 0 24px 0;
+        }
+
+        /* ═══ Loading State ═══ */
+        .submit-btn.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .submit-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ═══ Responsive ═══ */
+        @media (max-width: 768px) {
+            .register-card {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .brand-title {
+                font-size: 1.6rem;
+                letter-spacing: 1px;
+            }
+
+            .brand-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 
-<body class="cyber-bg">
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class="cyber-bg">
-        <div class="starfield"></div>
+<body>
+    <!-- Animated Background -->
+    <div class="cyber-grid-bg"></div>
+
+    <!-- Floating Particles -->
+    <div class="particles">
+        <?php for ($i = 0; $i < 20; $i++): ?>
+            <div class="particle" style="left: <?= rand(0, 100) ?>%; animation-delay: <?= rand(0, 15) ?>s; animation-duration: <?= rand(12, 20) ?>s;"></div>
+        <?php endfor; ?>
     </div>
-    <div class="cyber-grid"></div>
-    <div class="register-wrapper">
+
+    <!-- Registration Container -->
+    <div class="register-container">
         <div class="register-card">
-            <div class="register-header">
-                <h1><i class="fas fa-user-plus"></i> Create Account</h1>
-                <p>Register for School Management System Access</p>
+            <!-- Corner Decorations -->
+            <div class="corner-decoration top-left"></div>
+            <div class="corner-decoration top-right"></div>
+            <div class="corner-decoration bottom-left"></div>
+            <div class="corner-decoration bottom-right"></div>
+
+            <!-- Brand Header -->
+            <div class="brand-header">
+                <div class="brand-logo">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h1 class="brand-title">Join Verdant</h1>
+                <p class="brand-subtitle">Create Your Digital Identity</p>
             </div>
-            <?php if ($message): ?>
-                <div class="cyber-alert <?php echo $message_type === 'success' ? 'success' : 'error'; ?>">
-                    <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-triangle'; ?>"></i>
-                    <span><?php echo $message; ?></span>
+
+            <!-- Alerts -->
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <ul>
+                        <?php foreach ($errors as $error): ?>
+                            <li><?= htmlspecialchars($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
             <?php endif; ?>
-            <?php if ($registration_enabled && (!$message || $message_type !== 'success')): ?>
-                <form method="POST">
-                    <div class="role-selector">
-                        <div class="role-option">
-                            <input type="radio" id="student" name="role" value="student" required>
-                            <label for="student" class="role-label">
-                                <i class="fas fa-user-graduate"></i>
-                                <span>Student</span>
-                            </label>
+
+            <?php if (!empty($success)): ?>
+                <div class="success-overlay" id="successOverlay">
+                    <div class="success-content">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
                         </div>
-                        <div class="role-option">
-                            <input type="radio" id="parent" name="role" value="parent">
-                            <label for="parent" class="role-label">
-                                <i class="fas fa-user-friends"></i>
-                                <span>Parent</span>
-                            </label>
-                        </div>
-                        <div class="role-option">
-                            <input type="radio" id="teacher" name="role" value="teacher">
-                            <label for="teacher" class="role-label">
-                                <i class="fas fa-chalkboard-teacher"></i>
-                                <span>Teacher</span>
-                            </label>
-                        </div>
+                        <h2 class="success-title">Welcome Aboard!</h2>
+                        <p class="success-message"><?= htmlspecialchars($success) ?></p>
+                        <a href="../login.php" class="success-btn">Go to Login <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="first_name"><i class="fas fa-user"></i> First Name</label>
-                            <input type="text" id="first_name" name="first_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name"><i class="fas fa-user"></i> Last Name</label>
-                            <input type="text" id="last_name" name="last_name" required>
-                        </div>
-                        <div class="form-group full-width">
-                            <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="username"><i class="fas fa-at"></i> Username</label>
-                            <input type="text" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone"><i class="fas fa-phone"></i> Phone</label>
-                            <input type="tel" id="phone" name="phone">
-                        </div>
-                        <div class="form-group">
-                            <label for="password"><i class="fas fa-lock"></i> Password</label>
-                            <div class="pw-wrapper">
-                                <input type="password" id="password" name="password" class="pw-input" required>
-                                <button type="button" class="pw-toggle" aria-label="Toggle password visibility" onclick="togglePassword('password', this)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm_password"><i class="fas fa-lock"></i> Confirm Password</label>
-                            <div class="pw-wrapper">
-                                <input type="password" id="confirm_password" name="confirm_password" class="pw-input" required>
-                                <button type="button" class="pw-toggle" aria-label="Toggle password visibility" onclick="togglePassword('confirm_password', this)">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="student_fields" class="conditional-fields">
-                            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
-                                <div class="form-group">
-                                    <label for="date_of_birth"><i class="fas fa-calendar"></i> Date of Birth</label>
-                                    <input type="date" id="date_of_birth" name="date_of_birth">
-                                </div>
-                                <div class="form-group">
-                                    <label for="grade_level"><i class="fas fa-graduation-cap"></i> Level</label>
-                                    <select id="grade_level" name="grade_level">
-                                        <option value="">Select Level</option>
-                                        <option value="100">100 Level</option>
-                                        <option value="200">200 Level</option>
-                                        <option value="300">300 Level</option>
-                                        <option value="400">400 Level</option>
-                                        <option value="500">500 Level</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group full-width">
-                            <button type="submit" name="register" class="btn-submit">
-                                <i class="fas fa-rocket"></i> Create Account
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                </div>
             <?php endif; ?>
-            <div class="login-link">
-                Already have an account? <a href="login.php"><i class="fas fa-sign-in-alt"></i> Login here</a>
-            </div>
+
+            <!-- Registration Form -->
+            <form method="POST" action="" id="registerForm">
+                <!-- Role Selector -->
+                <div class="role-selector">
+                    <label class="role-selector-label">Select Your Role</label>
+                    <div class="role-cards">
+                        <div class="role-card student">
+                            <input type="radio" name="role" id="role_student" value="student"
+                                <?= $form_data['role'] === 'student' ? 'checked' : '' ?>>
+                            <label for="role_student">
+                                <div class="role-icon"><i class="fas fa-graduation-cap"></i></div>
+                                <span class="role-name">Student</span>
+                            </label>
+                        </div>
+                        <div class="role-card teacher">
+                            <input type="radio" name="role" id="role_teacher" value="teacher"
+                                <?= $form_data['role'] === 'teacher' ? 'checked' : '' ?>>
+                            <label for="role_teacher">
+                                <div class="role-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                                <span class="role-name">Teacher</span>
+                            </label>
+                        </div>
+                        <div class="role-card parent">
+                            <input type="radio" name="role" id="role_parent" value="parent"
+                                <?= $form_data['role'] === 'parent' ? 'checked' : '' ?>>
+                            <label for="role_parent">
+                                <div class="role-icon"><i class="fas fa-users"></i></div>
+                                <span class="role-name">Parent</span>
+                            </label>
+                        </div>
+                        <div class="role-card alumni">
+                            <input type="radio" name="role" id="role_alumni" value="alumni"
+                                <?= $form_data['role'] === 'alumni' ? 'checked' : '' ?>>
+                            <label for="role_alumni">
+                                <div class="role-icon"><i class="fas fa-user-graduate"></i></div>
+                                <span class="role-name">Alumni</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="section-divider">
+                    <span>Personal Info</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="first_name">First Name</label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="first_name" name="first_name" class="form-input"
+                            placeholder="John" value="<?= htmlspecialchars($form_data['first_name']) ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="last_name">Last Name</label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="last_name" name="last_name" class="form-input"
+                            placeholder="Doe" value="<?= htmlspecialchars($form_data['last_name']) ?>" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="email" name="email" class="form-input"
+                            placeholder="john@example.com" value="<?= htmlspecialchars($form_data['email']) ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" id="phone" name="phone" class="form-input"
+                            placeholder="+1 234 567 890" value="<?= htmlspecialchars($form_data['phone']) ?>">
+                    </div>
+                </div>
+
+                <!-- Student-Specific Fields -->
+                <div class="role-fields" id="studentFields">
+                    <div class="section-divider">
+                        <span>Student Details</span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="student_id">Student ID</label>
+                            <i class="fas fa-id-card input-icon"></i>
+                            <input type="text" id="student_id" name="student_id" class="form-input"
+                                placeholder="STU-2025-001" value="<?= htmlspecialchars($form_data['student_id']) ?>">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="grade_level">Grade Level</label>
+                            <i class="fas fa-layer-group input-icon"></i>
+                            <select id="grade_level" name="grade_level" class="form-select">
+                                <option value="">Select Grade</option>
+                                <?php for ($i = 1; $i <= 12; $i++): ?>
+                                    <option value="<?= $i ?>" <?= $form_data['grade_level'] == $i ? 'selected' : '' ?>>Grade <?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teacher-Specific Fields -->
+                <div class="role-fields" id="teacherFields">
+                    <div class="section-divider">
+                        <span>Teacher Details</span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="department">Department</label>
+                            <i class="fas fa-building input-icon"></i>
+                            <select id="department" name="department" class="form-select">
+                                <option value="">Select Department</option>
+                                <option value="science" <?= $form_data['department'] === 'science' ? 'selected' : '' ?>>Science</option>
+                                <option value="mathematics" <?= $form_data['department'] === 'mathematics' ? 'selected' : '' ?>>Mathematics</option>
+                                <option value="english" <?= $form_data['department'] === 'english' ? 'selected' : '' ?>>English</option>
+                                <option value="social_studies" <?= $form_data['department'] === 'social_studies' ? 'selected' : '' ?>>Social Studies</option>
+                                <option value="arts" <?= $form_data['department'] === 'arts' ? 'selected' : '' ?>>Arts</option>
+                                <option value="physical_education" <?= $form_data['department'] === 'physical_education' ? 'selected' : '' ?>>Physical Education</option>
+                                <option value="computer_science" <?= $form_data['department'] === 'computer_science' ? 'selected' : '' ?>>Computer Science</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="subject">Subject Specialization</label>
+                            <i class="fas fa-book input-icon"></i>
+                            <input type="text" id="subject" name="subject" class="form-input"
+                                placeholder="e.g., Physics, Calculus" value="<?= htmlspecialchars($form_data['subject']) ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Password Section -->
+                <div class="section-divider">
+                    <span>Security</span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" name="password" class="form-input"
+                            placeholder="••••••••" required minlength="8">
+                        <div class="password-strength" id="passwordStrength">
+                            <div class="strength-bar" id="str1"></div>
+                            <div class="strength-bar" id="str2"></div>
+                            <div class="strength-bar" id="str3"></div>
+                            <div class="strength-bar" id="str4"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="confirm_password">Confirm Password</label>
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-input"
+                            placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span>Create Account</span>
+                    <i class="fas fa-rocket"></i>
+                </button>
+
+                <!-- Footer -->
+                <div class="form-footer">
+                    <p>Already have an account?</p>
+                    <a href="../login.php">Sign In <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </form>
         </div>
     </div>
+
     <script>
+        // ═══ Role Field Toggle ═══
         const roleInputs = document.querySelectorAll('input[name="role"]');
-        const studentFields = document.getElementById('student_fields');
+        const studentFields = document.getElementById('studentFields');
+        const teacherFields = document.getElementById('teacherFields');
+
+        function updateRoleFields() {
+            const selectedRole = document.querySelector('input[name="role"]:checked')?.value;
+
+            studentFields.classList.remove('active');
+            teacherFields.classList.remove('active');
+
+            if (selectedRole === 'student') {
+                studentFields.classList.add('active');
+            } else if (selectedRole === 'teacher') {
+                teacherFields.classList.add('active');
+            }
+        }
+
         roleInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                if (this.value === 'student') {
-                    studentFields.classList.add('active');
-                    document.getElementById('date_of_birth').required = true;
-                    document.getElementById('grade_level').required = true;
-                } else {
-                    studentFields.classList.remove('active');
-                    document.getElementById('date_of_birth').required = false;
-                    document.getElementById('grade_level').required = false;
+            input.addEventListener('change', updateRoleFields);
+        });
+
+        // Initialize on load
+        updateRoleFields();
+
+        // ═══ Password Strength Indicator ═══
+        const passwordInput = document.getElementById('password');
+        const strengthBars = document.querySelectorAll('.strength-bar');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+
+            strengthBars.forEach((bar, index) => {
+                bar.classList.remove('weak', 'medium', 'strong');
+                if (index < strength) {
+                    if (strength <= 1) bar.classList.add('weak');
+                    else if (strength <= 2) bar.classList.add('medium');
+                    else bar.classList.add('strong');
                 }
             });
         });
-    </script>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+        // ═══ Form Submit Animation ═══
+        const form = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', function() {
+            submitBtn.classList.add('loading');
+            submitBtn.querySelector('span').textContent = 'Creating...';
+        });
+
+        // ═══ Input Focus Effects ═══
+        document.querySelectorAll('.form-input, .form-select').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.closest('.form-group').classList.add('focused');
+            });
+            input.addEventListener('blur', function() {
+                this.closest('.form-group').classList.remove('focused');
+            });
+        });
+
+        // ═══ Confetti on Success ═══
+        <?php if (!empty($success)): ?>
+
+            function createConfetti() {
+                const colors = ['#00f5ff', '#bf00ff', '#ff006e', '#00ff88', '#ff9500'];
+                const container = document.getElementById('successOverlay');
+
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    left: ${Math.random() * 100}%;
+                    top: -20px;
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                    animation: confettiFall ${Math.random() * 3 + 2}s linear forwards;
+                    animation-delay: ${Math.random() * 0.5}s;
+                `;
+                    container.appendChild(confetti);
+                }
+            }
+
+            // Add confetti animation
+            const style = document.createElement('style');
+            style.textContent = `
+            @keyframes confettiFall {
+                to {
+                    transform: translateY(100vh) rotate(${Math.random() * 720}deg);
+                    opacity: 0;
+                }
+            }
+        `;
+            document.head.appendChild(style);
+
+            setTimeout(createConfetti, 500);
+        <?php endif; ?>
+    </script>
 </body>
 
 </html>
-<script>
-    function togglePassword(fieldId, btn) {
-        var input = document.getElementById(fieldId);
-        var icon = btn.querySelector('i');
-        if (!input || !icon) return;
-
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.className = 'fas fa-eye-slash';
-        } else {
-            input.type = 'password';
-            icon.className = 'fas fa-eye';
-        }
-    }
-</script>

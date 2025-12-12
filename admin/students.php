@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $page_title = 'Student Neural Database';
 $page_icon = 'user-graduate';
@@ -68,16 +68,19 @@ $avg_attendance = $total_students > 0 ? round(array_sum($attendance_map) / $tota
 
     <!-- Cyberpunk UI Framework -->
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
 
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg"><div class="starfield"></div></div><div class="cyber-grid"></div>
-        
+    <div class="cyber-bg">
+        <div class="starfield"></div>
     </div>
-    
+    <div class="cyber-grid"></div>
+
+    </div>
+
 
     <!-- Main Layout -->
     <div class="cyber-layout">

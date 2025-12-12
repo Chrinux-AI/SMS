@@ -5,13 +5,12 @@
  * Track student behavior incidents
  */
 
-require_once '../includes/session-handler.php';
-require_once '../includes/db.php';
+session_start();
+require_once '../includes/config.php';
+require_once '../includes/functions.php';
+require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
-    header('Location: ../login.php');
-    exit;
-}
+require_role('teacher', '../login.php');
 
 $user_id = $_SESSION['user_id'];
 $page_title = "Behavior Logs";
@@ -43,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Get teacher's classes and students
 $students = db()->fetchAll("
-    SELECT DISTINCT s.id, u.first_name, u.last_name, s.grade, s.section
+    SELECT DISTINCT s.id, u.first_name, u.last_name, s.grade_level, '' as section
     FROM class_enrollments ce
     JOIN classes c ON ce.class_id = c.id
     JOIN students s ON ce.student_id = s.id
@@ -54,7 +53,7 @@ $students = db()->fetchAll("
 
 // Get recent logs
 $logs = db()->fetchAll("
-    SELECT bl.*, u.first_name, u.last_name, s.grade, s.section
+    SELECT bl.*, u.first_name, u.last_name, s.grade_level, '' as section
     FROM behavior_logs bl
     JOIN students s ON bl.student_id = s.id
     JOIN users u ON s.user_id = u.id
@@ -64,7 +63,7 @@ $logs = db()->fetchAll("
 ", [$user_id]);
 
 include '../includes/cyber-header.php';
-<?php include '../includes/cyber-nav.php'; ?>
+include '../includes/cyber-nav.php';
 ?>
 
 <div class="cyber-content">

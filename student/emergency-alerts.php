@@ -4,11 +4,7 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-// Check if user is logged in and is a student
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header('Location: ../login.php');
-    exit();
-}
+require_role('student', '../login.php');
 
 $user_id = $_SESSION['user_id'];
 
@@ -55,7 +51,8 @@ $page_title = "Emergency Alerts";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="/attendance/manifest.json">
     <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png"><title><?php echo $page_title; ?> - SAMS</title>
+    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
+    <title><?php echo $page_title; ?> - SAMS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
     <link href="../assets/css/pwa-styles.css" rel="stylesheet">
@@ -236,7 +233,7 @@ $page_title = "Emergency Alerts";
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
 
-        <?php include '../includes/cyber-nav.php'; ?>
+    <?php include '../includes/cyber-nav.php'; ?>
 
     <div class="alerts-container">
         <h1><i class="fas fa-exclamation-triangle"></i> Emergency Alerts</h1>

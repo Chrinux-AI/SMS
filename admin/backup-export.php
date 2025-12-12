@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_admin('../login.php');
+require_role('admin');
 
 $page_title = 'Backup & Export';
 $page_icon = 'database';
@@ -150,7 +150,7 @@ $db_stats = [
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

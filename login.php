@@ -15,58 +15,83 @@ $success = '';
 
 // Handle login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $password = $_POST['password'] ?? '';
-
-    if (empty($email) || empty($password)) {
-        $error = 'Please enter both email and password';
+    // Verify CSRF token
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        $error = 'Invalid security token. Please refresh and try again.';
     } else {
-        $user = db()->fetchOne(
-            "SELECT * FROM users WHERE email = ?",
-            [$email]
-        );
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
 
-        if ($user && password_verify($password, $user['password_hash'])) {
-            // Check user status
-            if ($user['email_verified'] == 0) {
-                $error = 'Please verify your email address before logging in. Check your inbox for the verification link.';
-            } elseif ($user['approved'] == 0) {
-                $error = 'Your account is pending admin approval. You will receive an email once approved.';
-            } elseif ($user['status'] !== 'active') {
-                $error = 'Your account is not active. Please contact the administrator.';
-            } else {
-                // Update last login time
-                db()->update('users', [
-                    'last_login' => date('Y-m-d H:i:s')
-                ], 'id = ?', [$user['id']]);
-
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['email'] = $user['email'];
-                $_SESSION['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
-                $_SESSION['role'] = $user['role'];
-                $_SESSION['user_role'] = $user['role'];  // For compatibility with has_role() function
-                $_SESSION['assigned_id'] = $user['assigned_id'];
-                $_SESSION['last_login'] = $user['last_login'];  // Store previous login time
-
-                // Log the login activity
-                log_activity($user['id'], 'login', 'users', $user['id']);
-
-                // Redirect based on role
-                if ($user['role'] === 'admin') {
-                    header('Location: admin/dashboard.php');
-                } elseif ($user['role'] === 'teacher') {
-                    header('Location: teacher/dashboard.php');
-                } elseif ($user['role'] === 'student') {
-                    header('Location: student/dashboard.php');
-                } elseif ($user['role'] === 'parent') {
-                    header('Location: parent/dashboard.php');
-                } else {
-                    header('Location: student/dashboard.php');
-                }
-                exit;
-            }
+        if (empty($email) || empty($password)) {
+            $error = 'Please enter both email and password';
         } else {
-            $error = 'Invalid credentials - Access denied';
+            $user = db()->fetchOne(
+                "SELECT * FROM users WHERE email = ?",
+                [$email]
+            );
+
+            if ($user && password_verify($password, $user['password_hash'])) {
+                // Check user status
+                if ($user['email_verified'] == 0) {
+                    $error = 'Please verify your email address before logging in. Check your inbox for the verification link.';
+                } elseif ($user['approved'] == 0) {
+                    $error = 'Your account is pending admin approval. You will receive an email once approved.';
+                } elseif ($user['status'] !== 'active') {
+                    $error = 'Your account is not active. Please contact the administrator.';
+                } else {
+                    // Update last login time
+                    db()->update('users', [
+                        'last_login' => date('Y-m-d H:i:s')
+                    ], 'id = ?', [$user['id']]);
+
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['email'] = $user['email'];
+                    $_SESSION['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
+                    $_SESSION['role'] = $user['role'];
+                    $_SESSION['user_role'] = $user['role'];  // For compatibility with has_role() function
+                    $_SESSION['assigned_id'] = $user['assigned_id'];
+                    $_SESSION['last_login'] = $user['last_login'];  // Store previous login time
+
+                    // Log the login activity
+                    log_activity($user['id'], 'login', 'users', $user['id']);
+
+                    // Redirect based on role - supports all 25 roles
+                    $role_redirects = [
+                        // Leadership
+                        'superadmin' => 'superadmin/dashboard.php',
+                        'owner' => 'owner/dashboard.php',
+                        'principal' => 'principal/dashboard.php',
+                        'vice-principal' => 'vice-principal/dashboard.php',
+                        // Administration
+                        'admin' => 'admin/dashboard.php',
+                        'admin-officer' => 'admin-officer/dashboard.php',
+                        'accountant' => 'accountant/dashboard/index.php',
+                        // Academic
+                        'teacher' => 'teacher/dashboard.php',
+                        'class-teacher' => 'class-teacher/dashboard.php',
+                        'subject-coordinator' => 'subject-coordinator/dashboard.php',
+                        // Support Services
+                        'librarian' => 'librarian/dashboard.php',
+                        'counselor' => 'counselor/dashboard.php',
+                        'nurse' => 'nurse/dashboard.php',
+                        // Facilities
+                        'transport' => 'transport/dashboard.php',
+                        'hostel' => 'hostel/dashboard.php',
+                        'canteen' => 'canteen/dashboard.php',
+                        'general' => 'general/dashboard.php',
+                        // Users
+                        'student' => 'student/dashboard.php',
+                        'parent' => 'parent/dashboard.php',
+                        'alumni' => 'alumni/dashboard.php',
+                    ];
+
+                    $redirect_url = $role_redirects[$user['role']] ?? 'student/dashboard.php';
+                    header('Location: ' . $redirect_url);
+                    exit;
+                }
+            } else {
+                $error = 'Invalid credentials - Access denied';
+            }
         }
     }
 }
@@ -97,6 +122,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <script src="assets/js/biometric-auth.js"></script>
 
     <style>
+        /* Ensure background elements don't block inputs */
+        .starfield,
+        .cyber-grid,
+        .cyber-bg::before,
+        .particle {
+            pointer-events: none !important;
+        }
+
         .login-container {
             display: flex;
             justify-content: center;
@@ -111,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             position: relative;
             width: 100%;
             max-width: 450px;
+            z-index: 10;
         }
 
         /* Floating Login Hologram */
@@ -364,11 +398,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<!-- Cyberpunk Background -->
-    <div class="cyber-bg">
-        <div class="starfield"></div>
-    </div>
-    <div class="cyber-grid"></div>
 
     <!-- Floating Particles -->
     <?php for ($i = 0; $i < 20; $i++): ?>
@@ -421,6 +450,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
                     <!-- Login Form -->
                     <form method="POST" action="" class="login-form">
+                        <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
                         <div class="cyber-input-group">
                             <label class="cyber-label" for="email">
                                 <i class="fas fa-envelope"></i> Email Address
@@ -543,27 +573,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 }
             });
         });
+
+        // Password toggle shared helper
+        function togglePassword(fieldId, btn) {
+            var input = document.getElementById(fieldId);
+            var icon = btn.querySelector('i');
+            if (!input || !icon) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
     </script>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+    <?php include 'includes/theme-toggle.php'; ?>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/pwa-manager.js"></script>
+    <script src="assets/js/pwa-analytics.js"></script>
 </body>
 
 </html>
-<script>
-    // Password toggle shared helper
-    function togglePassword(fieldId, btn) {
-        var input = document.getElementById(fieldId);
-        var icon = btn.querySelector('i');
-        if (!input || !icon) return;
-
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.className = 'fas fa-eye-slash';
-        } else {
-            input.type = 'password';
-            icon.className = 'fas fa-eye';
-        }
-    }
-</script>

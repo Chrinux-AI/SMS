@@ -10,6 +10,11 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
+// CSRF protection for state-changing requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_require();
+}
+
 if (!is_logged_in()) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);

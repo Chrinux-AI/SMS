@@ -10,10 +10,8 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
-    exit;
-}
+
+require_login('../login.php');
 
 $user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['role'];
@@ -334,7 +332,7 @@ $page_title = "Settings";
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<?php include '../includes/cyber-nav.php'; ?>
+    <?php include '../includes/cyber-nav.php'; ?>
 
     <div class="settings-container">
         <h1><i class="fas fa-cog"></i> Settings</h1>

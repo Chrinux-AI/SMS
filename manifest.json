@@ -1,11 +1,11 @@
 {
-  "name": "SAMS - Attendance Management",
-  "short_name": "SAMS",
-  "description": "Student Attendance Management System - Track attendance, grades, and stay connected with your school community",
+  "name": "Verdant SMS - School Management System",
+  "short_name": "Verdant SMS",
+  "description": "Complete 42-Module School Management System with AI Analytics, 25 User Roles, 8 Themes, and Biometric Attendance",
   "start_url": "/attendance/",
   "display": "standalone",
   "background_color": "#0A0A0A",
-  "theme_color": "#00BFFF",
+  "theme_color": "#10b981",
   "orientation": "portrait-primary",
   "scope": "/attendance/",
   "icons": [

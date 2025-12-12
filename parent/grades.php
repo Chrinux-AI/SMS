@@ -3,15 +3,15 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_parent('../login.php');
+require_role('parent');
 
 // Get parent's linked children
 $children = db()->fetchAll("
     SELECT s.*, CONCAT(u.first_name, ' ', u.last_name) as child_name
-    FROM guardians g
-    LEFT JOIN students s ON g.student_id = s.id
-    LEFT JOIN users u ON s.user_id = u.id
-    WHERE g.parent_id = (SELECT id FROM users WHERE id = ?)
+    FROM students s
+    JOIN parent_student_links psl ON s.user_id = psl.student_id
+    JOIN users u ON s.user_id = u.id
+    WHERE psl.parent_id = ?
 ", [$_SESSION['user_id']]);
 
 // Get selected child
@@ -34,21 +34,20 @@ $overall_letter = 'N/A';
 
 if ($selected_child) {
     $grades = db()->fetchAll("
-        SELECT g.*, a.title as assignment_title, a.assignment_type,
-               c.class_name, c.grade as class_grade,
+        SELECT g.*, g.grade_type as assignment_type, g.comments as title,
+               c.class_name, c.grade_level as class_grade,
                CONCAT(u.first_name, ' ', u.last_name) as teacher_name
         FROM grades g
-        LEFT JOIN assignments a ON g.assignment_id = a.id
         LEFT JOIN classes c ON g.class_id = c.id
         LEFT JOIN teachers t ON c.teacher_id = t.id
         LEFT JOIN users u ON t.user_id = u.id
         WHERE g.student_id = ?
-        ORDER BY g.grade_date DESC
+        ORDER BY g.graded_date DESC
     ", [$selected_child['id']]);
 
     // Calculate overall
     $total_points = array_sum(array_column($grades, 'max_points'));
-    $earned_points = array_sum(array_column($grades, 'points_earned'));
+    $earned_points = array_sum(array_column($grades, 'grade_value'));
 
     if ($total_points > 0) {
         $overall_percentage = ($earned_points / $total_points) * 100;
@@ -79,12 +78,13 @@ $full_name = $_SESSION['full_name'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

@@ -8,11 +8,12 @@
 session_start();
 
 require_once '../includes/config.php';
-require_once '../includes/functions.php';
 require_once '../includes/database.php';
+require_once '../includes/functions.php';
+require_once '../includes/theme-loader.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $user_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];
@@ -86,9 +87,12 @@ $page_icon = 'chart-line';
     <!-- Cyberpunk UI Framework -->
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
 
+    <!-- Dynamic Theme CSS -->
+    <?php output_theme_css(); ?>
+
 </head>
 
-<body class="cyber-bg">
+<body class="cyber-bg <?php echo get_theme_body_class(); ?>">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
 
@@ -342,9 +346,39 @@ $page_icon = 'chart-line';
                     </div>
                 </section>
 
+                <!-- Enhanced Dashboard Components -->
+                <div class="enhanced-components">
+                    <!-- Analytics Dashboard -->
+                    <?php include '../includes/analytics-dashboard.php'; ?>
+
+                    <!-- Poll System -->
+                    <?php include '../includes/poll-system.php'; ?>
+
+                    <!-- Study Groups -->
+                    <?php include '../includes/study-groups.php'; ?>
+
+                    <!-- Grade Calculator -->
+                    <?php include '../includes/grade-calculator.php'; ?>
+                </div>
+
             </div>
         </main>
     </div>
+
+    <!-- Visual Polish & Toast System -->
+    <?php include '../includes/visual-polish.php'; ?>
+
+    <!-- Quick Actions FAB -->
+    <?php include '../includes/quick-actions.php'; ?>
+
+    <!-- Online Users Widget -->
+    <?php include '../includes/online-users.php'; ?>
+
+    <!-- AI Copilot -->
+    <?php include '../includes/ai-copilot.php'; ?>
+
+    <!-- Mobile Bottom Nav -->
+    <?php include '../includes/mobile-bottom-nav.php'; ?>
 
     <!-- JavaScript -->
     <script>

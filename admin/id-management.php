@@ -12,7 +12,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -239,227 +239,227 @@ $users = db()->fetchAll("
 
         <main class="cyber-main">
 
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class="copy-notification" id="copyNotification">
-        <i class="fas fa-check-circle"></i>
-        <span id="copyText">ID copied to clipboard!</span>
-    </div>
+            <div class="starfield"></div>
+            <div class="cyber-grid"></div>
+            <div class="copy-notification" id="copyNotification">
+                <i class="fas fa-check-circle"></i>
+                <span id="copyText">ID copied to clipboard!</span>
+            </div>
 
-    <div class="header">
-        <div class="header-content">
-            <div>
-                <h1><i class="fas fa-id-card"></i> <?php echo APP_NAME; ?></h1>
-                <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
-            </div>
-            <a href="../logout.php" class="btn-logout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-    </div>
-
-    <div class="container">
-        <nav class="nav-menu">
-            <a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a>
-            <a href="students.php"><i class="fas fa-user-graduate"></i> Students</a>
-            <a href="teachers.php"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
-            <a href="classes.php"><i class="fas fa-book"></i> Classes</a>
-            <a href="attendance.php"><i class="fas fa-clipboard-check"></i> Attendance</a>
-            <a href="reports.php"><i class="fas fa-chart-bar"></i> Reports</a>
-            <a href="users.php"><i class="fas fa-users"></i> Users</a>
-            <a href="registrations.php"><i class="fas fa-user-check"></i> Registrations</a>
-            <a href="id-management.php" class="active"><i class="fas fa-id-card"></i> ID Management</a>
-            <a href="test-accounts.php"><i class="fas fa-vial"></i> Test Accounts</a>
-            <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
-        </nav>
-
-        <?php if ($message): ?>
-            <div class="alert alert-<?php echo $message_type; ?>">
-                <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
-                <?php echo $message; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Statistics -->
-        <div class="stats-row">
-            <div class="stat-box">
-                <h2><?php echo count($students); ?></h2>
-                <p><i class="fas fa-user-graduate"></i> Student IDs</p>
-            </div>
-            <div class="stat-box" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <h2><?php echo count($teachers); ?></h2>
-                <p><i class="fas fa-chalkboard-teacher"></i> Teacher IDs</p>
-            </div>
-            <div class="stat-box" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <h2><?php echo count($classes); ?></h2>
-                <p><i class="fas fa-book"></i> Class Codes</p>
-            </div>
-            <div class="stat-box" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <h2><?php echo count($users); ?></h2>
-                <p><i class="fas fa-users"></i> User IDs</p>
-            </div>
-        </div>
-
-        <!-- Student IDs -->
-        <div class="id-section">
-            <h3><i class="fas fa-user-graduate"></i> Student IDs</h3>
-            <input type="text" class="search-box" id="searchStudents" placeholder="🔍 Search student IDs, names, or emails...">
-            <div class="id-grid" id="studentGrid">
-                <?php foreach ($students as $student): ?>
-                    <div class="id-card" onclick="copyToClipboard('<?php echo htmlspecialchars($student['student_id']); ?>', 'Student ID')">
-                        <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo htmlspecialchars($student['student_id']); ?>', 'Student ID')">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                        <div class="id-value"><?php echo htmlspecialchars($student['student_id']); ?></div>
-                        <div class="id-name"><?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></div>
-                        <div class="id-details">
-                            <div><i class="fas fa-graduation-cap"></i> Grade <?php echo $student['grade_level']; ?></div>
-                            <?php if ($student['email']): ?>
-                                <div><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($student['email']); ?></div>
-                            <?php endif; ?>
-                            <span class="badge badge-<?php echo $student['status']; ?>"><?php echo ucfirst($student['status']); ?></span>
-                        </div>
+            <div class="header">
+                <div class="header-content">
+                    <div>
+                        <h1><i class="fas fa-id-card"></i> <?php echo APP_NAME; ?></h1>
+                        <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
                     </div>
-                <?php endforeach; ?>
+                    <a href="../logout.php" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
             </div>
-        </div>
 
-        <!-- Teacher IDs -->
-        <div class="id-section">
-            <h3><i class="fas fa-chalkboard-teacher"></i> Teacher IDs (Employee IDs)</h3>
-            <input type="text" class="search-box" id="searchTeachers" placeholder="🔍 Search teacher IDs, names, or departments...">
-            <div class="id-grid" id="teacherGrid">
-                <?php foreach ($teachers as $teacher): ?>
-                    <div class="id-card" onclick="copyToClipboard('<?php echo htmlspecialchars($teacher['employee_id']); ?>', 'Teacher ID')">
-                        <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo htmlspecialchars($teacher['employee_id']); ?>', 'Teacher ID')">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                        <div class="id-value"><?php echo htmlspecialchars($teacher['employee_id']); ?></div>
-                        <div class="id-name"><?php echo htmlspecialchars($teacher['first_name'] . ' ' . $teacher['last_name']); ?></div>
-                        <div class="id-details">
-                            <?php if ($teacher['department']): ?>
-                                <div><i class="fas fa-building"></i> <?php echo htmlspecialchars($teacher['department']); ?></div>
-                            <?php endif; ?>
-                            <?php if ($teacher['email']): ?>
-                                <div><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($teacher['email']); ?></div>
-                            <?php endif; ?>
-                            <span class="badge badge-<?php echo $teacher['status']; ?>"><?php echo ucfirst($teacher['status']); ?></span>
-                        </div>
+            <div class="container">
+                <nav class="nav-menu">
+                    <a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a>
+                    <a href="students.php"><i class="fas fa-user-graduate"></i> Students</a>
+                    <a href="teachers.php"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
+                    <a href="classes.php"><i class="fas fa-book"></i> Classes</a>
+                    <a href="attendance.php"><i class="fas fa-clipboard-check"></i> Attendance</a>
+                    <a href="reports.php"><i class="fas fa-chart-bar"></i> Reports</a>
+                    <a href="users.php"><i class="fas fa-users"></i> Users</a>
+                    <a href="registrations.php"><i class="fas fa-user-check"></i> Registrations</a>
+                    <a href="id-management.php" class="active"><i class="fas fa-id-card"></i> ID Management</a>
+                    <a href="test-accounts.php"><i class="fas fa-vial"></i> Test Accounts</a>
+                    <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
+                </nav>
+
+                <?php if ($message): ?>
+                    <div class="alert alert-<?php echo $message_type; ?>">
+                        <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
+                        <?php echo $message; ?>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+                <?php endif; ?>
 
-        <!-- Class Codes -->
-        <div class="id-section">
-            <h3><i class="fas fa-book"></i> Class Codes</h3>
-            <input type="text" class="search-box" id="searchClasses" placeholder="🔍 Search class codes or names...">
-            <div class="id-grid" id="classGrid">
-                <?php foreach ($classes as $class): ?>
-                    <div class="id-card" onclick="copyToClipboard('<?php echo htmlspecialchars($class['class_code']); ?>', 'Class Code')">
-                        <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo htmlspecialchars($class['class_code']); ?>', 'Class Code')">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                        <div class="id-value"><?php echo htmlspecialchars($class['class_code']); ?></div>
-                        <div class="id-name"><?php echo htmlspecialchars($class['name']); ?></div>
-                        <div class="id-details">
-                            <?php if ($class['grade_level']): ?>
-                                <div><i class="fas fa-graduation-cap"></i> Grade <?php echo $class['grade_level']; ?></div>
-                            <?php endif; ?>
-                            <?php if ($class['academic_year']): ?>
-                                <div><i class="fas fa-calendar"></i> <?php echo htmlspecialchars($class['academic_year']); ?></div>
-                            <?php endif; ?>
-                            <?php if ($class['room_number']): ?>
-                                <div><i class="fas fa-door-open"></i> Room <?php echo htmlspecialchars($class['room_number']); ?></div>
-                            <?php endif; ?>
-                        </div>
+                <!-- Statistics -->
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <h2><?php echo count($students); ?></h2>
+                        <p><i class="fas fa-user-graduate"></i> Student IDs</p>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <h2><?php echo count($teachers); ?></h2>
+                        <p><i class="fas fa-chalkboard-teacher"></i> Teacher IDs</p>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                        <h2><?php echo count($classes); ?></h2>
+                        <p><i class="fas fa-book"></i> Class Codes</p>
+                    </div>
+                    <div class="stat-box" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                        <h2><?php echo count($users); ?></h2>
+                        <p><i class="fas fa-users"></i> User IDs</p>
+                    </div>
+                </div>
 
-        <!-- User IDs -->
-        <div class="id-section">
-            <h3><i class="fas fa-users"></i> System User IDs</h3>
-            <input type="text" class="search-box" id="searchUsers" placeholder="🔍 Search user IDs, usernames, or emails...">
-            <div class="id-grid" id="userGrid">
-                <?php foreach ($users as $user): ?>
-                    <div class="id-card" onclick="copyToClipboard('<?php echo $user['id']; ?>', 'User ID')">
-                        <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo $user['id']; ?>', 'User ID')">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                        <div class="id-value">ID: <?php echo $user['id']; ?></div>
-                        <div class="id-name"><?php echo htmlspecialchars($user['full_name']); ?></div>
-                        <div class="id-details">
-                            <div><i class="fas fa-user"></i> @<?php echo htmlspecialchars($user['username']); ?></div>
-                            <div><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($user['email']); ?></div>
-                            <div>
-                                <span class="badge badge-<?php
-                                                            echo $user['role'] === 'admin' ? 'danger' : ($user['role'] === 'teacher' ? 'primary' : ($user['role'] === 'student' ? 'info' : 'success'));
-                                                            ?>">
-                                    <?php echo ucfirst($user['role']); ?>
-                                </span>
-                                <span class="badge badge-<?php echo $user['status']; ?>"><?php echo ucfirst($user['status']); ?></span>
+                <!-- Student IDs -->
+                <div class="id-section">
+                    <h3><i class="fas fa-user-graduate"></i> Student IDs</h3>
+                    <input type="text" class="search-box" id="searchStudents" placeholder="🔍 Search student IDs, names, or emails...">
+                    <div class="id-grid" id="studentGrid">
+                        <?php foreach ($students as $student): ?>
+                            <div class="id-card" onclick="copyToClipboard('<?php echo htmlspecialchars($student['student_id']); ?>', 'Student ID')">
+                                <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo htmlspecialchars($student['student_id']); ?>', 'Student ID')">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <div class="id-value"><?php echo htmlspecialchars($student['student_id']); ?></div>
+                                <div class="id-name"><?php echo htmlspecialchars($student['first_name'] . ' ' . $student['last_name']); ?></div>
+                                <div class="id-details">
+                                    <div><i class="fas fa-graduation-cap"></i> Grade <?php echo $student['grade_level']; ?></div>
+                                    <?php if ($student['email']): ?>
+                                        <div><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($student['email']); ?></div>
+                                    <?php endif; ?>
+                                    <span class="badge badge-<?php echo $student['status']; ?>"><?php echo ucfirst($student['status']); ?></span>
+                                </div>
                             </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
-                <?php endforeach; ?>
+                </div>
+
+                <!-- Teacher IDs -->
+                <div class="id-section">
+                    <h3><i class="fas fa-chalkboard-teacher"></i> Teacher IDs (Employee IDs)</h3>
+                    <input type="text" class="search-box" id="searchTeachers" placeholder="🔍 Search teacher IDs, names, or departments...">
+                    <div class="id-grid" id="teacherGrid">
+                        <?php foreach ($teachers as $teacher): ?>
+                            <div class="id-card" onclick="copyToClipboard('<?php echo htmlspecialchars($teacher['employee_id']); ?>', 'Teacher ID')">
+                                <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo htmlspecialchars($teacher['employee_id']); ?>', 'Teacher ID')">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <div class="id-value"><?php echo htmlspecialchars($teacher['employee_id']); ?></div>
+                                <div class="id-name"><?php echo htmlspecialchars($teacher['first_name'] . ' ' . $teacher['last_name']); ?></div>
+                                <div class="id-details">
+                                    <?php if ($teacher['department']): ?>
+                                        <div><i class="fas fa-building"></i> <?php echo htmlspecialchars($teacher['department']); ?></div>
+                                    <?php endif; ?>
+                                    <?php if ($teacher['email']): ?>
+                                        <div><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($teacher['email']); ?></div>
+                                    <?php endif; ?>
+                                    <span class="badge badge-<?php echo $teacher['status']; ?>"><?php echo ucfirst($teacher['status']); ?></span>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Class Codes -->
+                <div class="id-section">
+                    <h3><i class="fas fa-book"></i> Class Codes</h3>
+                    <input type="text" class="search-box" id="searchClasses" placeholder="🔍 Search class codes or names...">
+                    <div class="id-grid" id="classGrid">
+                        <?php foreach ($classes as $class): ?>
+                            <div class="id-card" onclick="copyToClipboard('<?php echo htmlspecialchars($class['class_code']); ?>', 'Class Code')">
+                                <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo htmlspecialchars($class['class_code']); ?>', 'Class Code')">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <div class="id-value"><?php echo htmlspecialchars($class['class_code']); ?></div>
+                                <div class="id-name"><?php echo htmlspecialchars($class['name']); ?></div>
+                                <div class="id-details">
+                                    <?php if ($class['grade_level']): ?>
+                                        <div><i class="fas fa-graduation-cap"></i> Grade <?php echo $class['grade_level']; ?></div>
+                                    <?php endif; ?>
+                                    <?php if ($class['academic_year']): ?>
+                                        <div><i class="fas fa-calendar"></i> <?php echo htmlspecialchars($class['academic_year']); ?></div>
+                                    <?php endif; ?>
+                                    <?php if ($class['room_number']): ?>
+                                        <div><i class="fas fa-door-open"></i> Room <?php echo htmlspecialchars($class['room_number']); ?></div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- User IDs -->
+                <div class="id-section">
+                    <h3><i class="fas fa-users"></i> System User IDs</h3>
+                    <input type="text" class="search-box" id="searchUsers" placeholder="🔍 Search user IDs, usernames, or emails...">
+                    <div class="id-grid" id="userGrid">
+                        <?php foreach ($users as $user): ?>
+                            <div class="id-card" onclick="copyToClipboard('<?php echo $user['id']; ?>', 'User ID')">
+                                <button class="copy-btn" onclick="event.stopPropagation(); copyToClipboard('<?php echo $user['id']; ?>', 'User ID')">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <div class="id-value">ID: <?php echo $user['id']; ?></div>
+                                <div class="id-name"><?php echo htmlspecialchars($user['full_name']); ?></div>
+                                <div class="id-details">
+                                    <div><i class="fas fa-user"></i> @<?php echo htmlspecialchars($user['username']); ?></div>
+                                    <div><i class="fas fa-envelope"></i> <?php echo htmlspecialchars($user['email']); ?></div>
+                                    <div>
+                                        <span class="badge badge-<?php
+                                                                    echo $user['role'] === 'admin' ? 'danger' : ($user['role'] === 'teacher' ? 'primary' : ($user['role'] === 'student' ? 'info' : 'success'));
+                                                                    ?>">
+                                            <?php echo ucfirst($user['role']); ?>
+                                        </span>
+                                        <span class="badge badge-<?php echo $user['status']; ?>"><?php echo ucfirst($user['status']); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
             </div>
-        </div>
 
-    </div>
+            <script>
+                function copyToClipboard(text, type) {
+                    // Create temporary input
+                    const temp = document.createElement('input');
+                    temp.value = text;
+                    document.body.appendChild(temp);
+                    temp.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(temp);
 
-    <script>
-        function copyToClipboard(text, type) {
-            // Create temporary input
-            const temp = document.createElement('input');
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
+                    // Show notification
+                    const notification = document.getElementById('copyNotification');
+                    const copyText = document.getElementById('copyText');
+                    copyText.textContent = type + ' "' + text + '" copied to clipboard!';
+                    notification.style.display = 'flex';
 
-            // Show notification
-            const notification = document.getElementById('copyNotification');
-            const copyText = document.getElementById('copyText');
-            copyText.textContent = type + ' "' + text + '" copied to clipboard!';
-            notification.style.display = 'flex';
+                    setTimeout(() => {
+                        notification.style.display = 'none';
+                    }, 3000);
+                }
 
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
+                // Search functionality
+                function setupSearch(inputId, gridId) {
+                    const searchInput = document.getElementById(inputId);
+                    const grid = document.getElementById(gridId);
+                    const cards = grid.getElementsByClassName('id-card');
 
-        // Search functionality
-        function setupSearch(inputId, gridId) {
-            const searchInput = document.getElementById(inputId);
-            const grid = document.getElementById(gridId);
-            const cards = grid.getElementsByClassName('id-card');
+                    searchInput.addEventListener('input', function() {
+                        const searchTerm = this.value.toLowerCase();
 
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
+                        Array.from(cards).forEach(card => {
+                            const text = card.textContent.toLowerCase();
+                            if (text.includes(searchTerm)) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    });
+                }
 
-                Array.from(cards).forEach(card => {
-                    const text = card.textContent.toLowerCase();
-                    if (text.includes(searchTerm)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        }
+                // Initialize search for all sections
+                setupSearch('searchStudents', 'studentGrid');
+                setupSearch('searchTeachers', 'teacherGrid');
+                setupSearch('searchClasses', 'classGrid');
+                setupSearch('searchUsers', 'userGrid');
+            </script>
 
-        // Initialize search for all sections
-        setupSearch('searchStudents', 'studentGrid');
-        setupSearch('searchTeachers', 'teacherGrid');
-        setupSearch('searchClasses', 'classGrid');
-        setupSearch('searchUsers', 'userGrid');
-    </script>
-
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+            <script src="../assets/js/main.js"></script>
+            <script src="../assets/js/pwa-manager.js"></script>
+            <script src="../assets/js/pwa-analytics.js"></script>
 </body>
 
 </html>

@@ -824,3 +824,24 @@ a:hover {
         border: 2px solid var(--gray-800);
     }
 }
+
+/* ========================================
+   GLOBAL OVERFLOW FIX - ENSURES SCROLLING
+   ======================================== */
+html {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+}
+
+body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    max-width: 100vw;
+}
+
+.nature-bg,
+.nature-layout,
+.nature-main {
+    overflow-x: hidden;
+    overflow-y: visible;
+}

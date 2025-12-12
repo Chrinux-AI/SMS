@@ -12,6 +12,11 @@ require_once '../includes/database.php';
 
 header('Content-Type: application/json');
 
+// CSRF protection for state-changing requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_require();
+}
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit;

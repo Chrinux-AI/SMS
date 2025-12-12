@@ -17,7 +17,7 @@ $page_title = "Book Meeting";
 
 // Get parent's children
 $children = db()->fetchAll("
-    SELECT s.id, s.user_id, u.first_name, u.last_name, s.grade, s.section
+    SELECT s.id, s.user_id, u.first_name, u.last_name, s.grade_level, '' as section
     FROM parent_student_links psl
     JOIN students s ON psl.student_id = s.id
     JOIN users u ON s.user_id = u.id
@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 include '../includes/cyber-header.php';
-<?php include '../includes/cyber-nav.php'; ?>
+include '../includes/cyber-nav.php';
 ?>
 
 <div class="cyber-content">

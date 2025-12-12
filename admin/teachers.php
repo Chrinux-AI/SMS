@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Teachers Management - Nature UI
  */
@@ -10,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -69,6 +70,7 @@ $full_name = $_SESSION['full_name'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,12 +83,13 @@ $full_name = $_SESSION['full_name'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-layout">
+    <div class="cyber-layout">
         <?php include '../includes/cyber-nav.php'; ?>
         <main class="cyber-main">
             <header class="cyber-header">
@@ -242,4 +245,5 @@ $full_name = $_SESSION['full_name'];
     <script src="../assets/js/pwa-manager.js"></script>
     <script src="../assets/js/pwa-analytics.js"></script>
 </body>
+
 </html>

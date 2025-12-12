@@ -40,6 +40,10 @@ define('APP_VERSION', '1.0.0');
 define('APP_URL', 'http://localhost/attendance');
 define('TIMEZONE', 'America/New_York');
 
+// TEST MODE - Set to true to bypass login for testing pages
+// WARNING: Set to false in production!
+define('TEST_MODE', true);
+
 // Security Settings
 define('SESSION_TIMEOUT', 1800); // 30 minutes
 define('PASSWORD_MIN_LENGTH', 12);

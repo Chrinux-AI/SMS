@@ -2,6 +2,7 @@
 session_start();
 require_once 'includes/config.php';
 require_once 'includes/database.php';
+require_once 'includes/functions.php';
 require_once 'includes/email-helper.php';
 
 $message = '';
@@ -10,6 +11,10 @@ $step = 'email'; // email, otp, reset
 
 // Handle email submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        $message = 'Invalid request. Please try again.';
+        $message_type = 'error';
+    } else {
     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -31,14 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
 
             // Send OTP via email
             $subject = "Password Reset OTP - School Management System";
-            $email_body = "
+            $first_name = htmlspecialchars($user['first_name']);
+            $current_year = date('Y');
+            $email_body = <<<HTML
             <html>
             <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/attendance/manifest.json">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
+                <meta charset='UTF-8'>
                 <style>
                     body { font-family: Arial, sans-serif; background: #f4f4f4; }
                     .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 10px; overflow: hidden; }
@@ -49,15 +52,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
                     .footer { background: #f9f9f9; padding: 20px; text-align: center; color: #666; font-size: 12px; }
                 </style>
             </head>
-            <body class="cyber-bg">
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class='container'>
+            <body>
+                <div class='container'>
                     <div class='header'>
-                        <h1>🔐 Password Reset Request</h1>
+                        <h1>Password Reset Request</h1>
                     </div>
                     <div class='content'>
-                        <p>Hello <strong>" . htmlspecialchars($user['first_name']) . "</strong>,</p>
+                        <p>Hello <strong>{$first_name}</strong>,</p>
                         <p>You have requested to reset your password. Please use the OTP code below to verify your identity:</p>
 
                         <div class='otp-box'>
@@ -66,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
                             <div style='color: #999; font-size: 12px; margin-top: 10px;'>Valid for 15 minutes</div>
                         </div>
 
-                        <p><strong>⚠️ Security Notice:</strong></p>
+                        <p><strong>Security Notice:</strong></p>
                         <ul>
                             <li>Do not share this code with anyone</li>
                             <li>This code expires in 15 minutes</li>
@@ -75,16 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
                     </div>
                     <div class='footer'>
                         <p>This is an automated message from the Attendance Management System.</p>
-                        <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
+                        <p>&copy; {$current_year} School Management System. All rights reserved.</p>
                     </div>
                 </div>
-            
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
-</body>
+            </body>
             </html>
-            ";
+HTML;
 
             if (quick_send_email($email, $subject, $email_body)) {
                 $_SESSION['reset_email'] = $email;
@@ -103,10 +100,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_otp'])) {
             $step = 'otp';
         }
     }
+    }
 }
 
 // Handle OTP verification
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_otp'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        $message = 'Invalid request. Please try again.';
+        $message_type = 'error';
+        $step = 'otp';
+    } else {
     $email = $_SESSION['reset_email'] ?? '';
     $otp = $_POST['otp'] ?? '';
 
@@ -125,10 +128,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['verify_otp'])) {
         $message_type = 'error';
         $step = 'otp';
     }
+    }
 }
 
 // Handle password reset
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_password'])) {
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        $message = 'Invalid request. Please try again.';
+        $message_type = 'error';
+        $step = 'reset';
+    } else {
     $email = $_SESSION['verified_email'] ?? '';
     $password = $_POST['password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
@@ -155,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset_password'])) {
         // Clear session
         unset($_SESSION['reset_email']);
         unset($_SESSION['verified_email']);
+    }
 
         // Redirect to login after 3 seconds
         header("refresh:3;url=login.php");
@@ -181,6 +191,13 @@ if (isset($_SESSION['verified_email'])) {
     <link href="assets/css/cyberpunk-ui.css" rel="stylesheet">
 
     <style>
+        /* Ensure background elements don't block inputs */
+        .starfield,
+        .cyber-grid,
+        .cyber-bg::before {
+            pointer-events: none !important;
+        }
+
         .forgot-container {
             display: flex;
             justify-content: center;
@@ -200,6 +217,8 @@ if (isset($_SESSION['verified_email'])) {
             border-radius: 25px;
             padding: 40px;
             box-shadow: 0 0 60px rgba(0, 191, 255, 0.3);
+            position: relative;
+            z-index: 10;
         }
 
         .forgot-header {
@@ -259,7 +278,7 @@ if (isset($_SESSION['verified_email'])) {
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>
@@ -291,6 +310,7 @@ if (isset($_SESSION['verified_email'])) {
 
             <?php if ($step === 'email'): ?>
                 <form method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
                     <div class="cyber-form-group">
                         <label class="cyber-label" for="email">
                             <i class="fas fa-envelope"></i> Email Address
@@ -306,6 +326,7 @@ if (isset($_SESSION['verified_email'])) {
 
             <?php elseif ($step === 'otp'): ?>
                 <form method="POST" id="otpForm">
+                    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
                     <div class="otp-input-group">
                         <input type="text" maxlength="1" class="otp-digit" id="otp1" required>
                         <input type="text" maxlength="1" class="otp-digit" id="otp2" required>
@@ -329,6 +350,7 @@ if (isset($_SESSION['verified_email'])) {
 
             <?php elseif ($step === 'reset'): ?>
                 <form method="POST">
+                    <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
                     <div class="cyber-form-group">
                         <label class="cyber-label" for="password">
                             <i class="fas fa-lock"></i> New Password
@@ -435,9 +457,11 @@ if (isset($_SESSION['verified_email'])) {
         }
     </script>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+    <?php include 'includes/theme-toggle.php'; ?>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/pwa-manager.js"></script>
+    <script src="assets/js/pwa-analytics.js"></script>
 </body>
 
 </html>

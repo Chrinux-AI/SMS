@@ -88,14 +88,11 @@ try {
 
         $to = $email;
         $subject = "Admin Account Created - School Management System";
-        $email_message = "
+        $current_year = date('Y');
+        $email_message = <<<HTML
         <html>
         <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/attendance/manifest.json">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
+            <meta charset='UTF-8'>
             <title>Admin Account Created</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
@@ -107,21 +104,19 @@ try {
                 .credentials { background: #f0f0f0; padding: 15px; border-radius: 5px; margin: 15px 0; }
             </style>
         </head>
-        <body class="cyber-bg">
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class='container'>
+        <body>
+            <div class='container'>
                 <div class='header'>
-                    <h1>🎉 Admin Account Created!</h1>
+                    <h1>Admin Account Created!</h1>
                 </div>
                 <div class='content'>
-                    <p>Hello <strong>$first_name $last_name</strong>,</p>
+                    <p>Hello <strong>{$first_name} {$last_name}</strong>,</p>
                     <p>Your administrator account has been successfully created for the Attendance Management System.</p>
 
                     <div class='credentials'>
                         <h3>Login Credentials:</h3>
-                        <p><strong>Email:</strong> $email</p>
-                        <p><strong>Password:</strong> $password</p>
+                        <p><strong>Email:</strong> {$email}</p>
+                        <p><strong>Password:</strong> {$password}</p>
                         <p><strong>Role:</strong> Administrator</p>
                     </div>
 
@@ -135,16 +130,12 @@ try {
                 </div>
                 <div class='footer'>
                     <p>This is an automated message from the Attendance Management System.</p>
-                    <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
+                    <p>&copy; {$current_year} School Management System. All rights reserved.</p>
                 </div>
             </div>
-        
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
-</body>
+        </body>
         </html>
-        ";
+HTML;
 
         if (quick_send_email($to, $subject, $email_message)) {
             echo "  ✓ Welcome email sent to $email\n";

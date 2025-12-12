@@ -1,5 +1,8 @@
 # Attendance AI - Apache Configuration
 
+# Set default index file
+DirectoryIndex index.php index.html
+
 # Enable Rewrite Engine
 RewriteEngine On
 

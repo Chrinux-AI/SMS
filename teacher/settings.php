@@ -10,10 +10,7 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
-    exit;
-}
+require_login('../login.php');
 
 $user_id = $_SESSION['user_id'];
 $user_role = $_SESSION['role'];

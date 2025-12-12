@@ -12,6 +12,11 @@ require_once '../includes/functions.php';
 
 header('Content-Type: application/json');
 
+// CSRF protection for state-changing requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_require();
+}
+
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 $response = ['success' => false, 'message' => '', 'data' => null];
 

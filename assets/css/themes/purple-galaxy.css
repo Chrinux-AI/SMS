@@ -1,0 +1,231 @@
+/**
+ * Purple Galaxy Theme
+ * Deep purple with starry accents
+ * For creative/UI/UX designers
+ * Verdant SMS v3.0
+ */
+
+:root {
+    /* Primary Colors */
+    --theme-primary: #a855f7;
+    --theme-primary-dark: #9333ea;
+    --theme-primary-light: #c084fc;
+    --theme-primary-rgb: 168, 85, 247;
+
+    /* Secondary Colors */
+    --theme-secondary: #ec4899;
+    --theme-secondary-dark: #db2777;
+    --theme-secondary-light: #f472b6;
+
+    /* Accent Colors */
+    --theme-accent: #818cf8;
+    --theme-accent-dark: #6366f1;
+    --theme-accent-light: #a5b4fc;
+
+    /* Background Colors */
+    --theme-bg-primary: #0f0a1a;
+    --theme-bg-secondary: #1a1025;
+    --theme-bg-tertiary: #251530;
+    --theme-bg-card: rgba(168, 85, 247, 0.08);
+    --theme-bg-glass: rgba(236, 72, 153, 0.05);
+
+    /* Text Colors */
+    --theme-text-primary: #faf5ff;
+    --theme-text-secondary: #e9d5ff;
+    --theme-text-muted: rgba(250, 245, 255, 0.6);
+    --theme-text-inverse: #0f0a1a;
+
+    /* Border & Shadow */
+    --theme-border: rgba(168, 85, 247, 0.25);
+    --theme-border-light: rgba(236, 72, 153, 0.15);
+    --theme-shadow: 0 4px 20px rgba(168, 85, 247, 0.2);
+    --theme-glow: 0 0 30px rgba(168, 85, 247, 0.4), 0 0 60px rgba(236, 72, 153, 0.2);
+
+    /* Status Colors */
+    --theme-success: #22c55e;
+    --theme-warning: #fbbf24;
+    --theme-danger: #f43f5e;
+    --theme-info: #818cf8;
+
+    /* Gradient */
+    --theme-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 50%, #818cf8 100%);
+    --theme-gradient-subtle: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+
+    /* Animation */
+    --theme-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Body Background */
+body.theme-purple-galaxy {
+    background: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+}
+
+/* Starry background */
+body.theme-purple-galaxy::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(2px 2px at 20px 30px, white, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, white, transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 230px 80px, white, transparent),
+        radial-gradient(2px 2px at 300px 150px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 350px 200px, white, transparent),
+        radial-gradient(2px 2px at 420px 50px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(ellipse at 20% 30%, rgba(168, 85, 247, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(129, 140, 248, 0.08) 0%, transparent 60%);
+    background-size: 500px 500px, 500px 500px, 500px 500px, 500px 500px, 500px 500px,
+                     500px 500px, 500px 500px, 500px 500px, 100% 100%, 100% 100%, 100% 100%;
+    animation: twinkle 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Nebula glow */
+body.theme-purple-galaxy::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    height: 150%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(ellipse, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+    animation: nebulaPulse 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes nebulaPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+}
+
+/* Sidebar */
+body.theme-purple-galaxy .cyber-sidebar {
+    background: linear-gradient(180deg, var(--theme-bg-secondary) 0%, var(--theme-bg-primary) 100%);
+    border-right: 1px solid var(--theme-border);
+    box-shadow: 2px 0 20px rgba(168, 85, 247, 0.1);
+}
+
+body.theme-purple-galaxy .menu-item:hover,
+body.theme-purple-galaxy .menu-item.active {
+    background: var(--theme-gradient-subtle);
+    border-left: 3px solid var(--theme-primary);
+}
+
+/* Cards */
+body.theme-purple-galaxy .stat-orb,
+body.theme-purple-galaxy .cyber-card,
+body.theme-purple-galaxy .dashboard-card {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+    box-shadow: var(--theme-shadow);
+    backdrop-filter: blur(10px);
+}
+
+body.theme-purple-galaxy .stat-orb:hover,
+body.theme-purple-galaxy .cyber-card:hover {
+    border-color: var(--theme-primary);
+    box-shadow: var(--theme-glow);
+}
+
+/* Buttons */
+body.theme-purple-galaxy .btn-primary,
+body.theme-purple-galaxy .cyber-btn {
+    background: var(--theme-gradient);
+    color: white;
+    border: none;
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-purple-galaxy .btn-primary:hover,
+body.theme-purple-galaxy .cyber-btn:hover {
+    box-shadow: var(--theme-glow);
+    transform: translateY(-2px);
+}
+
+/* Form Elements */
+body.theme-purple-galaxy input,
+body.theme-purple-galaxy select,
+body.theme-purple-galaxy textarea {
+    background: var(--theme-bg-tertiary);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text-primary);
+}
+
+body.theme-purple-galaxy input:focus,
+body.theme-purple-galaxy select:focus,
+body.theme-purple-galaxy textarea:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+}
+
+/* Tables */
+body.theme-purple-galaxy table {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+}
+
+body.theme-purple-galaxy th {
+    background: var(--theme-bg-tertiary);
+    color: var(--theme-primary-light);
+}
+
+body.theme-purple-galaxy tr:hover {
+    background: var(--theme-bg-glass);
+}
+
+/* Links */
+body.theme-purple-galaxy a {
+    color: var(--theme-primary-light);
+}
+
+body.theme-purple-galaxy a:hover {
+    color: var(--theme-secondary-light);
+    text-shadow: 0 0 10px var(--theme-secondary);
+}
+
+/* Scrollbar */
+body.theme-purple-galaxy ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.theme-purple-galaxy ::-webkit-scrollbar-track {
+    background: var(--theme-bg-secondary);
+}
+
+body.theme-purple-galaxy ::-webkit-scrollbar-thumb {
+    background: var(--theme-gradient);
+    border-radius: 4px;
+}
+
+/* Shooting star animation */
+body.theme-purple-galaxy .shooting-star {
+    position: fixed;
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, white, transparent);
+    animation: shootingStar 3s linear infinite;
+    opacity: 0;
+}
+
+@keyframes shootingStar {
+    0% { transform: translateX(-100px) translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateX(100vw) translateY(100vh); opacity: 0; }
+}

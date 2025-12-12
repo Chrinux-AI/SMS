@@ -5,13 +5,11 @@
  * Find or create study groups
  */
 
-require_once '../includes/session-handler.php';
-require_once '../includes/db.php';
-
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header('Location: ../login.php');
-    exit;
-}
+session_start();
+require_once '../includes/config.php';
+require_once '../includes/functions.php';
+require_once '../includes/database.php';
+require_role('student');
 
 $user_id = $_SESSION['user_id'];
 $page_title = "Study Groups";
@@ -104,7 +102,7 @@ $my_groups = db()->fetchAll("
 ", [$student_id]);
 
 include '../includes/cyber-header.php';
-<?php include '../includes/cyber-nav.php'; ?>
+include '../includes/cyber-nav.php';
 ?>
 
 <div class="cyber-content">

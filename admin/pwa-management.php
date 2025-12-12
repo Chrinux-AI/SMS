@@ -5,18 +5,13 @@
  * Manage PWA features, analytics, and push notifications
  */
 
-require_once '../includes/session.php';
-require_once '../config/database.php';
+session_start();
+require_once '../includes/config.php';
 require_once '../includes/functions.php';
+require_once '../includes/database.php';
 
-// Admin only
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header('Location: ../login.php');
-    exit();
-}
+require_role('admin');
 
-$database = new Database();
-$db = $database->getConnection();
 $pageTitle = 'PWA Management';
 
 // Get PWA statistics
@@ -266,7 +261,7 @@ $featureFlags = getFeatureFlags($db);
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<?php include '../includes/cyber-nav.php'; ?>
+    <?php include '../includes/cyber-nav.php'; ?>
 
     <div class="container" style="padding: 40px 20px;">
         <div class="content-header">

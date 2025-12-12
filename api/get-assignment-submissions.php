@@ -35,7 +35,7 @@ $assignment = db()->fetchOne("
     WHERE a.id = ? AND c.id = ?
 ", [$assignment_id, $class_id]);
 
-if (!$assignment || $assignment['teacher_id'] != $_SESSION['assigned_id']) {
+if (!$assignment || $assignment['teacher_id'] != $_SESSION['user_id']) {
     http_response_code(404);
     echo json_encode(['error' => 'Assignment not found or access denied']);
     exit;

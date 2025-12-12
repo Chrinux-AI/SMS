@@ -7,16 +7,12 @@
  */
 
 session_start();
+
 header('Content-Type: application/json');
 require_once '../../includes/config.php';
 require_once '../../includes/database.php';
 require_once '../../includes/functions.php';
-
-// Authentication check
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    echo json_encode(['success' => false, 'error' => 'Unauthorized access']);
-    exit;
-}
+require_role('student');
 
 $student_id = $_SESSION['user_id'];
 $action = $_POST['action'] ?? $_GET['action'] ?? '';

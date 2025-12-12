@@ -3,15 +3,15 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_parent('../login.php');
+require_role('parent');
 
 // Get parent's linked children
 $children = db()->fetchAll("
     SELECT s.*, CONCAT(u.first_name, ' ', u.last_name) as child_name
-    FROM guardians g
-    LEFT JOIN students s ON g.student_id = s.id
-    LEFT JOIN users u ON s.user_id = u.id
-    WHERE g.parent_id = (SELECT id FROM users WHERE id = ?)
+    FROM students s
+    JOIN parent_student_links psl ON s.user_id = psl.student_id
+    JOIN users u ON s.user_id = u.id
+    WHERE psl.parent_id = ?
 ", [$_SESSION['user_id']]);
 
 // Get selected child
@@ -69,12 +69,13 @@ $full_name = $_SESSION['full_name'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

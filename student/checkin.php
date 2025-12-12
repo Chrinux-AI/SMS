@@ -8,6 +8,8 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
+require_role('student');
+
 $message = '';
 $message_type = '';
 $student = null;
@@ -131,7 +133,7 @@ if (isset($_SESSION['student_data'])) {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
     <style>
         .checkin-container {
             min-height: 100vh;
@@ -251,10 +253,10 @@ if (isset($_SESSION['student_data'])) {
 
         <main class="cyber-main">
 
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-</div>
-    
+            <div class="starfield"></div>
+            <div class="cyber-grid"></div>
+    </div>
+
 
     <div class="checkin-container">
         <div class="checkin-box">

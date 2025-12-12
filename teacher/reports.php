@@ -4,10 +4,7 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
-    header('Location: ../login.php');
-    exit;
-}
+require_role('teacher', '../login.php');
 
 $teacher_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];
@@ -59,12 +56,13 @@ $attendance_rate = $total_records > 0 ? round((($present_count + $late_count) / 
 
 // Unread messages
 $unread_count = db()->fetchOne("
-    SELECT COUNT(*) as count FROM message_recipients 
+    SELECT COUNT(*) as count FROM message_recipients
     WHERE recipient_id = ? AND is_read = 0 AND deleted_at IS NULL
 ", [$teacher_id])['count'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,12 +75,13 @@ $unread_count = db()->fetchOne("
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-layout">
+    <div class="cyber-layout">
         <?php include '../includes/cyber-nav.php'; ?>
 
         <main class="cyber-main">
@@ -120,8 +119,8 @@ $unread_count = db()->fetchOne("
                                 <select name="class" class="cyber-input">
                                     <option value="">All Classes</option>
                                     <?php foreach ($my_classes as $class): ?>
-                                        <option value="<?php echo $class['id']; ?>" 
-                                                <?php echo $class_filter == $class['id'] ? 'selected' : ''; ?>>
+                                        <option value="<?php echo $class['id']; ?>"
+                                            <?php echo $class_filter == $class['id'] ? 'selected' : ''; ?>>
                                             <?php echo htmlspecialchars($class['class_name']); ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -205,7 +204,7 @@ $unread_count = db()->fetchOne("
                             <p><strong>Generated:</strong> <?php echo date('F d, Y h:i A'); ?></p>
                             <hr style="border-color: rgba(0,191,255,0.2); margin: 15px 0;">
                             <p style="font-size: 16px; color: #00BFFF;">
-                                <strong>Overall Attendance Rate:</strong> 
+                                <strong>Overall Attendance Rate:</strong>
                                 <span style="font-size: 24px; color: <?php echo $attendance_rate >= 90 ? '#00FF7F' : ($attendance_rate >= 75 ? '#FFD700' : '#FF4444'); ?>">
                                     <?php echo $attendance_rate; ?>%
                                 </span>
@@ -221,4 +220,5 @@ $unread_count = db()->fetchOne("
     <script src="../assets/js/pwa-manager.js"></script>
     <script src="../assets/js/pwa-analytics.js"></script>
 </body>
+
 </html>

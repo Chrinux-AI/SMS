@@ -23,7 +23,7 @@ if (!$class_id) {
 }
 
 // Verify teacher owns this class
-$class = db()->fetchOne("SELECT * FROM classes WHERE id = ? AND teacher_id = ?", [$class_id, $_SESSION['assigned_id']]);
+$class = db()->fetchOne("SELECT * FROM classes WHERE id = ? AND teacher_id = ?", [$class_id, $_SESSION['user_id']]);
 
 if (!$class) {
     die('Class not found or access denied');

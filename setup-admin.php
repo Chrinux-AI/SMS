@@ -95,14 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Send welcome email to admin
                 $to = $email;
                 $subject = "Admin Account Created - School Management System";
-                $email_message = "
+                $current_year = date('Y');
+                $host = $_SERVER['HTTP_HOST'];
+                $login_url = 'http://' . $host . dirname($_SERVER['PHP_SELF']) . '/login.php';
+                $email_message = <<<HTML
                 <html>
                 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/attendance/manifest.json">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
+                    <meta charset='UTF-8'>
                     <title>Admin Account Created</title>
                     <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
@@ -113,12 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         .footer { text-align: center; margin-top: 20px; color: #666; font-size: 12px; }
                     </style>
                 </head>
-                <body class="cyber-bg">
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class='container'>
+                <body>
+                    <div class='container'>
                         <div class='header'>
-                            <h1>🎉 Admin Account Created!</h1>
+                            <h1>Admin Account Created!</h1>
                         </div>
                         <div class='content'>
                             <p>Hello <strong>{$full_name}</strong>,</p>
@@ -134,24 +131,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <p>You can now login to the system and manage users, classes, and attendance records.</p>
 
                             <p style='text-align: center;'>
-                                <a href='http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/login.php' class='button'>Login to Dashboard</a>
+                                <a href='{$login_url}' class='button'>Login to Dashboard</a>
                             </p>
 
                             <p><strong>Important:</strong> All previous data has been cleared from the system. You're starting fresh!</p>
 
                             <div class='footer'>
                                 <p>This is an automated message from the Attendance Management System.</p>
-                                <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
+                                <p>&copy; {$current_year} School Management System. All rights reserved.</p>
                             </div>
                         </div>
                     </div>
-                
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
-</body>
+                </body>
                 </html>
-                ";
+HTML;
 
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -404,7 +397,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<!-- Cyberpunk Background -->
+    <!-- Cyberpunk Background -->
     <div class="cyber-bg">
         <div class="starfield"></div>
     </div>

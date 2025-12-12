@@ -4,10 +4,8 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'counselor') {
-    header('Location: ../login.php');
-    exit;
-}
+// Use require_role for TEST_MODE support
+require_role('counselor', '../login.php');
 
 $user_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];

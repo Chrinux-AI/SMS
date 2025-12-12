@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -128,13 +128,13 @@ if ($selected_class_id) {
             SELECT s.*, CONCAT(u.first_name, ' ', u.last_name) as student_name
             FROM students s
             LEFT JOIN users u ON s.user_id = u.id
-            WHERE s.grade = ?
+            WHERE s.grade_level = ?
             AND s.id NOT IN (
                 SELECT student_id FROM class_enrollments WHERE class_id = ?
             )
             AND u.status = 'active'
             ORDER BY student_name
-        ", [$selected_class['grade'], $selected_class_id]);
+        ", [$selected_class['grade_level'], $selected_class_id]);
     }
 }
 
@@ -157,12 +157,13 @@ $full_name = $_SESSION['full_name'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

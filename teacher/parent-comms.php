@@ -9,9 +9,9 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_teacher('../login.php');
+require_role('teacher');
 
-$teacher_id = $_SESSION['assigned_id'];
+$teacher_id = $_SESSION['user_id']; // Teachers are in users table
 $full_name = $_SESSION['full_name'];
 $message = '';
 $message_type = '';
@@ -237,7 +237,7 @@ $page_icon = 'users';
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
     <style>
         .communication-card {
             background: linear-gradient(135deg, rgba(0, 191, 255, 0.05), rgba(138, 43, 226, 0.05));
@@ -281,10 +281,11 @@ $page_icon = 'users';
         }
     </style>
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

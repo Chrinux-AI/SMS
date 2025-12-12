@@ -15,10 +15,13 @@ $success = '';
 
 // Handle login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-    $password = $_POST['password'] ?? '';
+    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+        $error = 'Invalid request. Please refresh the page and try again.';
+    } else {
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+        $password = $_POST['password'] ?? '';
 
-    if (empty($email) || empty($password)) {
+        if (empty($email) || empty($password)) {
         $error = 'Please enter both email and password';
     } else {
         $user = db()->fetchOne(
@@ -69,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             $error = 'Invalid credentials - Access denied';
         }
     }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -97,6 +101,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <script src="assets/js/biometric-auth.js"></script>
 
     <style>
+        /* Ensure background elements don't block inputs */
+        .starfield,
+        .cyber-grid,
+        .cyber-bg::before,
+        .particle {
+            pointer-events: none !important;
+        }
+
         .login-container {
             display: flex;
             justify-content: center;
@@ -111,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             position: relative;
             width: 100%;
             max-width: 450px;
+            z-index: 10;
         }
 
         /* Floating Login Hologram */
@@ -364,7 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<!-- Cyberpunk Background -->
+    <!-- Cyberpunk Background -->
     <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
@@ -421,6 +434,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
                     <!-- Login Form -->
                     <form method="POST" action="" class="login-form">
+                        <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
                         <div class="cyber-input-group">
                             <label class="cyber-label" for="email">
                                 <i class="fas fa-envelope"></i> Email Address
@@ -543,7 +557,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                 }
             });
         });
+
+        // Password toggle shared helper
+        function togglePassword(fieldId, btn) {
+            var input = document.getElementById(fieldId);
+            var icon = btn.querySelector('i');
+            if (!input || !icon) return;
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
     </script>
+
+    <?php include '../includes/theme-toggle.php'; ?>
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/pwa-manager.js"></script>
@@ -551,19 +582,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 </body>
 
 </html>
-<script>
-    // Password toggle shared helper
-    function togglePassword(fieldId, btn) {
-        var input = document.getElementById(fieldId);
-        var icon = btn.querySelector('i');
-        if (!input || !icon) return;
-
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.className = 'fas fa-eye-slash';
-        } else {
-            input.type = 'password';
-            icon.className = 'fas fa-eye';
-        }
-    }
-</script>

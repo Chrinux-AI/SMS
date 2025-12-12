@@ -9,14 +9,13 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-
-require_student();
+require_role('student');
 
 $student_id = $_SESSION['user_id'];
 
 // Get student data
 $student_data = db()->fetchOne("
-    SELECT u.*, s.student_id, s.assigned_student_id, s.grade, s.section, s.enrollment_date, s.status
+    SELECT u.*, s.student_id, s.assigned_student_id, s.grade_level, '' as section, s.enrollment_date, s.status
     FROM users u
     JOIN students s ON u.id = s.user_id
     WHERE u.id = ?
@@ -53,7 +52,7 @@ $unread_messages = db()->fetchOne(
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         .id-card {
@@ -203,8 +202,8 @@ $unread_messages = db()->fetchOne(
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-</div>
-    
+    </div>
+
     <div class="cyber-layout">
         <?php include '../includes/cyber-nav.php'; ?>
         <main class="cyber-main">

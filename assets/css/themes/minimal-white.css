@@ -1,0 +1,250 @@
+/**
+ * Minimal White Theme
+ * Ultra-clean light theme with high contrast
+ * Accessibility-focused
+ * Verdant SMS v3.0
+ */
+
+:root {
+    /* Primary Colors */
+    --theme-primary: #2563eb;
+    --theme-primary-dark: #1d4ed8;
+    --theme-primary-light: #3b82f6;
+    --theme-primary-rgb: 37, 99, 235;
+
+    /* Secondary Colors */
+    --theme-secondary: #4f46e5;
+    --theme-secondary-dark: #4338ca;
+    --theme-secondary-light: #6366f1;
+
+    /* Accent Colors */
+    --theme-accent: #0ea5e9;
+    --theme-accent-dark: #0284c7;
+    --theme-accent-light: #38bdf8;
+
+    /* Background Colors */
+    --theme-bg-primary: #ffffff;
+    --theme-bg-secondary: #f8fafc;
+    --theme-bg-tertiary: #f1f5f9;
+    --theme-bg-card: #ffffff;
+    --theme-bg-glass: rgba(37, 99, 235, 0.02);
+
+    /* Text Colors */
+    --theme-text-primary: #0f172a;
+    --theme-text-secondary: #334155;
+    --theme-text-muted: #64748b;
+    --theme-text-inverse: #ffffff;
+
+    /* Border & Shadow */
+    --theme-border: #e2e8f0;
+    --theme-border-light: #f1f5f9;
+    --theme-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --theme-glow: 0 4px 15px rgba(37, 99, 235, 0.15);
+
+    /* Status Colors */
+    --theme-success: #16a34a;
+    --theme-warning: #ca8a04;
+    --theme-danger: #dc2626;
+    --theme-info: #2563eb;
+
+    /* Gradient */
+    --theme-gradient: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+    --theme-gradient-subtle: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(79, 70, 229, 0.02) 100%);
+
+    /* Animation */
+    --theme-transition: 0.2s ease;
+}
+
+/* Body Background */
+body.theme-minimal-white {
+    background: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+}
+
+/* Clean without background effects */
+body.theme-minimal-white::before,
+body.theme-minimal-white::after {
+    display: none;
+}
+
+/* Sidebar */
+body.theme-minimal-white .cyber-sidebar {
+    background: var(--theme-bg-secondary);
+    border-right: 1px solid var(--theme-border);
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-minimal-white .sidebar-brand {
+    border-bottom: 1px solid var(--theme-border);
+}
+
+body.theme-minimal-white .brand-title,
+body.theme-minimal-white .brand-subtitle {
+    color: var(--theme-text-primary);
+}
+
+body.theme-minimal-white .menu-section-title {
+    color: var(--theme-text-muted);
+}
+
+body.theme-minimal-white .menu-item {
+    color: var(--theme-text-secondary);
+}
+
+body.theme-minimal-white .menu-item:hover,
+body.theme-minimal-white .menu-item.active {
+    background: var(--theme-gradient-subtle);
+    border-left: 3px solid var(--theme-primary);
+    color: var(--theme-primary);
+}
+
+body.theme-minimal-white .menu-icon {
+    color: var(--theme-text-muted);
+}
+
+body.theme-minimal-white .menu-item:hover .menu-icon,
+body.theme-minimal-white .menu-item.active .menu-icon {
+    color: var(--theme-primary);
+}
+
+/* Cards */
+body.theme-minimal-white .stat-orb,
+body.theme-minimal-white .cyber-card,
+body.theme-minimal-white .dashboard-card {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-minimal-white .stat-orb:hover,
+body.theme-minimal-white .cyber-card:hover {
+    border-color: var(--theme-primary);
+    box-shadow: var(--theme-glow);
+}
+
+body.theme-minimal-white .orb-value,
+body.theme-minimal-white .card-title {
+    color: var(--theme-text-primary);
+}
+
+body.theme-minimal-white .orb-label {
+    color: var(--theme-text-muted);
+}
+
+/* Buttons */
+body.theme-minimal-white .btn-primary,
+body.theme-minimal-white .cyber-btn {
+    background: var(--theme-gradient);
+    color: white;
+    border: none;
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-minimal-white .btn-primary:hover,
+body.theme-minimal-white .cyber-btn:hover {
+    box-shadow: var(--theme-glow);
+    transform: translateY(-1px);
+}
+
+body.theme-minimal-white .btn-outline {
+    background: transparent;
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text-secondary);
+}
+
+body.theme-minimal-white .btn-outline:hover {
+    border-color: var(--theme-primary);
+    color: var(--theme-primary);
+}
+
+/* Form Elements */
+body.theme-minimal-white input,
+body.theme-minimal-white select,
+body.theme-minimal-white textarea {
+    background: var(--theme-bg-primary);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text-primary);
+}
+
+body.theme-minimal-white input:focus,
+body.theme-minimal-white select:focus,
+body.theme-minimal-white textarea:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    outline: none;
+}
+
+body.theme-minimal-white input::placeholder {
+    color: var(--theme-text-muted);
+}
+
+/* Tables */
+body.theme-minimal-white table {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+}
+
+body.theme-minimal-white th {
+    background: var(--theme-bg-tertiary);
+    color: var(--theme-text-secondary);
+    font-weight: 600;
+}
+
+body.theme-minimal-white td {
+    color: var(--theme-text-primary);
+    border-bottom: 1px solid var(--theme-border);
+}
+
+body.theme-minimal-white tr:hover {
+    background: var(--theme-bg-tertiary);
+}
+
+/* Links */
+body.theme-minimal-white a {
+    color: var(--theme-primary);
+}
+
+body.theme-minimal-white a:hover {
+    color: var(--theme-primary-dark);
+}
+
+/* Page Headers */
+body.theme-minimal-white .page-header h1 {
+    color: var(--theme-text-primary);
+}
+
+body.theme-minimal-white .page-header p {
+    color: var(--theme-text-muted);
+}
+
+/* Scrollbar */
+body.theme-minimal-white ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.theme-minimal-white ::-webkit-scrollbar-track {
+    background: var(--theme-bg-tertiary);
+}
+
+body.theme-minimal-white ::-webkit-scrollbar-thumb {
+    background: var(--theme-border);
+    border-radius: 4px;
+}
+
+body.theme-minimal-white ::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-text-muted);
+}
+
+/* User card in sidebar */
+body.theme-minimal-white .sidebar-user {
+    border-top: 1px solid var(--theme-border);
+}
+
+body.theme-minimal-white .user-name {
+    color: var(--theme-text-primary);
+}
+
+body.theme-minimal-white .user-role {
+    color: var(--theme-text-muted);
+}

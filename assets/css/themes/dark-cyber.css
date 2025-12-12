@@ -1,0 +1,227 @@
+/**
+ * Dark Cyber Theme
+ * Deep black/purple with neon cyan accents
+ * For cyber enthusiasts & night owls
+ * Verdant SMS v3.0
+ */
+
+:root {
+    /* Primary Colors */
+    --theme-primary: #00ffff;
+    --theme-primary-dark: #00cccc;
+    --theme-primary-light: #66ffff;
+    --theme-primary-rgb: 0, 255, 255;
+
+    /* Secondary Colors */
+    --theme-secondary: #8b5cf6;
+    --theme-secondary-dark: #7c3aed;
+    --theme-secondary-light: #a78bfa;
+
+    /* Accent Colors */
+    --theme-accent: #f0abfc;
+    --theme-accent-dark: #e879f9;
+    --theme-accent-light: #f5d0fe;
+
+    /* Background Colors */
+    --theme-bg-primary: #0a0a0f;
+    --theme-bg-secondary: #12121a;
+    --theme-bg-tertiary: #1a1a25;
+    --theme-bg-card: rgba(0, 255, 255, 0.05);
+    --theme-bg-glass: rgba(139, 92, 246, 0.05);
+
+    /* Text Colors */
+    --theme-text-primary: #f0f0ff;
+    --theme-text-secondary: #a5b4fc;
+    --theme-text-muted: rgba(240, 240, 255, 0.6);
+    --theme-text-inverse: #0a0a0f;
+
+    /* Border & Shadow */
+    --theme-border: rgba(0, 255, 255, 0.2);
+    --theme-border-light: rgba(139, 92, 246, 0.15);
+    --theme-shadow: 0 4px 20px rgba(0, 255, 255, 0.15);
+    --theme-glow: 0 0 30px rgba(0, 255, 255, 0.4), 0 0 60px rgba(139, 92, 246, 0.2);
+
+    /* Status Colors */
+    --theme-success: #10b981;
+    --theme-warning: #fbbf24;
+    --theme-danger: #f43f5e;
+    --theme-info: #00ffff;
+
+    /* Gradient */
+    --theme-gradient: linear-gradient(135deg, #00ffff 0%, #8b5cf6 50%, #f0abfc 100%);
+    --theme-gradient-subtle: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%);
+
+    /* Animation */
+    --theme-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Body Background */
+body.theme-dark-cyber {
+    background: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+}
+
+body.theme-dark-cyber::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(0, 255, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(240, 171, 252, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Cyber Grid Overlay */
+body.theme-dark-cyber::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridPulse 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes gridPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Sidebar */
+body.theme-dark-cyber .cyber-sidebar {
+    background: linear-gradient(180deg, var(--theme-bg-secondary) 0%, var(--theme-bg-primary) 100%);
+    border-right: 1px solid var(--theme-border);
+    box-shadow: 2px 0 20px rgba(0, 255, 255, 0.1);
+}
+
+body.theme-dark-cyber .menu-item:hover,
+body.theme-dark-cyber .menu-item.active {
+    background: var(--theme-gradient-subtle);
+    border-left: 3px solid var(--theme-primary);
+    text-shadow: 0 0 10px var(--theme-primary);
+}
+
+/* Cards */
+body.theme-dark-cyber .stat-orb,
+body.theme-dark-cyber .cyber-card,
+body.theme-dark-cyber .dashboard-card {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+    box-shadow: var(--theme-shadow);
+    backdrop-filter: blur(10px);
+}
+
+body.theme-dark-cyber .stat-orb:hover,
+body.theme-dark-cyber .cyber-card:hover {
+    border-color: var(--theme-primary);
+    box-shadow: var(--theme-glow);
+}
+
+/* Neon Text Effect */
+body.theme-dark-cyber h1,
+body.theme-dark-cyber h2,
+body.theme-dark-cyber .brand-title {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Buttons */
+body.theme-dark-cyber .btn-primary,
+body.theme-dark-cyber .cyber-btn {
+    background: transparent;
+    color: var(--theme-primary);
+    border: 2px solid var(--theme-primary);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
+    text-shadow: 0 0 5px var(--theme-primary);
+}
+
+body.theme-dark-cyber .btn-primary:hover,
+body.theme-dark-cyber .cyber-btn:hover {
+    background: var(--theme-primary);
+    color: var(--theme-bg-primary);
+    box-shadow: var(--theme-glow);
+    text-shadow: none;
+}
+
+/* Form Elements */
+body.theme-dark-cyber input,
+body.theme-dark-cyber select,
+body.theme-dark-cyber textarea {
+    background: var(--theme-bg-tertiary);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text-primary);
+}
+
+body.theme-dark-cyber input:focus,
+body.theme-dark-cyber select:focus,
+body.theme-dark-cyber textarea:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Tables */
+body.theme-dark-cyber table {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+}
+
+body.theme-dark-cyber th {
+    background: var(--theme-bg-tertiary);
+    color: var(--theme-primary);
+    text-shadow: 0 0 5px var(--theme-primary);
+}
+
+body.theme-dark-cyber tr:hover {
+    background: var(--theme-bg-glass);
+    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+/* Links */
+body.theme-dark-cyber a {
+    color: var(--theme-primary);
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+body.theme-dark-cyber a:hover {
+    color: var(--theme-accent);
+    text-shadow: 0 0 10px var(--theme-accent);
+}
+
+/* Scrollbar */
+body.theme-dark-cyber ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.theme-dark-cyber ::-webkit-scrollbar-track {
+    background: var(--theme-bg-secondary);
+}
+
+body.theme-dark-cyber ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--theme-primary), var(--theme-secondary));
+    border-radius: 4px;
+    box-shadow: 0 0 10px var(--theme-primary);
+}
+
+/* Cyber Glitch Effect on Hover */
+body.theme-dark-cyber .cyber-card:hover .card-title {
+    animation: glitch 0.3s ease-in-out;
+}
+
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+}

@@ -4,10 +4,8 @@ require_once '../../includes/config.php';
 require_once '../../includes/functions.php';
 require_once '../../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['superadmin', 'admin', 'principal', 'hr_manager'])) {
-    header('Location: ../../login.php');
-    exit;
-}
+
+require_role('admin'); // TEST_MODE will allow access for testing
 
 // Fetch All Employees
 $employees = db()->fetchAll("

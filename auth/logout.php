@@ -7,8 +7,8 @@
 session_start();
 
 require_once '../includes/config.php';
+require_once '../includes/database.php';
 require_once '../includes/functions.php';
-require_once 'includes/database.php';
 
 // Log activity before destroying session
 if (isset($_SESSION['user_id'])) {

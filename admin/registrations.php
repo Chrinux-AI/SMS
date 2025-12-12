@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -289,287 +289,287 @@ $recent = db()->fetchAll("
 
         <main class="cyber-main">
 
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class="header">
-        <div class="header-content">
-            <div>
-                <h1><i class="fas fa-user-check"></i> <?php echo APP_NAME; ?></h1>
-                <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
-            </div>
-            <a href="../logout.php" class="btn-logout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-    </div>
-
-    <div class="container">
-        <nav class="nav-menu">
-            <a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a>
-            <a href="users.php"><i class="fas fa-users"></i> Users</a>
-            <a href="registrations.php" class="active"><i class="fas fa-user-check"></i> Registrations</a>
-            <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
-            <a href="system-monitor.php"><i class="fas fa-heartbeat"></i> Monitor</a>
-            <a href="system-management.php"><i class="fas fa-tools"></i> System</a>
-            <a href="advanced-admin.php"><i class="fas fa-rocket"></i> Advanced</a>
-        </nav>
-
-        <?php if ($message): ?>
-            <div class="alert alert-<?php echo $message_type; ?>">
-                <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
-                <?php echo $message; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Registration Toggle Card -->
-        <div class="card">
-            <div class="card-header">
-                <h2><i class="fas fa-toggle-on"></i> Registration Control</h2>
-            </div>
-
-            <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px;">
-                <div>
-                    <h3 style="margin-bottom: 10px;">
-                        <i class="fas fa-user-plus"></i> Public Registration
-                    </h3>
-                    <p style="color: #64748b;">
-                        <?php if ($registration_enabled): ?>
-                            Registration is currently <strong style="color: #10b981;">ENABLED</strong>. New users can register and wait for approval.
-                        <?php else: ?>
-                            Registration is currently <strong style="color: #ef4444;">DISABLED</strong>. New users cannot register.
-                        <?php endif; ?>
-                    </p>
-                </div>
-                <form method="POST">
-                    <label class="toggle-switch">
-                        <input type="checkbox" <?php echo $registration_enabled ? 'checked' : ''; ?> onchange="this.form.submit()">
-                        <span class="slider"></span>
-                    </label>
-                    <input type="hidden" name="toggle_registration" value="1">
-                </form>
-            </div>
-        </div>
-
-        <!-- Statistics Cards -->
-        <div class="stats-grid">
-            <div class="stat-orb">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="stat-details">
-                    <h3><?php echo count($pending); ?></h3>
-                    <p>Pending Approval</p>
+            <div class="starfield"></div>
+            <div class="cyber-grid"></div>
+            <div class="header">
+                <div class="header-content">
+                    <div>
+                        <h1><i class="fas fa-user-check"></i> <?php echo APP_NAME; ?></h1>
+                        <p>Welcome, <?php echo htmlspecialchars($_SESSION['full_name']); ?></p>
+                    </div>
+                    <a href="../logout.php" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </div>
             </div>
 
-            <div class="stat-orb">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="stat-details">
-                    <h3><?php echo count($recent); ?></h3>
-                    <p>Recently Approved</p>
-                </div>
-            </div>
+            <div class="container">
+                <nav class="nav-menu">
+                    <a href="dashboard.php"><i class="fas fa-chart-line"></i> Dashboard</a>
+                    <a href="users.php"><i class="fas fa-users"></i> Users</a>
+                    <a href="registrations.php" class="active"><i class="fas fa-user-check"></i> Registrations</a>
+                    <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
+                    <a href="system-monitor.php"><i class="fas fa-heartbeat"></i> Monitor</a>
+                    <a href="system-management.php"><i class="fas fa-tools"></i> System</a>
+                    <a href="advanced-admin.php"><i class="fas fa-rocket"></i> Advanced</a>
+                </nav>
 
-            <div class="stat-orb">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                    <i class="fas fa-<?php echo $registration_enabled ? 'toggle-on' : 'toggle-off'; ?>"></i>
-                </div>
-                <div class="stat-details">
-                    <h3><?php echo $registration_enabled ? 'ON' : 'OFF'; ?></h3>
-                    <p>Registration Status</p>
-                </div>
-            </div>
+                <?php if ($message): ?>
+                    <div class="alert alert-<?php echo $message_type; ?>">
+                        <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
+                        <?php echo $message; ?>
+                    </div>
+                <?php endif; ?>
 
-            <div class="stat-orb">
-                <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                    <i class="fas fa-link"></i>
-                </div>
-                <div class="stat-details">
-                    <h3><a href="../register.php" target="_blank" style="color: inherit; text-decoration: none;">Link</a></h3>
-                    <p>Registration Page</p>
-                </div>
-            </div>
-        </div>
+                <!-- Registration Toggle Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-toggle-on"></i> Registration Control</h2>
+                    </div>
 
-        <!-- Pending Registrations -->
-        <div class="card">
-            <div class="card-header">
-                <h2><i class="fas fa-hourglass-half"></i> Pending Registrations (<?php echo count($pending); ?>)</h2>
-            </div>
-
-            <?php if (empty($pending)): ?>
-                <p class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> No pending registrations at the moment.
-                </p>
-            <?php else: ?>
-                <?php foreach ($pending as $user): ?>
-                    <div class="registration-card">
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
-                            <div class="user-info">
-                                <div class="user-avatar">
-                                    <?php echo strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1)); ?>
-                                </div>
-                                <div>
-                                    <strong style="font-size: 18px;">
-                                        <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
-                                    </strong>
-                                    <p style="color: #64748b; margin-top: 5px;">
-                                        <i class="fas fa-at"></i> @<?php echo htmlspecialchars($user['username']); ?> •
-                                        <i class="fas fa-envelope"></i> <?php echo htmlspecialchars($user['email']); ?>
-                                    </p>
-                                </div>
-                            </div>
-                            <div>
-                                <span class="badge badge-<?php
-                                                            echo $user['role'] === 'student' ? 'info' : ($user['role'] === 'teacher' ? 'primary' : 'success');
-                                                            ?>">
-                                    <i class="fas fa-<?php
-                                                        echo $user['role'] === 'student' ? 'user-graduate' : ($user['role'] === 'teacher' ? 'chalkboard-teacher' : 'user-friends');
-                                                        ?>"></i>
-                                    <?php echo ucfirst($user['role']); ?>
-                                </span>
-                            </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px;">
+                        <div>
+                            <h3 style="margin-bottom: 10px;">
+                                <i class="fas fa-user-plus"></i> Public Registration
+                            </h3>
+                            <p style="color: #64748b;">
+                                <?php if ($registration_enabled): ?>
+                                    Registration is currently <strong style="color: #10b981;">ENABLED</strong>. New users can register and wait for approval.
+                                <?php else: ?>
+                                    Registration is currently <strong style="color: #ef4444;">DISABLED</strong>. New users cannot register.
+                                <?php endif; ?>
+                            </p>
                         </div>
+                        <form method="POST">
+                            <label class="toggle-switch">
+                                <input type="checkbox" <?php echo $registration_enabled ? 'checked' : ''; ?> onchange="this.form.submit()">
+                                <span class="slider"></span>
+                            </label>
+                            <input type="hidden" name="toggle_registration" value="1">
+                        </form>
+                    </div>
+                </div>
 
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
-                            <?php if (isset($user['phone_number']) && $user['phone_number']): ?>
-                                <div>
-                                    <strong>Phone:</strong>
-                                    <p style="color: #64748b;"><i class="fas fa-phone"></i> <?php echo htmlspecialchars($user['phone_number']); ?></p>
-                                </div>
-                            <?php endif; ?>
-
-                            <?php if ($user['role'] === 'student' && isset($user['grade_level']) && $user['grade_level']): ?>
-                                <div>
-                                    <strong>Grade:</strong>
-                                    <p style="color: #64748b;"><i class="fas fa-graduation-cap"></i> Grade <?php echo $user['grade_level']; ?></p>
-                                </div>
-                            <?php endif; ?>
-
-                            <div>
-                                <strong>Registered:</strong>
-                                <p style="color: #64748b;"><i class="fas fa-clock"></i> <?php echo date('M d, Y g:i A', strtotime($user['created_at'])); ?></p>
-                            </div>
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-orb">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                            <i class="fas fa-clock"></i>
                         </div>
-
-                        <div style="display: flex; gap: 10px;">
-                            <form method="POST" style="flex: 1;">
-                                <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
-                                <button type="submit" name="approve" class="btn btn-success" style="width: 100%;">
-                                    <i class="fas fa-check"></i> Approve
-                                </button>
-                            </form>
-                            <button onclick="showRejectModal(<?php echo $user['id']; ?>)" class="btn btn-danger" style="flex: 1;">
-                                <i class="fas fa-times"></i> Reject
-                            </button>
+                        <div class="stat-details">
+                            <h3><?php echo count($pending); ?></h3>
+                            <p>Pending Approval</p>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
 
-        <!-- Recently Approved -->
-        <div class="card">
-            <div class="card-header">
-                <h2><i class="fas fa-history"></i> Recently Approved Users</h2>
-            </div>
+                    <div class="stat-orb">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3><?php echo count($recent); ?></h3>
+                            <p>Recently Approved</p>
+                        </div>
+                    </div>
 
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>User</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Registered</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($recent as $user): ?>
-                            <tr>
-                                <td>
+                    <div class="stat-orb">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <i class="fas fa-<?php echo $registration_enabled ? 'toggle-on' : 'toggle-off'; ?>"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3><?php echo $registration_enabled ? 'ON' : 'OFF'; ?></h3>
+                            <p>Registration Status</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-orb">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+                            <i class="fas fa-link"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3><a href="../register.php" target="_blank" style="color: inherit; text-decoration: none;">Link</a></h3>
+                            <p>Registration Page</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Registrations -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-hourglass-half"></i> Pending Registrations (<?php echo count($pending); ?>)</h2>
+                    </div>
+
+                    <?php if (empty($pending)): ?>
+                        <p class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> No pending registrations at the moment.
+                        </p>
+                    <?php else: ?>
+                        <?php foreach ($pending as $user): ?>
+                            <div class="registration-card">
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
                                     <div class="user-info">
                                         <div class="user-avatar">
                                             <?php echo strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1)); ?>
                                         </div>
                                         <div>
-                                            <strong><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></strong>
-                                            <p style="font-size: 12px; color: #64748b;">@<?php echo htmlspecialchars($user['username']); ?></p>
+                                            <strong style="font-size: 18px;">
+                                                <?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?>
+                                            </strong>
+                                            <p style="color: #64748b; margin-top: 5px;">
+                                                <i class="fas fa-at"></i> @<?php echo htmlspecialchars($user['username']); ?> •
+                                                <i class="fas fa-envelope"></i> <?php echo htmlspecialchars($user['email']); ?>
+                                            </p>
                                         </div>
                                     </div>
-                                </td>
-                                <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                <td>
-                                    <span class="badge badge-<?php
-                                                                echo $user['role'] === 'admin' ? 'danger' : ($user['role'] === 'teacher' ? 'primary' : ($user['role'] === 'student' ? 'info' : 'success'));
-                                                                ?>">
-                                        <?php echo ucfirst($user['role']); ?>
-                                    </span>
-                                </td>
-                                <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
-                                <td>
-                                    <span class="badge badge-success">
-                                        <i class="fas fa-check"></i> Active
-                                    </span>
-                                </td>
-                            </tr>
+                                    <div>
+                                        <span class="badge badge-<?php
+                                                                    echo $user['role'] === 'student' ? 'info' : ($user['role'] === 'teacher' ? 'primary' : 'success');
+                                                                    ?>">
+                                            <i class="fas fa-<?php
+                                                                echo $user['role'] === 'student' ? 'user-graduate' : ($user['role'] === 'teacher' ? 'chalkboard-teacher' : 'user-friends');
+                                                                ?>"></i>
+                                            <?php echo ucfirst($user['role']); ?>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                                    <?php if (isset($user['phone_number']) && $user['phone_number']): ?>
+                                        <div>
+                                            <strong>Phone:</strong>
+                                            <p style="color: #64748b;"><i class="fas fa-phone"></i> <?php echo htmlspecialchars($user['phone_number']); ?></p>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if ($user['role'] === 'student' && isset($user['grade_level']) && $user['grade_level']): ?>
+                                        <div>
+                                            <strong>Grade:</strong>
+                                            <p style="color: #64748b;"><i class="fas fa-graduation-cap"></i> Grade <?php echo $user['grade_level']; ?></p>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div>
+                                        <strong>Registered:</strong>
+                                        <p style="color: #64748b;"><i class="fas fa-clock"></i> <?php echo date('M d, Y g:i A', strtotime($user['created_at'])); ?></p>
+                                    </div>
+                                </div>
+
+                                <div style="display: flex; gap: 10px;">
+                                    <form method="POST" style="flex: 1;">
+                                        <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                                        <button type="submit" name="approve" class="btn btn-success" style="width: 100%;">
+                                            <i class="fas fa-check"></i> Approve
+                                        </button>
+                                    </form>
+                                    <button onclick="showRejectModal(<?php echo $user['id']; ?>)" class="btn btn-danger" style="flex: 1;">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                </div>
+                            </div>
                         <?php endforeach; ?>
-                    </tbody>
-                </table>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Recently Approved -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history"></i> Recently Approved Users</h2>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Registered</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($recent as $user): ?>
+                                    <tr>
+                                        <td>
+                                            <div class="user-info">
+                                                <div class="user-avatar">
+                                                    <?php echo strtoupper(substr($user['first_name'], 0, 1) . substr($user['last_name'], 0, 1)); ?>
+                                                </div>
+                                                <div>
+                                                    <strong><?php echo htmlspecialchars($user['first_name'] . ' ' . $user['last_name']); ?></strong>
+                                                    <p style="font-size: 12px; color: #64748b;">@<?php echo htmlspecialchars($user['username']); ?></p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                        <td>
+                                            <span class="badge badge-<?php
+                                                                        echo $user['role'] === 'admin' ? 'danger' : ($user['role'] === 'teacher' ? 'primary' : ($user['role'] === 'student' ? 'info' : 'success'));
+                                                                        ?>">
+                                                <?php echo ucfirst($user['role']); ?>
+                                            </span>
+                                        </td>
+                                        <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
+                                        <td>
+                                            <span class="badge badge-success">
+                                                <i class="fas fa-check"></i> Active
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Reject Modal -->
-    <div id="rejectModal" class="modal">
-        <div class="modal-content">
-            <h3 style="margin-bottom: 20px;">Reject Registration</h3>
-            <form method="POST" id="rejectForm">
-                <input type="hidden" name="user_id" id="rejectUserId">
+            <!-- Reject Modal -->
+            <div id="rejectModal" class="modal">
+                <div class="modal-content">
+                    <h3 style="margin-bottom: 20px;">Reject Registration</h3>
+                    <form method="POST" id="rejectForm">
+                        <input type="hidden" name="user_id" id="rejectUserId">
 
-                <div class="form-group">
-                    <label for="reason">Reason for Rejection (Optional)</label>
-                    <textarea name="reason" id="reason" rows="4" class="form-control"
-                        placeholder="Please provide a reason for rejecting this registration..."></textarea>
+                        <div class="form-group">
+                            <label for="reason">Reason for Rejection (Optional)</label>
+                            <textarea name="reason" id="reason" rows="4" class="form-control"
+                                placeholder="Please provide a reason for rejecting this registration..."></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 15px; margin-top: 20px;">
+                            <button type="submit" name="reject" class="btn btn-danger">
+                                <i class="fas fa-times"></i> Reject
+                            </button>
+                            <button type="button" onclick="closeRejectModal()" class="btn btn-secondary">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
                 </div>
+            </div>
 
-                <div style="display: flex; gap: 15px; margin-top: 20px;">
-                    <button type="submit" name="reject" class="btn btn-danger">
-                        <i class="fas fa-times"></i> Reject
-                    </button>
-                    <button type="button" onclick="closeRejectModal()" class="btn btn-secondary">
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+            <script>
+                function showRejectModal(userId) {
+                    document.getElementById('rejectUserId').value = userId;
+                    document.getElementById('rejectModal').style.display = 'block';
+                }
 
-    <script>
-        function showRejectModal(userId) {
-            document.getElementById('rejectUserId').value = userId;
-            document.getElementById('rejectModal').style.display = 'block';
-        }
+                function closeRejectModal() {
+                    document.getElementById('rejectModal').style.display = 'none';
+                }
 
-        function closeRejectModal() {
-            document.getElementById('rejectModal').style.display = 'none';
-        }
+                // Close modal when clicking outside
+                window.onclick = function(event) {
+                    const modal = document.getElementById('rejectModal');
+                    if (event.target === modal) {
+                        closeRejectModal();
+                    }
+                }
+            </script>
 
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('rejectModal');
-            if (event.target === modal) {
-                closeRejectModal();
-            }
-        }
-    </script>
-
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+            <script src="../assets/js/main.js"></script>
+            <script src="../assets/js/pwa-manager.js"></script>
+            <script src="../assets/js/pwa-analytics.js"></script>
 </body>
 
 </html>

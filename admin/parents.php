@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -110,7 +110,7 @@ $full_name = $_SESSION['full_name'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
     <style>
         .parent-card {
             background: linear-gradient(135deg, rgba(138, 43, 226, 0.05), rgba(255, 0, 255, 0.05));
@@ -211,10 +211,11 @@ $full_name = $_SESSION['full_name'];
         }
     </style>
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

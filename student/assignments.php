@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_student('../login.php');
+require_role('student');
 
 $message = '';
 $message_type = '';
@@ -60,7 +60,7 @@ $assignments = [];
 if (!empty($class_ids)) {
     $placeholders = implode(',', array_fill(0, count($class_ids), '?'));
     $assignments = db()->fetchAll("
-        SELECT a.*, c.class_name, c.grade,
+        SELECT a.*, c.class_name, c.grade_level,
                asub.id as submission_id, asub.submitted_at, asub.grade, asub.feedback, asub.graded_at
         FROM assignments a
         LEFT JOIN classes c ON a.class_id = c.id
@@ -89,12 +89,13 @@ $full_name = $_SESSION['full_name'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

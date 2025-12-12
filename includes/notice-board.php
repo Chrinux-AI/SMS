@@ -88,7 +88,7 @@ if (empty($notices)) {
         <?php endforeach; ?>
 
         <div style="padding: 15px; text-align: center; background: rgba(0, 0, 0, 0.2);">
-            <?php if ($_SESSION['role'] === 'admin'): ?>
+            <?php if (has_role('admin')): ?>
                 <a href="/attendance/admin/notices.php" class="cyber-btn cyber-btn-sm">
                     <i class="fas fa-cog"></i> Manage Notices
                 </a>

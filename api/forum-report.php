@@ -6,8 +6,12 @@
 
 require_once '../includes/session-handler.php';
 require_once '../includes/db.php';
+require_once '../includes/functions.php';
 
 header('Content-Type: application/json');
+
+// CSRF protection for state-changing requests
+csrf_require();
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);

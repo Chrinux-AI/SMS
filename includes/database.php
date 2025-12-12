@@ -140,6 +140,19 @@ class Database
     }
 
     /**
+     * Fetch a single column value from the first row
+     * @param string $sql The SQL query
+     * @param array $params The parameters
+     * @param int $column The column index (default 0)
+     * @return mixed The column value or false on failure
+     */
+    public function fetchColumn($sql, $params = [], $column = 0)
+    {
+        $stmt = $this->query($sql, $params);
+        return $stmt ? $stmt->fetchColumn($column) : false;
+    }
+
+    /**
      * Execute a query (INSERT, UPDATE, DELETE) without returning results
      * Alias for query() method for compatibility
      */

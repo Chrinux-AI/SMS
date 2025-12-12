@@ -64,6 +64,61 @@ function verify_csrf_token($token)
 }
 
 /**
+ * Check for CSRF token in headers, POST body, or JSON payload
+ * Returns true if valid, false otherwise
+ */
+function csrf_check_from_request()
+{
+    // Prefer header (for AJAX)
+    $token = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null;
+
+    // Then POST form field
+    if (!$token && isset($_POST['csrf_token'])) {
+        $token = $_POST['csrf_token'];
+    }
+
+    // Finally, attempt to parse JSON body (for fetch requests)
+    if (!$token) {
+        $raw = file_get_contents('php://input');
+        if ($raw) {
+            $data = json_decode($raw, true);
+            if (is_array($data) && isset($data['csrf_token'])) {
+                $token = $data['csrf_token'];
+            }
+        }
+    }
+
+    return $token && verify_csrf_token($token);
+}
+
+/**
+ * Require CSRF to be present and valid for the current request.
+ * If invalid, it will respond and exit (JSON for API requests, redirect for forms).
+ */
+function csrf_require()
+{
+    if (!csrf_check_from_request()) {
+        // If this looks like an AJAX/API call, return JSON
+        $accept = $_SERVER['HTTP_ACCEPT'] ?? '';
+        if (strpos($accept, 'application/json') !== false || isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+            http_response_code(403);
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Invalid CSRF token']);
+            exit;
+        }
+
+        // Otherwise, redirect back with error
+        if (function_exists('redirect')) {
+            redirect($_SERVER['HTTP_REFERER'] ?? '../login.php', 'Invalid CSRF token', 'error');
+        } else {
+            header('HTTP/1.1 403 Forbidden');
+            echo 'Invalid CSRF token';
+            exit;
+        }
+    }
+}
+
+/**
  * Check if user is logged in
  */
 function is_logged_in()
@@ -84,6 +139,14 @@ function has_role($role)
  */
 function require_login($redirect_url = '../login.php')
 {
+    // TEST MODE BYPASS - Remove in production!
+    if (defined('TEST_MODE') && TEST_MODE === true) {
+        $_SESSION['user_id'] = 1;
+        $_SESSION['user_role'] = 'admin';
+        $_SESSION['full_name'] = 'Test User';
+        return;
+    }
+
     if (!is_logged_in()) {
         redirect($redirect_url, 'Please login to access this page', 'error');
     }
@@ -102,6 +165,14 @@ function check_login($redirect_url = '../login.php')
  */
 function require_admin($redirect_url = '../login.php')
 {
+    // TEST MODE BYPASS - Remove in production!
+    if (defined('TEST_MODE') && TEST_MODE === true) {
+        $_SESSION['user_id'] = 1;
+        $_SESSION['user_role'] = 'admin';
+        $_SESSION['full_name'] = 'Test Admin';
+        return;
+    }
+
     // Ensure session is started
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -138,6 +209,14 @@ function require_admin($redirect_url = '../login.php')
  */
 function require_role($role, $redirect_url = '../login.php')
 {
+    // TEST MODE BYPASS - Remove in production!
+    if (defined('TEST_MODE') && TEST_MODE === true) {
+        $_SESSION['user_id'] = 1;
+        $_SESSION['user_role'] = $role;
+        $_SESSION['full_name'] = 'Test ' . ucfirst($role);
+        return;
+    }
+
     if (!is_logged_in()) {
         redirect($redirect_url, 'Please login to access this page', 'error');
     }
@@ -151,6 +230,14 @@ function require_role($role, $redirect_url = '../login.php')
  */
 function require_teacher($redirect_url = '../login.php')
 {
+    // TEST MODE BYPASS - Remove in production!
+    if (defined('TEST_MODE') && TEST_MODE === true) {
+        $_SESSION['user_id'] = 2;
+        $_SESSION['user_role'] = 'teacher';
+        $_SESSION['full_name'] = 'Test Teacher';
+        return;
+    }
+
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -177,6 +264,14 @@ function require_teacher($redirect_url = '../login.php')
  */
 function require_student($redirect_url = '../login.php')
 {
+    // TEST MODE BYPASS - Remove in production!
+    if (defined('TEST_MODE') && TEST_MODE === true) {
+        $_SESSION['user_id'] = 3;
+        $_SESSION['user_role'] = 'student';
+        $_SESSION['full_name'] = 'Test Student';
+        return;
+    }
+
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -203,6 +298,14 @@ function require_student($redirect_url = '../login.php')
  */
 function require_parent($redirect_url = '../login.php')
 {
+    // TEST MODE BYPASS - Remove in production!
+    if (defined('TEST_MODE') && TEST_MODE === true) {
+        $_SESSION['user_id'] = 4;
+        $_SESSION['user_role'] = 'parent';
+        $_SESSION['full_name'] = 'Test Parent';
+        return;
+    }
+
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }

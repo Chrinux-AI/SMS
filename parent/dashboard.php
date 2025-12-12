@@ -4,10 +4,8 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'parent') {
-    header('Location: ../login.php');
-    exit;
-}
+// Use require_role for TEST_MODE support
+require_role('parent', '../login.php');
 
 $parent_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];
@@ -71,7 +69,7 @@ $unread_count = db()->fetchOne("
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

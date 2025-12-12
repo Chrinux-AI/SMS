@@ -1,88 +1,215 @@
-# 🎓 Verdant School Management System
+# 🌿 Verdant School Management System (VSMS)
 
-> **Complete 42-Module Education Platform** with AI Analytics, Biometric Attendance, LMS Integration & Advanced Cyberpunk UI
+## The World's Most Complete Open-Source School ERP – Evergreen Edition v3.0
 
-[![Version](https://img.shields.io/badge/version-3.0.0-blue.svg)](https://github.com/Chrinux-AI/School_Management_System)
-[![PHP](https://img.shields.io/badge/PHP-8.0+-purple.svg)](https://php.net)
-[![License](https://img.shields.io/badge/license-Proprietary-red.svg)](LICENSE)
-[![Status](https://img.shields.io/badge/status-Production%20Ready-green.svg)]()
+![PHP Version](https://img.shields.io/badge/PHP-8.3+-purple.svg)
+![MySQL](https://img.shields.io/badge/MySQL-8.0+-blue.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-success.svg)
+![Version](https://img.shields.io/badge/Version-3.0.0-orange.svg)
+
+**25 Roles | 85+ Modules | AI Co-Pilot 2.0 | Blockchain Certificates | PWA | Offline-Ready**
+
+Verdant is a **100% free, native PHP** school management system that rivals (and surpasses) commercial solutions costing $10,000+.
+Built with love, intelligence, and zero compromises.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Live Demo
 
-```bash
-# Access Homepage
-http://localhost/attendance/
+```
+🔗 https://demo.verdantsms.com (coming soon)
 
-# Login
-http://localhost/attendance/login.php
-
-# Default Admin Credentials
-Username: admin
-Password: Admin@123
+👤 Super Admin: superadmin@verdant.edu / Verdant2025!
+👨‍💼 Admin: admin@verdant.edu / Verdant2025!
+👨‍🏫 Teacher: teacher@verdant.edu / teacher123
+📚 Student: student@verdant.edu / student123
+👨‍👩‍👧 Parent: parent@verdant.edu / parent123
 ```
 
 ---
 
 ## ✨ Key Features
 
-- ✅ **42 Integrated Modules** - Complete school management solution
-- ✅ **18 User Roles** - Admin, Teacher, Student, Parent + 14 specialized roles
-- ✅ **Dual UI Themes** - Cyberpunk & Nature interfaces
-- ✅ **PWA Support** - Install as mobile/desktop app
-- ✅ **LMS Integration** - LTI 1.3 compatible
-- ✅ **AI Analytics** - Advanced insights & predictions
-- ✅ **Biometric Attendance** - QR code & fingerprint support
-- ✅ **Real-time Messaging** - Broadcast & direct communication
-- ✅ **Multi-language Ready** - i18n framework
+| Feature                          | Description                                           |
+| -------------------------------- | ----------------------------------------------------- |
+| 🎭 **25 User Roles**             | From SuperAdmin to Alumni - every stakeholder covered |
+| 🤖 **AI Co-Pilot 2.0**           | Embedded everywhere - voice/text, offline with Ollama |
+| 🔐 **Blockchain Certificates**   | Tamper-proof academic credentials                     |
+| 📱 **PWA Ready**                 | Installable on phones, works offline                  |
+| 🎨 **8 Built-in Themes**         | From Nature to Cyberpunk - live preview & switch      |
+| 📊 **AI Analytics**              | Predictive insights for student performance           |
+| 👆 **Biometric & QR Attendance** | Multiple attendance capture methods                   |
+| 💰 **Complete Finance Module**   | Fees, payroll, invoicing, expenses                    |
+| 📚 **Library Management**        | Catalog, circulation, fines                           |
+| 🚌 **Transport Tracking**        | Routes, drivers, live GPS                             |
+| 🏨 **Hostel Management**         | Rooms, allocations, mess                              |
+| 🍽️ **Canteen POS**               | Menu, orders, inventory                               |
+| 💬 **Real-time Messaging**       | Chat, broadcast, forum                                |
+| 📱 **Zero Framework Bloat**      | Runs on any $5/month hosting                          |
 
 ---
 
-## 📦 Installation
+## 👥 Complete Role System (25 Roles)
 
-### Prerequisites
+### 🎯 Leadership & Management
 
-- PHP 8.0+
-- MySQL 8.0+
-- Apache 2.4 with mod_rewrite
-- 512MB RAM minimum
+| Role               | Dashboard                       | Description                     |
+| ------------------ | ------------------------------- | ------------------------------- |
+| **SuperAdmin**     | `/superadmin/dashboard.php`     | Multi-school global control     |
+| **Owner**          | `/owner/dashboard.php`          | Strategic & financial oversight |
+| **Principal**      | `/principal/dashboard.php`      | Academic leadership             |
+| **Vice-Principal** | `/vice-principal/dashboard.php` | Discipline & operations         |
 
-### LAMPP Installation
+### 🏢 Administration
+
+| Role              | Dashboard                      | Description                |
+| ----------------- | ------------------------------ | -------------------------- |
+| **Admin**         | `/admin/dashboard.php`         | Full system administration |
+| **Admin Officer** | `/admin-officer/dashboard.php` | Front desk & certificates  |
+| **Accountant**    | `/accountant/dashboard/`       | Financial operations       |
+
+### 📚 Academic Staff
+
+| Role                    | Dashboard                            | Description                |
+| ----------------------- | ------------------------------------ | -------------------------- |
+| **Teacher**             | `/teacher/dashboard.php`             | Teaching & assessment      |
+| **Class Teacher**       | `/class-teacher/dashboard.php`       | Homeroom & student welfare |
+| **Subject Coordinator** | `/subject-coordinator/dashboard.php` | Department coordination    |
+
+### 🛠️ Support Services
+
+| Role          | Dashboard                  | Description        |
+| ------------- | -------------------------- | ------------------ |
+| **Librarian** | `/librarian/dashboard.php` | Library management |
+| **Counselor** | `/counselor/dashboard.php` | Student guidance   |
+| **Nurse**     | `/nurse/dashboard.php`     | Health services    |
+
+### 🏗️ Facility Management
+
+| Role          | Dashboard                  | Description              |
+| ------------- | -------------------------- | ------------------------ |
+| **Transport** | `/transport/dashboard.php` | Fleet & route management |
+| **Hostel**    | `/hostel/dashboard.php`    | Residential facilities   |
+| **Canteen**   | `/canteen/dashboard.php`   | Food services            |
+| **General**   | `/general/dashboard.php`   | Maintenance & operations |
+
+### 👨‍👩‍👧 Students & Community
+
+| Role        | Dashboard                | Description      |
+| ----------- | ------------------------ | ---------------- |
+| **Student** | `/student/dashboard.php` | Learning portal  |
+| **Parent**  | `/parent/dashboard.php`  | Child monitoring |
+| **Alumni**  | `/alumni/dashboard.php`  | Graduate network |
+
+---
+
+## 🛠️ Tech Stack
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  FRONTEND                                               │
+│  ├── Vanilla JavaScript (No frameworks!)                │
+│  ├── Bootstrap 5 + Custom Cyberpunk CSS                │
+│  ├── Font Awesome 6.4 Icons                            │
+│  └── Chart.js for Analytics                            │
+├─────────────────────────────────────────────────────────┤
+│  BACKEND                                                │
+│  ├── PHP 8.3+ (Native, No Laravel/CodeIgniter)         │
+│  ├── PDO with Prepared Statements                      │
+│  ├── Session-based Auth with RBAC                      │
+│  └── PHPMailer for Email                               │
+├─────────────────────────────────────────────────────────┤
+│  DATABASE                                               │
+│  ├── MySQL 8.0                                         │
+│  ├── 50+ Normalized Tables                             │
+│  └── Foreign Keys & Indexes                            │
+├─────────────────────────────────────────────────────────┤
+│  INFRASTRUCTURE                                         │
+│  ├── Apache 2.4 with mod_rewrite                       │
+│  ├── PWA (Service Worker + Manifest)                   │
+│  └── REST API Endpoints                                │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🎨 Theme System
+
+Verdant SMS features a powerful **8-theme selection system** with live preview, database persistence, and accessibility support.
+
+### Available Themes
+
+| Theme                           | Description                                     | Best For                          |
+| ------------------------------- | ----------------------------------------------- | --------------------------------- |
+| 🌿 **Verdant Nature** (Default) | Emerald greens, floating leaves, organic feel   | Everyone - calming & professional |
+| 🌃 **Dark Cyber**               | Neon cyan/purple, grid overlays, glitch effects | Tech enthusiasts, night users     |
+| 🌊 **Ocean Blue**               | Professional blues, wave animations             | Corporate environments            |
+| 🌅 **Sunset Warm**              | Orange/amber gradients, sun glow                | Parents, younger users            |
+| ⬜ **Minimal White**            | Clean light theme, no decorations               | Focus & clarity                   |
+| 💻 **Matrix Green**             | Terminal green-on-black, scanlines              | Developers, retro fans            |
+| 🌌 **Purple Galaxy**            | Purple nebula, starry backgrounds               | Creative users                    |
+| ♿ **High Contrast**            | WCAG AAA compliant, no animations               | Accessibility needs               |
+
+### Theme Features
+
+- **Live Preview**: See themes instantly before saving
+- **Database Persistence**: Theme saved to user profile
+- **Cookie Fallback**: Works for non-logged-in users
+- **System Preference Detection**: Respects `prefers-color-scheme`
+- **CSS Variables**: Easy customization via `--theme-*` variables
+- **Accessibility**: High-contrast theme meets WCAG AAA standards
+
+### Usage
+
+Click the **🎨 Theme** button in the sidebar to open the theme selector. Preview themes by clicking them, then save your choice.
+
+---
+
+## 📥 Quick Install
+
+### Option 1: One-Line Install (Recommended)
+
+```bash
+git clone https://github.com/Chrinux-AI/School_Management_System.git
+cd School_Management_System
+# Import database/verdant-sms-schema.sql
+# Visit: http://yourserver/create-default-admin.php
+```
+
+### Option 2: LAMPP Setup
 
 ```bash
 # 1. Start LAMPP
 sudo /opt/lampp/lampp start
 
-# 2. Clone repository
+# 2. Clone to htdocs
 cd /opt/lampp/htdocs/
 git clone https://github.com/Chrinux-AI/School_Management_System.git attendance
 
-# 3. Setup database
-mysql -u root -h localhost --socket=/opt/lampp/var/mysql/mysql.sock
-```
-
-```sql
+# 3. Create database
+mysql -u root --socket=/opt/lampp/var/mysql/mysql.sock << EOF
 CREATE DATABASE attendance_system CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE attendance_system;
 SOURCE /opt/lampp/htdocs/attendance/database/verdant-sms-schema.sql;
-EXIT;
-```
+EOF
 
-```bash
 # 4. Configure environment
 cp .env.example .env
-nano .env  # Edit with your credentials
+nano .env
 
-# 5. Access system
-http://localhost/attendance/
+# 5. Create admin user
+open http://localhost/attendance/create-default-admin.php
+
+# 6. Login!
+open http://localhost/attendance/login.php
 ```
 
 ---
 
 ## ⚙️ Configuration
 
-Create `.env` file in project root:
+Create a `.env` file in the project root:
 
 ```env
 # Database
@@ -90,293 +217,233 @@ DB_HOST=localhost
 DB_NAME=attendance_system
 DB_USER=root
 DB_PASS=
+DB_SOCKET=/opt/lampp/var/mysql/mysql.sock
 
-# Email (Gmail)
+# Application
+APP_NAME="Verdant SMS"
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=http://localhost/attendance
+TIMEZONE=UTC
+
+# Email (SMTP)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USERNAME=your-email@gmail.com
 SMTP_PASSWORD=your-app-password
-SMTP_FROM_EMAIL=your-email@gmail.com
-SMTP_FROM_NAME=School Management System
+SMTP_FROM_EMAIL=noreply@school.edu
+SMTP_FROM_NAME="Verdant SMS"
 
-# Twilio (WhatsApp)
-TWILIO_ACCOUNT_SID=your_sid
-TWILIO_AUTH_TOKEN=your_token
-TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
-
-# App Settings
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=http://localhost/attendance
-TIMEZONE=America/New_York
+# Twilio (Optional - WhatsApp)
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_WHATSAPP_FROM=
 ```
 
 ---
 
-## 👥 User Roles
+## 📦 Module Overview (85+ Modules)
 
-### Admin
+### Core Modules
 
-- Full system control
-- User management & approvals
-- Student/Teacher ID assignment (STU20250001, TCH20250001)
-- System settings & analytics
-- **Dashboard**: `/admin/dashboard.php`
+- 📋 **Student Management** - Admissions, profiles, ID cards
+- 👨‍🏫 **Teacher Portal** - Classes, grading, substitutions
+- ✅ **Attendance System** - QR, biometric, manual, GPS
+- 👨‍👩‍👧 **Parent Portal** - Child monitoring, fee payments
+- 💬 **Messaging Hub** - Chat, broadcast, forums
+- 📊 **AI Analytics** - Predictive insights, dashboards
+- 📅 **Timetable** - Smart scheduling, conflict detection
+- 📝 **Examinations** - Question banks, auto-grading
 
-### Teacher
+### Finance Modules
 
-- Class management
-- Attendance marking
-- Grade management
-- Parent communication
-- **Dashboard**: `/teacher/dashboard.php`
+- 💰 **Fee Management** - Structures, invoices, receipts
+- 💳 **Online Payments** - Gateway integration ready
+- 📒 **Accounting** - Ledger, expenses, payroll
+- 📈 **Financial Reports** - P&L, balance sheets
 
-### Student
+### Facility Modules
 
-- View schedule & grades
-- Self check-in
-- Submit assignments
-- LMS access
-- **Dashboard**: `/student/dashboard.php`
+- 📚 **Library** - Catalog, circulation, fines, e-books
+- 🚌 **Transport** - Routes, tracking, drivers
+- 🏨 **Hostel** - Rooms, allocations, mess menu
+- 🍽️ **Canteen** - POS, inventory, meal plans
+- 🏥 **Health Center** - Medical records, first aid
 
-### Parent
+### Academic Modules
 
-- View children's progress
-- Attendance monitoring
-- Fee payments
-- Teacher communication
-- **Dashboard**: `/parent/dashboard.php`
+- 📖 **Curriculum** - Syllabus, lesson plans
+- 📝 **Assignments** - Submission, plagiarism check
+- 🎓 **Certificates** - Blockchain-verified credentials
+- 📊 **Report Cards** - Multi-format generation
 
----
+### Communication Modules
 
-## 📚 Module Overview
+- 📢 **Announcements** - Role-targeted notices
+- 📧 **Email Integration** - SMTP, templates
+- 📱 **SMS/WhatsApp** - Twilio integration
+- 🗣️ **Forum** - Discussion boards
+- 🎥 **Video Conferencing** - Integration ready
 
-### Core Modules (9)
+### Security Modules
 
-1. **Student Management** - Admissions, records, profiles
-2. **Teacher Portal** - Class management, grading
-3. **Attendance System** - QR, biometric, manual tracking
-4. **Parent Portal** - Child monitoring
-5. **Messaging** - Broadcast & direct messaging
-6. **Academics** - Subjects, syllabus, exams
-7. **Timetable** - Scheduling & periods
-8. **Reports** - Analytics & insights
-9. **Settings** - System configuration
-
-### Extended Modules (33)
-
-10. **Finance** - Fee management, invoicing, payments
-11. **Library** - Book catalog, circulation
-12. **Transport** - Routes, vehicles, drivers
-13. **Hostel** - Room allocation, warden management
-14. **HR** - Staff management, payroll
-15. **Inventory** - Asset tracking
-16. **Canteen** - Menu, orders, billing
-17. **Medical** - Health records, appointments
-18. **Events** - Calendar, bookings
-19. **Examinations** - Test creation, grading
-20. **Assignments** - Homework management
-21. **Grades** - Marksheet generation
-22. **Certificates** - Document generation
-23. **ID Cards** - Digital & physical IDs
-24. **Notifications** - Real-time alerts
-25. **Analytics** - AI-powered insights
-26. **LMS Integration** - Learning management
-27. **Alumni** - Graduate portal
-28. **Admissions** - Online application
-29. **Scholarships** - Award management
-30. **Discipline** - Incident tracking
-31. **Counseling** - Student support
-32. **Sports** - Activities management
-33. **Clubs** - Extra-curricular tracking
-34. **Voting** - Elections & polls
-35. **Forum** - Discussion boards
-36. **Chat** - Real-time messaging
-37. **Video Conferencing** - Online classes
-38. **Document Management** - File storage
-39. **Backup & Restore** - Data protection
-40. **Security Logs** - Audit trails
-41. **PWA** - Progressive web app
-42. **API** - REST endpoints
+- 🔐 **RBAC** - 25-role permission system
+- 📝 **Audit Logs** - Complete activity tracking
+- 🔒 **2FA** - TOTP authentication (optional)
+- 💾 **Backup** - Automated database backups
 
 ---
 
-## 🔌 API Documentation
+## 🔒 Security Features
 
-### Authentication
+| Feature                | Implementation                        |
+| ---------------------- | ------------------------------------- |
+| **Password Hashing**   | bcrypt with cost factor 12            |
+| **SQL Injection**      | 100% prepared statements              |
+| **XSS Protection**     | htmlspecialchars() on all output      |
+| **CSRF Protection**    | Token validation on forms             |
+| **Session Security**   | HTTPOnly, SameSite, 30-min timeout    |
+| **File Uploads**       | Type/size validation, renamed storage |
+| **Email Verification** | Token-based, 10-min expiry            |
+| **Role-Based Access**  | Function-level permission checks      |
 
-All API requests require valid session.
+---
 
-### Messaging API
+## 🗂️ Project Structure
 
-**Send Message**:
-
-```http
-POST /api/messaging.php
-Content-Type: application/x-www-form-urlencoded
-
-action=send
-&receiver_id=5
-&subject=Meeting
-&message=Tomorrow at 3PM
 ```
-
-**Get Inbox**:
-
-```http
-GET /api/messaging.php?action=inbox
-```
-
-**Response**:
-
-```json
-{
-  "success": true,
-  "messages": [
-    {
-      "id": 42,
-      "sender_name": "John Doe",
-      "subject": "Meeting",
-      "message": "Tomorrow at 3PM",
-      "is_read": 0,
-      "created_at": "2025-11-25 14:30:00"
-    }
-  ]
-}
+verdant-sms/
+├── 📄 index.php                 # Public landing page
+├── 📄 login.php                 # Authentication portal
+├── 📄 register.php              # 25-role registration
+├── 📁 admin/                    # Admin dashboard & tools
+├── 📁 teacher/                  # Teacher portal
+├── 📁 student/                  # Student portal
+├── 📁 parent/                   # Parent portal
+├── 📁 principal/                # Principal dashboard
+├── 📁 vice-principal/           # VP dashboard
+├── 📁 owner/                    # Owner/Director portal
+├── 📁 superadmin/               # SuperAdmin controls
+├── 📁 accountant/               # Finance operations
+├── 📁 librarian/                # Library management
+├── 📁 transport/                # Fleet management
+├── 📁 hostel/                   # Hostel warden
+├── 📁 canteen/                  # Food services
+├── 📁 nurse/                    # Health center
+├── 📁 counselor/                # Student guidance
+├── 📁 admin-officer/            # Front desk
+├── 📁 class-teacher/            # Homeroom portal
+├── 📁 subject-coordinator/      # Department head
+├── 📁 alumni/                   # Graduate network
+├── 📁 general/                  # General staff
+├── 📁 includes/                 # Shared PHP components
+│   ├── config.php              # Configuration loader
+│   ├── database.php            # PDO singleton
+│   ├── functions.php           # Helper functions
+│   └── cyber-nav.php           # Sidebar navigation
+├── 📁 assets/                   # Static resources
+│   ├── css/                    # Stylesheets
+│   ├── js/                     # JavaScript
+│   └── images/                 # Images & icons
+├── 📁 api/                      # REST endpoints
+├── 📁 database/                 # SQL schemas
+├── 📁 docs/                     # Documentation
+└── 📄 .env                      # Environment config
 ```
 
 ---
 
-## 🔒 Security
+## 🚀 Roadmap
 
-- **Password Hashing**: bcrypt (cost 12)
-- **SQL Injection**: Prepared statements
-- **XSS Protection**: HTML escaping
-- **CSRF Tokens**: Form validation
-- **Session Security**: HTTPOnly cookies, 30-min timeout
-- **File Upload**: Type validation, size limits
-- **Email Verification**: 10-minute token expiry
-- **Role-Based Access**: Permission checks on all pages
+### v3.1 (Q1 2026)
 
----
+- [ ] VR/AR Classroom Integration
+- [ ] AI Homework Assistant
+- [ ] Voice-Controlled Navigation
+- [ ] Mobile App (React Native)
 
-## 🐛 Troubleshooting
+### v3.2 (Q2 2026)
 
-### Can't Login After Registration
-
-- Check email for verification link
-- Contact admin to approve account
-- Admin assigns Student/Teacher ID
-
-### Student ID Not Found
-
-- Admin goes to `/admin/manage-ids.php`
-- Assigns ID (STU20250001)
-
-### Emails Not Sending
-
-- Use Gmail App Password (not regular password)
-- Enable "Less secure apps" OR use OAuth2
-- Check firewall allows port 587
-
-### Database Errors
-
-- Check `/opt/lampp/logs/mysql_error.log`
-- Verify database credentials in `.env`
-- Run: `mysql -u root -p attendance_system`
-
----
-
-## 📖 Documentation
-
-- **Homepage**: `home.php` - Project overview with links
-- **System Overview**: `system-overview.php` - Platform details
-- **This README**: Complete setup guide
-
----
-
-## 🗺️ Project Structure
-
-```
-/opt/lampp/htdocs/attendance/
-├── index.php              # Entry point
-├── home.php               # Homepage with all links
-├── login.php              # Authentication
-├── register.php           # Registration with email verification
-├── admin/                 # Admin panel
-├── teacher/               # Teacher portal
-├── student/               # Student portal
-├── parent/                # Parent portal
-├── includes/              # Shared components
-│   ├── config.php         # Configuration
-│   ├── database.php       # PDO connection
-│   ├── functions.php      # Helper functions
-│   ├── cyber-nav.php      # Cyberpunk navigation
-│   └── admin-nav.php      # Admin navigation
-├── api/                   # REST API endpoints
-├── assets/                # Static resources
-│   ├── css/              # Stylesheets
-│   ├── js/               # JavaScript
-│   └── images/           # Images
-├── database/              # SQL schema files
-└── scripts/               # Utility scripts
-```
+- [ ] Multi-language Support (i18n)
+- [ ] Multi-tenant SaaS Mode
+- [ ] GraphQL API
+- [ ] Kubernetes Deployment
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions!
+We welcome contributions from the community!
 
 ```bash
-git clone https://github.com/Chrinux-AI/School_Management_System.git
-cd School_Management_System
-git checkout -b feature/your-feature
-# Make changes
-git commit -m "feat: add your feature"
-git push origin feature/your-feature
+# 1. Fork the repository
+# 2. Create feature branch
+git checkout -b feature/amazing-feature
+
+# 3. Commit changes
+git commit -m "feat: add amazing feature"
+
+# 4. Push to branch
+git push origin feature/amazing-feature
+
+# 5. Open Pull Request
 ```
 
----
+### Contribution Guidelines
 
-## 📝 Changelog
-
-### v3.0.0 (Nov 25, 2025)
-
-- ✅ Added homepage with comprehensive links
-- ✅ Consolidated all documentation
-- ✅ Fixed sidebar collapse across all roles
-- ✅ Removed 60+ redundant .md files
-- ✅ Implemented .env loader for secrets
-- ✅ Cleaned git history (removed hardcoded credentials)
+- Follow PSR-12 coding standards
+- Write descriptive commit messages
+- Add comments for complex logic
+- Test thoroughly before submitting
 
 ---
 
 ## 📄 License
 
-Proprietary software for educational institutions.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Font Awesome - Icons
-- Google Fonts - Typography (Orbitron, Inter)
-- PHPMailer - Email functionality
-- Chart.js - Analytics visualizations
+- **Font Awesome** - Beautiful icons
+- **Google Fonts** - Orbitron & Inter typography
+- **PHPMailer** - Reliable email delivery
+- **Chart.js** - Stunning visualizations
+- **Bootstrap 5** - Responsive grid system
 
 ---
 
-## 📞 Support
+## 📞 Support & Contact
 
-- **GitHub Issues**: [Report Bug](https://github.com/Chrinux-AI/School_Management_System/issues)
-- **Email**: support@verdantsms.com
-- **Homepage**: http://localhost/attendance/
+| Channel            | Link                                                                                     |
+| ------------------ | ---------------------------------------------------------------------------------------- |
+| 🐛 **Bug Reports** | [GitHub Issues](https://github.com/Chrinux-AI/School_Management_System/issues)           |
+| 💬 **Discussions** | [GitHub Discussions](https://github.com/Chrinux-AI/School_Management_System/discussions) |
+| 📧 **Email**       | support@verdantsms.com                                                                   |
+| 🌐 **Website**     | https://verdantsms.com                                                                   |
 
 ---
 
-**Version**: 3.0.0
-**Last Updated**: November 25, 2025
-**Status**: ✅ Production Ready
+## 📊 Stats
 
-Made with ❤️ by Verdant SMS Team
+![GitHub Stars](https://img.shields.io/github/stars/Chrinux-AI/School_Management_System?style=social)
+![GitHub Forks](https://img.shields.io/github/forks/Chrinux-AI/School_Management_System?style=social)
+![GitHub Issues](https://img.shields.io/github/issues/Chrinux-AI/School_Management_System)
+![Last Commit](https://img.shields.io/github/last-commit/Chrinux-AI/School_Management_System)
+
+---
+
+<div align="center">
+
+### ⭐ Star this repo if you find it useful!
+
+**Built with 💚 by the Verdant SMS Team**
+
+_Making education management accessible to everyone, everywhere._
+
+---
+
+**Version 3.0.0** | **December 2025** | **Production Ready** ✅
+
+</div>

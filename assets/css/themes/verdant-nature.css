@@ -1,0 +1,195 @@
+/**
+ * Verdant Nature Theme (Default)
+ * Emerald green, nature-inspired, calming for schools
+ * Verdant SMS v3.0
+ */
+
+:root {
+    /* Primary Colors */
+    --theme-primary: #10b981;
+    --theme-primary-dark: #059669;
+    --theme-primary-light: #34d399;
+    --theme-primary-rgb: 16, 185, 129;
+
+    /* Secondary Colors */
+    --theme-secondary: #065f46;
+    --theme-secondary-dark: #064e3b;
+    --theme-secondary-light: #047857;
+
+    /* Accent Colors */
+    --theme-accent: #6ee7b7;
+    --theme-accent-dark: #34d399;
+    --theme-accent-light: #a7f3d0;
+
+    /* Background Colors */
+    --theme-bg-primary: #0f1a14;
+    --theme-bg-secondary: #162920;
+    --theme-bg-tertiary: #1d3a2d;
+    --theme-bg-card: rgba(16, 185, 129, 0.08);
+    --theme-bg-glass: rgba(16, 185, 129, 0.05);
+
+    /* Text Colors */
+    --theme-text-primary: #ecfdf5;
+    --theme-text-secondary: #a7f3d0;
+    --theme-text-muted: rgba(236, 253, 245, 0.6);
+    --theme-text-inverse: #064e3b;
+
+    /* Border & Shadow */
+    --theme-border: rgba(16, 185, 129, 0.2);
+    --theme-border-light: rgba(16, 185, 129, 0.1);
+    --theme-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
+    --theme-glow: 0 0 20px rgba(16, 185, 129, 0.3);
+
+    /* Status Colors */
+    --theme-success: #10b981;
+    --theme-warning: #f59e0b;
+    --theme-danger: #ef4444;
+    --theme-info: #3b82f6;
+
+    /* Gradient */
+    --theme-gradient: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%);
+    --theme-gradient-subtle: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+
+    /* Animation */
+    --theme-transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Body Background */
+body.theme-verdant-nature {
+    background: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+}
+
+body.theme-verdant-nature::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(6, 95, 70, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Sidebar */
+body.theme-verdant-nature .cyber-sidebar {
+    background: linear-gradient(180deg, var(--theme-bg-secondary) 0%, var(--theme-bg-primary) 100%);
+    border-right: 1px solid var(--theme-border);
+}
+
+body.theme-verdant-nature .menu-item:hover,
+body.theme-verdant-nature .menu-item.active {
+    background: var(--theme-gradient-subtle);
+    border-left: 3px solid var(--theme-primary);
+}
+
+/* Cards */
+body.theme-verdant-nature .stat-orb,
+body.theme-verdant-nature .cyber-card,
+body.theme-verdant-nature .dashboard-card {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-verdant-nature .stat-orb:hover,
+body.theme-verdant-nature .cyber-card:hover {
+    border-color: var(--theme-primary);
+    box-shadow: var(--theme-glow);
+}
+
+/* Buttons */
+body.theme-verdant-nature .btn-primary,
+body.theme-verdant-nature .cyber-btn {
+    background: var(--theme-gradient);
+    color: white;
+    border: none;
+    box-shadow: var(--theme-shadow);
+}
+
+body.theme-verdant-nature .btn-primary:hover,
+body.theme-verdant-nature .cyber-btn:hover {
+    box-shadow: var(--theme-glow);
+    transform: translateY(-2px);
+}
+
+/* Form Elements */
+body.theme-verdant-nature input,
+body.theme-verdant-nature select,
+body.theme-verdant-nature textarea {
+    background: var(--theme-bg-tertiary);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text-primary);
+}
+
+body.theme-verdant-nature input:focus,
+body.theme-verdant-nature select:focus,
+body.theme-verdant-nature textarea:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Tables */
+body.theme-verdant-nature table {
+    background: var(--theme-bg-card);
+    border: 1px solid var(--theme-border);
+}
+
+body.theme-verdant-nature th {
+    background: var(--theme-bg-tertiary);
+    color: var(--theme-primary);
+}
+
+body.theme-verdant-nature tr:hover {
+    background: var(--theme-bg-glass);
+}
+
+/* Links */
+body.theme-verdant-nature a {
+    color: var(--theme-primary);
+}
+
+body.theme-verdant-nature a:hover {
+    color: var(--theme-accent);
+}
+
+/* Scrollbar */
+body.theme-verdant-nature ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+body.theme-verdant-nature ::-webkit-scrollbar-track {
+    background: var(--theme-bg-secondary);
+}
+
+body.theme-verdant-nature ::-webkit-scrollbar-thumb {
+    background: var(--theme-primary);
+    border-radius: 4px;
+}
+
+body.theme-verdant-nature ::-webkit-scrollbar-thumb:hover {
+    background: var(--theme-primary-light);
+}
+
+/* Nature Elements - Floating Leaves Animation */
+body.theme-verdant-nature .nature-particle {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: var(--theme-primary);
+    opacity: 0.3;
+    border-radius: 50% 0 50% 50%;
+    animation: floatLeaf 15s infinite ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes floatLeaf {
+    0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+}

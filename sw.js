@@ -1,12 +1,12 @@
 /**
- * SAMS Service Worker
+ * Verdant SMS Service Worker
  * Handles offline caching, background sync, and push notifications
- * Version: 1.0.0
+ * Version: 3.0.0
  */
 
-const CACHE_VERSION = 'sams-v1.0.0';
-const CACHE_NAME = `sams-cache-${CACHE_VERSION}`;
-const DATA_CACHE_NAME = `sams-data-${CACHE_VERSION}`;
+const CACHE_VERSION = 'verdant-v3.0.0';
+const CACHE_NAME = `verdant-cache-${CACHE_VERSION}`;
+const DATA_CACHE_NAME = `verdant-data-${CACHE_VERSION}`;
 
 // Assets to cache immediately
 const STATIC_ASSETS = [
@@ -14,6 +14,14 @@ const STATIC_ASSETS = [
     '/attendance/index.php',
     '/attendance/login.php',
     '/attendance/assets/css/cyberpunk-ui.css',
+    '/attendance/assets/css/themes/verdant-nature.css',
+    '/attendance/assets/css/themes/dark-cyber.css',
+    '/attendance/assets/css/themes/ocean-blue.css',
+    '/attendance/assets/css/themes/sunset-warm.css',
+    '/attendance/assets/css/themes/minimal-white.css',
+    '/attendance/assets/css/themes/matrix-green.css',
+    '/attendance/assets/css/themes/purple-galaxy.css',
+    '/attendance/assets/css/themes/high-contrast.css',
     '/attendance/assets/js/main.js',
     '/attendance/assets/images/icons/icon-192x192.png',
     '/attendance/assets/images/icons/icon-512x512.png',

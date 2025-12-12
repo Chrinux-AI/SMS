@@ -6,16 +6,12 @@
  */
 
 session_start();
+
 require_once '../includes/config.php';
 require_once '../includes/database.php';
 require_once '../includes/logger.php';
-
+require_role('student');
 header('Content-Type: application/json');
-
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    exit;
-}
 
 $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];

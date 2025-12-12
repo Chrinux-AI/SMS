@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -288,216 +288,216 @@ $stats = [
 
         <main class="cyber-main">
 
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class="header">
-        <div class="header-content">
-            <div>
-                <h1><i class="fas fa-rocket"></i> Advanced Admin Features</h1>
-                <p>Powerful tools for system management and automation</p>
-            </div>
-            <a href="../logout.php" class="btn-logout">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-        </div>
-    </div>
-
-    <div class="container">
-        <nav class="admin-nav">
-            <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="users.php"><i class="fas fa-users"></i> Users</a>
-            <a href="registrations.php"><i class="fas fa-user-clock"></i> Registrations</a>
-            <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
-            <a href="system-management.php"><i class="fas fa-tools"></i> System</a>
-            <a href="advanced-admin.php" class="active"><i class="fas fa-rocket"></i> Advanced</a>
-        </nav>
-
-        <?php if ($message): ?>
-            <div class="alert alert-<?php echo $message_type; ?>">
-                <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
-                <?php echo $message; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Admin Statistics -->
-        <div class="admin-stats">
-            <div class="stat-orb">
-                <div class="stat-number"><?php echo $stats['pending_registrations']; ?></div>
-                <div class="stat-label">Pending Registrations</div>
-            </div>
-            <div class="stat-orb" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
-                <div class="stat-number"><?php echo $stats['total_emails_sent']; ?></div>
-                <div class="stat-label">Mass Emails Sent</div>
-            </div>
-            <div class="stat-orb" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
-                <div class="stat-number"><?php echo $stats['reports_generated']; ?></div>
-                <div class="stat-label">Reports Generated</div>
-            </div>
-            <div class="stat-orb" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
-                <div class="stat-number"><?php echo $stats['system_health']; ?>%</div>
-                <div class="stat-label">System Health</div>
-            </div>
-        </div>
-
-        <!-- AI Suggestions -->
-        <div class="ai-suggestions">
-            <h3 style="margin-bottom: 20px;"><i class="fas fa-robot"></i> AI-Powered Suggestions</h3>
-            <div class="suggestion-item">
-                <i class="fas fa-lightbulb"></i>
-                <div>
-                    <strong>Optimize Performance:</strong> Consider implementing automated ID assignment for new registrations.
+            <div class="starfield"></div>
+            <div class="cyber-grid"></div>
+            <div class="header">
+                <div class="header-content">
+                    <div>
+                        <h1><i class="fas fa-rocket"></i> Advanced Admin Features</h1>
+                        <p>Powerful tools for system management and automation</p>
+                    </div>
+                    <a href="../logout.php" class="btn-logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
                 </div>
             </div>
-            <div class="suggestion-item">
-                <i class="fas fa-chart-line"></i>
-                <div>
-                    <strong>Analytics Insight:</strong> Generate weekly performance reports to track attendance trends.
-                </div>
-            </div>
-            <div class="suggestion-item">
-                <i class="fas fa-envelope"></i>
-                <div>
-                    <strong>Communication:</strong> Send personalized welcome emails to improve user engagement.
-                </div>
-            </div>
-        </div>
 
-        <!-- Advanced Features Grid -->
-        <div class="feature-grid">
-            <!-- Mass Email System -->
-            <div class="feature-card">
-                <div class="feature-header">
-                    <div class="feature-icon">
-                        <i class="fas fa-envelope-open-text"></i>
+            <div class="container">
+                <nav class="admin-nav">
+                    <a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="users.php"><i class="fas fa-users"></i> Users</a>
+                    <a href="registrations.php"><i class="fas fa-user-clock"></i> Registrations</a>
+                    <a href="analytics.php"><i class="fas fa-brain"></i> AI Analytics</a>
+                    <a href="system-management.php"><i class="fas fa-tools"></i> System</a>
+                    <a href="advanced-admin.php" class="active"><i class="fas fa-rocket"></i> Advanced</a>
+                </nav>
+
+                <?php if ($message): ?>
+                    <div class="alert alert-<?php echo $message_type; ?>">
+                        <i class="fas fa-<?php echo $message_type === 'success' ? 'check-circle' : 'exclamation-circle'; ?>"></i>
+                        <?php echo $message; ?>
                     </div>
-                    <div class="feature-title">Mass Email System</div>
-                </div>
+                <?php endif; ?>
 
-                <form method="POST" class="form-grid">
-                    <div class="form-group">
-                        <label for="recipient_type">Recipients</label>
-                        <select name="recipient_type" id="recipient_type" required>
-                            <option value="all_users">All Active Users</option>
-                            <option value="students">All Students</option>
-                            <option value="teachers">All Teachers</option>
-                            <option value="parents">All Parents</option>
-                        </select>
+                <!-- Admin Statistics -->
+                <div class="admin-stats">
+                    <div class="stat-orb">
+                        <div class="stat-number"><?php echo $stats['pending_registrations']; ?></div>
+                        <div class="stat-label">Pending Registrations</div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="subject">Email Subject</label>
-                        <input type="text" name="subject" id="subject" required
-                            placeholder="Important Announcement">
+                    <div class="stat-orb" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <div class="stat-number"><?php echo $stats['total_emails_sent']; ?></div>
+                        <div class="stat-label">Mass Emails Sent</div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="message">Message (Use {name} for personalization)</label>
-                        <textarea name="message" id="message" rows="4" required
-                            placeholder="Dear {name}, We are pleased to inform you..."></textarea>
+                    <div class="stat-orb" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                        <div class="stat-number"><?php echo $stats['reports_generated']; ?></div>
+                        <div class="stat-label">Reports Generated</div>
                     </div>
-
-                    <button type="submit" name="mass_email" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Send Mass Email
-                    </button>
-                </form>
-            </div>
-
-            <!-- Advanced Reports -->
-            <div class="feature-card">
-                <div class="feature-header">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-bar"></i>
+                    <div class="stat-orb" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                        <div class="stat-number"><?php echo $stats['system_health']; ?>%</div>
+                        <div class="stat-label">System Health</div>
                     </div>
-                    <div class="feature-title">Advanced Reports</div>
                 </div>
 
-                <form method="POST" class="form-grid">
-                    <div class="form-group">
-                        <label for="report_type">Report Type</label>
-                        <select name="report_type" id="report_type" required>
-                            <option value="attendance">Attendance Report</option>
-                            <option value="users">User Activity Report</option>
-                            <option value="performance">Performance Analysis</option>
-                        </select>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div class="form-group">
-                            <label for="date_from">From Date</label>
-                            <input type="date" name="date_from" id="date_from" required
-                                value="<?php echo date('Y-m-01'); ?>">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="date_to">To Date</label>
-                            <input type="date" name="date_to" id="date_to" required
-                                value="<?php echo date('Y-m-d'); ?>">
+                <!-- AI Suggestions -->
+                <div class="ai-suggestions">
+                    <h3 style="margin-bottom: 20px;"><i class="fas fa-robot"></i> AI-Powered Suggestions</h3>
+                    <div class="suggestion-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <strong>Optimize Performance:</strong> Consider implementing automated ID assignment for new registrations.
                         </div>
                     </div>
-
-                    <button type="submit" name="generate_reports" class="btn btn-success">
-                        <i class="fas fa-file-download"></i> Generate Report
-                    </button>
-                </form>
-            </div>
-
-            <!-- Auto ID Assignment -->
-            <div class="feature-card">
-                <div class="feature-header">
-                    <div class="feature-icon">
-                        <i class="fas fa-magic"></i>
+                    <div class="suggestion-item">
+                        <i class="fas fa-chart-line"></i>
+                        <div>
+                            <strong>Analytics Insight:</strong> Generate weekly performance reports to track attendance trends.
+                        </div>
                     </div>
-                    <div class="feature-title">Auto ID Assignment</div>
-                </div>
-
-                <p style="color: #64748b; margin-bottom: 20px;">
-                    Automatically assign Student/Employee IDs to users who don't have them yet.
-                </p>
-
-                <form method="POST">
-                    <button type="submit" name="auto_assign_ids" class="btn btn-warning"
-                        onclick="return confirm('Assign IDs to all users without them?')">
-                        <i class="fas fa-wand-magic-sparkles"></i> Auto-Assign IDs
-                    </button>
-                </form>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="feature-card">
-                <div class="feature-header">
-                    <div class="feature-icon">
-                        <i class="fas fa-lightning-bolt"></i>
+                    <div class="suggestion-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Communication:</strong> Send personalized welcome emails to improve user engagement.
+                        </div>
                     </div>
-                    <div class="feature-title">Quick Actions</div>
                 </div>
 
-                <div style="display: grid; gap: 10px;">
-                    <a href="registrations.php" class="btn btn-info">
-                        <i class="fas fa-user-check"></i> Pending Registrations
-                        <?php if ($stats['pending_registrations'] > 0): ?>
-                            <span class="badge badge-warning"><?php echo $stats['pending_registrations']; ?></span>
-                        <?php endif; ?>
-                    </a>
+                <!-- Advanced Features Grid -->
+                <div class="feature-grid">
+                    <!-- Mass Email System -->
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-envelope-open-text"></i>
+                            </div>
+                            <div class="feature-title">Mass Email System</div>
+                        </div>
 
-                    <a href="analytics.php" class="btn btn-primary">
-                        <i class="fas fa-brain"></i> AI Analytics Dashboard
-                    </a>
+                        <form method="POST" class="form-grid">
+                            <div class="form-group">
+                                <label for="recipient_type">Recipients</label>
+                                <select name="recipient_type" id="recipient_type" required>
+                                    <option value="all_users">All Active Users</option>
+                                    <option value="students">All Students</option>
+                                    <option value="teachers">All Teachers</option>
+                                    <option value="parents">All Parents</option>
+                                </select>
+                            </div>
 
-                    <a href="system-management.php" class="btn btn-danger">
-                        <i class="fas fa-tools"></i> System Management
-                    </a>
+                            <div class="form-group">
+                                <label for="subject">Email Subject</label>
+                                <input type="text" name="subject" id="subject" required
+                                    placeholder="Important Announcement">
+                            </div>
 
-                    <a href="../reports/" class="btn btn-success" target="_blank">
-                        <i class="fas fa-folder-open"></i> View All Reports
-                    </a>
+                            <div class="form-group">
+                                <label for="message">Message (Use {name} for personalization)</label>
+                                <textarea name="message" id="message" rows="4" required
+                                    placeholder="Dear {name}, We are pleased to inform you..."></textarea>
+                            </div>
+
+                            <button type="submit" name="mass_email" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> Send Mass Email
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Advanced Reports -->
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="feature-title">Advanced Reports</div>
+                        </div>
+
+                        <form method="POST" class="form-grid">
+                            <div class="form-group">
+                                <label for="report_type">Report Type</label>
+                                <select name="report_type" id="report_type" required>
+                                    <option value="attendance">Attendance Report</option>
+                                    <option value="users">User Activity Report</option>
+                                    <option value="performance">Performance Analysis</option>
+                                </select>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div class="form-group">
+                                    <label for="date_from">From Date</label>
+                                    <input type="date" name="date_from" id="date_from" required
+                                        value="<?php echo date('Y-m-01'); ?>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date_to">To Date</label>
+                                    <input type="date" name="date_to" id="date_to" required
+                                        value="<?php echo date('Y-m-d'); ?>">
+                                </div>
+                            </div>
+
+                            <button type="submit" name="generate_reports" class="btn btn-success">
+                                <i class="fas fa-file-download"></i> Generate Report
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Auto ID Assignment -->
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-magic"></i>
+                            </div>
+                            <div class="feature-title">Auto ID Assignment</div>
+                        </div>
+
+                        <p style="color: #64748b; margin-bottom: 20px;">
+                            Automatically assign Student/Employee IDs to users who don't have them yet.
+                        </p>
+
+                        <form method="POST">
+                            <button type="submit" name="auto_assign_ids" class="btn btn-warning"
+                                onclick="return confirm('Assign IDs to all users without them?')">
+                                <i class="fas fa-wand-magic-sparkles"></i> Auto-Assign IDs
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <div class="feature-icon">
+                                <i class="fas fa-lightning-bolt"></i>
+                            </div>
+                            <div class="feature-title">Quick Actions</div>
+                        </div>
+
+                        <div style="display: grid; gap: 10px;">
+                            <a href="registrations.php" class="btn btn-info">
+                                <i class="fas fa-user-check"></i> Pending Registrations
+                                <?php if ($stats['pending_registrations'] > 0): ?>
+                                    <span class="badge badge-warning"><?php echo $stats['pending_registrations']; ?></span>
+                                <?php endif; ?>
+                            </a>
+
+                            <a href="analytics.php" class="btn btn-primary">
+                                <i class="fas fa-brain"></i> AI Analytics Dashboard
+                            </a>
+
+                            <a href="system-management.php" class="btn btn-danger">
+                                <i class="fas fa-tools"></i> System Management
+                            </a>
+
+                            <a href="../reports/" class="btn btn-success" target="_blank">
+                                <i class="fas fa-folder-open"></i> View All Reports
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
+            <script src="../assets/js/main.js"></script>
+            <script src="../assets/js/pwa-manager.js"></script>
+            <script src="../assets/js/pwa-analytics.js"></script>
 </body>
 
 </html>

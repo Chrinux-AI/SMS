@@ -1,0 +1,18 @@
+<!-- Typing SVG for homepage, cyberpunk style, sequential dots -->
+<svg id="typing-indicator" width="60" height="20" viewBox="0 0 60 20" fill="none" aria-label="Typing indicator">
+  <circle cx="10" cy="10" r="6" fill="#00BFFF">
+    <set attributeName="opacity" to="1" begin="0s;dot3.end+0.2s" dur="0.2s" />
+    <set attributeName="opacity" to="0.2" begin="dot1.end+0.2s" dur="0.2s" id="dot1"/>
+  </circle>
+  <circle cx="30" cy="10" r="6" fill="#00BFFF" opacity="0.2">
+    <set attributeName="opacity" to="1" begin="dot1.end+0.2s" dur="0.2s" />
+    <set attributeName="opacity" to="0.2" begin="dot2.end+0.2s" dur="0.2s" id="dot2"/>
+  </circle>
+  <circle cx="50" cy="10" r="6" fill="#00BFFF" opacity="0.2">
+    <set attributeName="opacity" to="1" begin="dot2.end+0.2s" dur="0.2s" />
+    <set attributeName="opacity" to="0.2" begin="dot3.end+0.2s" dur="0.2s" id="dot3"/>
+  </circle>
+</svg>
+
+<!-- Usage: Place this in your homepage HTML where you want the typing indicator. -->
+<!-- You can also style #typing-indicator in your CSS for theme adaptation. -->

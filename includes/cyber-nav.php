@@ -10,6 +10,9 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Include theme loader
+require_once __DIR__ . '/theme-loader.php';
+
 $current_page = basename($_SERVER['PHP_SELF']);
 $user_name = $_SESSION['full_name'] ?? 'User';
 $user_role = $_SESSION['role'] ?? 'user';
@@ -218,22 +221,440 @@ if ($user_role === 'admin') {
             'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
         ],
     ];
+} elseif ($user_role === 'superadmin') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'crown', 'label' => 'Dashboard', 'badge' => null],
+            'schools.php' => ['icon' => 'school', 'label' => 'Schools', 'badge' => null],
+            'system-health.php' => ['icon' => 'heartbeat', 'label' => 'System Health', 'badge' => null],
+        ],
+        'Management' => [
+            'users.php' => ['icon' => 'users-cog', 'label' => 'All Users', 'badge' => null],
+            'roles.php' => ['icon' => 'user-shield', 'label' => 'Role Management', 'badge' => null],
+            'permissions.php' => ['icon' => 'key', 'label' => 'Permissions', 'badge' => null],
+        ],
+        'System' => [
+            'audit-logs.php' => ['icon' => 'clipboard-list', 'label' => 'Audit Logs', 'badge' => null],
+            'backup-restore.php' => ['icon' => 'database', 'label' => 'Backup & Restore', 'badge' => null],
+            'maintenance.php' => ['icon' => 'tools', 'label' => 'Maintenance', 'badge' => null],
+            'settings.php' => ['icon' => 'cog', 'label' => 'System Settings', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'owner') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'building', 'label' => 'Dashboard', 'badge' => null],
+            'revenue.php' => ['icon' => 'chart-line', 'label' => 'Revenue Analytics', 'badge' => null],
+            'schools.php' => ['icon' => 'school', 'label' => 'My Schools', 'badge' => null],
+        ],
+        'Finance' => [
+            'financial-overview.php' => ['icon' => 'wallet', 'label' => 'Financial Overview', 'badge' => null],
+            'investments.php' => ['icon' => 'hand-holding-usd', 'label' => 'Investments', 'badge' => null],
+            'reports.php' => ['icon' => 'file-invoice-dollar', 'label' => 'Financial Reports', 'badge' => null],
+        ],
+        'Management' => [
+            'principals.php' => ['icon' => 'user-tie', 'label' => 'Principals', 'badge' => null],
+            'performance.php' => ['icon' => 'chart-bar', 'label' => 'Performance', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'principal') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'landmark', 'label' => 'Dashboard', 'badge' => null],
+            'overview.php' => ['icon' => 'chart-pie', 'label' => 'School Overview', 'badge' => null],
+        ],
+        'Academic' => [
+            'teachers.php' => ['icon' => 'chalkboard-teacher', 'label' => 'Teachers', 'badge' => null],
+            'students.php' => ['icon' => 'user-graduate', 'label' => 'Students', 'badge' => null],
+            'classes.php' => ['icon' => 'door-open', 'label' => 'Classes', 'badge' => null],
+            'attendance.php' => ['icon' => 'clipboard-check', 'label' => 'Attendance', 'badge' => null],
+            'academics.php' => ['icon' => 'book-open', 'label' => 'Academics', 'badge' => null],
+        ],
+        'Management' => [
+            'staff.php' => ['icon' => 'users', 'label' => 'Staff Management', 'badge' => null],
+            'approvals.php' => ['icon' => 'user-check', 'label' => 'Approvals', 'badge' => null],
+            'announcements.php' => ['icon' => 'bullhorn', 'label' => 'Announcements', 'badge' => null],
+        ],
+        'Analytics' => [
+            'reports.php' => ['icon' => 'chart-line', 'label' => 'Reports', 'badge' => null],
+            'analytics.php' => ['icon' => 'brain', 'label' => 'AI Analytics', 'badge' => 'AI'],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+            '../forum/index.php' => ['icon' => 'comments', 'label' => 'The Quad Forum', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'vice-principal') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'user-tie', 'label' => 'Dashboard', 'badge' => null],
+            'overview.php' => ['icon' => 'chart-pie', 'label' => 'Overview', 'badge' => null],
+        ],
+        'Discipline' => [
+            'discipline.php' => ['icon' => 'gavel', 'label' => 'Discipline Records', 'badge' => null],
+            'incidents.php' => ['icon' => 'exclamation-triangle', 'label' => 'Incidents', 'badge' => null],
+            'behavior.php' => ['icon' => 'user-shield', 'label' => 'Behavior Tracking', 'badge' => null],
+        ],
+        'Academic' => [
+            'attendance.php' => ['icon' => 'clipboard-check', 'label' => 'Attendance', 'badge' => null],
+            'substitutions.php' => ['icon' => 'exchange-alt', 'label' => 'Substitutions', 'badge' => null],
+            'timetable.php' => ['icon' => 'calendar-week', 'label' => 'Timetable', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'accountant') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard/' => ['icon' => 'calculator', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Finance' => [
+            'fee-collection.php' => ['icon' => 'money-bill-wave', 'label' => 'Fee Collection', 'badge' => null],
+            'invoices.php' => ['icon' => 'file-invoice-dollar', 'label' => 'Invoices', 'badge' => null],
+            'payments.php' => ['icon' => 'credit-card', 'label' => 'Payments', 'badge' => null],
+            'expenses.php' => ['icon' => 'receipt', 'label' => 'Expenses', 'badge' => null],
+        ],
+        'Payroll' => [
+            'payroll.php' => ['icon' => 'hand-holding-usd', 'label' => 'Payroll', 'badge' => null],
+            'salary-slips.php' => ['icon' => 'file-alt', 'label' => 'Salary Slips', 'badge' => null],
+        ],
+        'Reports' => [
+            'reports.php' => ['icon' => 'chart-line', 'label' => 'Financial Reports', 'badge' => null],
+            'ledger.php' => ['icon' => 'book', 'label' => 'Ledger', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'librarian') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'book-reader', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Catalog' => [
+            'books.php' => ['icon' => 'book', 'label' => 'Book Catalog', 'badge' => null],
+            'add-book.php' => ['icon' => 'plus-circle', 'label' => 'Add Book', 'badge' => null],
+            'categories.php' => ['icon' => 'tags', 'label' => 'Categories', 'badge' => null],
+        ],
+        'Circulation' => [
+            'issue-book.php' => ['icon' => 'hand-holding', 'label' => 'Issue Book', 'badge' => null],
+            'return-book.php' => ['icon' => 'undo', 'label' => 'Return Book', 'badge' => null],
+            'overdue.php' => ['icon' => 'exclamation-circle', 'label' => 'Overdue Books', 'badge' => null],
+        ],
+        'Members' => [
+            'members.php' => ['icon' => 'users', 'label' => 'Members', 'badge' => null],
+            'fines.php' => ['icon' => 'money-bill', 'label' => 'Fines', 'badge' => null],
+        ],
+        'Reports' => [
+            'reports.php' => ['icon' => 'chart-bar', 'label' => 'Reports', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'transport') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'bus', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Fleet' => [
+            'vehicles.php' => ['icon' => 'car', 'label' => 'Vehicles', 'badge' => null],
+            'drivers.php' => ['icon' => 'id-badge', 'label' => 'Drivers', 'badge' => null],
+            'maintenance.php' => ['icon' => 'tools', 'label' => 'Maintenance', 'badge' => null],
+        ],
+        'Routes' => [
+            'routes.php' => ['icon' => 'route', 'label' => 'Routes', 'badge' => null],
+            'stops.php' => ['icon' => 'map-marker-alt', 'label' => 'Stops', 'badge' => null],
+            'tracking.php' => ['icon' => 'map-marked-alt', 'label' => 'Live Tracking', 'badge' => null],
+        ],
+        'Students' => [
+            'allocations.php' => ['icon' => 'user-plus', 'label' => 'Allocations', 'badge' => null],
+            'attendance.php' => ['icon' => 'clipboard-check', 'label' => 'Attendance', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'hostel') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'bed', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Accommodation' => [
+            'hostels.php' => ['icon' => 'building', 'label' => 'Hostels', 'badge' => null],
+            'rooms.php' => ['icon' => 'door-open', 'label' => 'Rooms', 'badge' => null],
+            'allocations.php' => ['icon' => 'user-plus', 'label' => 'Allocations', 'badge' => null],
+        ],
+        'Management' => [
+            'attendance.php' => ['icon' => 'clipboard-check', 'label' => 'Attendance', 'badge' => null],
+            'mess.php' => ['icon' => 'utensils', 'label' => 'Mess Management', 'badge' => null],
+            'complaints.php' => ['icon' => 'exclamation-circle', 'label' => 'Complaints', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'canteen') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'utensils', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Menu' => [
+            'menu.php' => ['icon' => 'clipboard-list', 'label' => 'Menu Management', 'badge' => null],
+            'items.php' => ['icon' => 'hamburger', 'label' => 'Food Items', 'badge' => null],
+            'categories.php' => ['icon' => 'tags', 'label' => 'Categories', 'badge' => null],
+        ],
+        'Orders' => [
+            'orders.php' => ['icon' => 'shopping-cart', 'label' => 'Orders', 'badge' => null],
+            'pos.php' => ['icon' => 'cash-register', 'label' => 'POS', 'badge' => null],
+        ],
+        'Inventory' => [
+            'stock.php' => ['icon' => 'boxes', 'label' => 'Stock', 'badge' => null],
+            'suppliers.php' => ['icon' => 'truck', 'label' => 'Suppliers', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'nurse') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'heartbeat', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Health' => [
+            'patients.php' => ['icon' => 'procedures', 'label' => 'Patient Records', 'badge' => null],
+            'checkups.php' => ['icon' => 'stethoscope', 'label' => 'Health Checkups', 'badge' => null],
+            'incidents.php' => ['icon' => 'ambulance', 'label' => 'Incidents', 'badge' => null],
+        ],
+        'Medication' => [
+            'medications.php' => ['icon' => 'pills', 'label' => 'Medications', 'badge' => null],
+            'dispensary.php' => ['icon' => 'prescription-bottle', 'label' => 'Dispensary', 'badge' => null],
+        ],
+        'Reports' => [
+            'reports.php' => ['icon' => 'chart-line', 'label' => 'Health Reports', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'counselor') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'hands-helping', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Counseling' => [
+            'appointments.php' => ['icon' => 'calendar-check', 'label' => 'Appointments', 'badge' => null],
+            'sessions.php' => ['icon' => 'comments', 'label' => 'Sessions', 'badge' => null],
+            'cases.php' => ['icon' => 'folder-open', 'label' => 'Cases', 'badge' => null],
+        ],
+        'Students' => [
+            'students.php' => ['icon' => 'user-graduate', 'label' => 'Student Profiles', 'badge' => null],
+            'referrals.php' => ['icon' => 'share', 'label' => 'Referrals', 'badge' => null],
+        ],
+        'Reports' => [
+            'reports.php' => ['icon' => 'chart-line', 'label' => 'Reports', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'admin-officer') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'user-tie', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Front Desk' => [
+            'visitors.php' => ['icon' => 'users', 'label' => 'Visitors', 'badge' => null],
+            'enquiries.php' => ['icon' => 'question-circle', 'label' => 'Enquiries', 'badge' => null],
+            'admissions.php' => ['icon' => 'user-plus', 'label' => 'Admissions', 'badge' => null],
+        ],
+        'Documents' => [
+            'certificates.php' => ['icon' => 'certificate', 'label' => 'Certificates', 'badge' => null],
+            'id-cards.php' => ['icon' => 'id-card', 'label' => 'ID Cards', 'badge' => null],
+            'letters.php' => ['icon' => 'envelope', 'label' => 'Letters', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'class-teacher') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'chalkboard-teacher', 'label' => 'Dashboard', 'badge' => null],
+            'my-class.php' => ['icon' => 'door-open', 'label' => 'My Class', 'badge' => null],
+        ],
+        'Students' => [
+            'students.php' => ['icon' => 'user-graduate', 'label' => 'Students', 'badge' => null],
+            'attendance.php' => ['icon' => 'clipboard-check', 'label' => 'Attendance', 'badge' => null],
+            'behavior.php' => ['icon' => 'user-shield', 'label' => 'Behavior', 'badge' => null],
+        ],
+        'Academic' => [
+            'grades.php' => ['icon' => 'chart-line', 'label' => 'Grades', 'badge' => null],
+            'report-cards.php' => ['icon' => 'file-alt', 'label' => 'Report Cards', 'badge' => null],
+        ],
+        'Parents' => [
+            'parent-comms.php' => ['icon' => 'users', 'label' => 'Parent Communication', 'badge' => null],
+            'meetings.php' => ['icon' => 'calendar-alt', 'label' => 'Parent Meetings', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'subject-coordinator') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'sitemap', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Curriculum' => [
+            'subjects.php' => ['icon' => 'book-open', 'label' => 'Subjects', 'badge' => null],
+            'syllabus.php' => ['icon' => 'list-alt', 'label' => 'Syllabus', 'badge' => null],
+            'lesson-plans.php' => ['icon' => 'clipboard', 'label' => 'Lesson Plans', 'badge' => null],
+        ],
+        'Resources' => [
+            'question-bank.php' => ['icon' => 'database', 'label' => 'Question Bank', 'badge' => null],
+            'resources.php' => ['icon' => 'folder-open', 'label' => 'Resources', 'badge' => null],
+        ],
+        'Teachers' => [
+            'teachers.php' => ['icon' => 'chalkboard-teacher', 'label' => 'Teachers', 'badge' => null],
+            'performance.php' => ['icon' => 'chart-bar', 'label' => 'Performance', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'alumni') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'user-graduate', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Network' => [
+            'directory.php' => ['icon' => 'address-book', 'label' => 'Alumni Directory', 'badge' => null],
+            'events.php' => ['icon' => 'calendar-alt', 'label' => 'Events', 'badge' => null],
+            'reunions.php' => ['icon' => 'users', 'label' => 'Reunions', 'badge' => null],
+        ],
+        'Engagement' => [
+            'mentorship.php' => ['icon' => 'hands-helping', 'label' => 'Mentorship', 'badge' => null],
+            'jobs.php' => ['icon' => 'briefcase', 'label' => 'Job Board', 'badge' => null],
+            'donate.php' => ['icon' => 'heart', 'label' => 'Donate', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+            '../forum/index.php' => ['icon' => 'comments', 'label' => 'The Quad Forum', 'badge' => null],
+        ],
+        'Account' => [
+            'profile.php' => ['icon' => 'user', 'label' => 'Profile', 'badge' => null],
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} elseif ($user_role === 'general') {
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'home', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Services' => [
+            'services.php' => ['icon' => 'concierge-bell', 'label' => 'Services', 'badge' => null],
+            'requests.php' => ['icon' => 'paper-plane', 'label' => 'My Requests', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'profile.php' => ['icon' => 'user', 'label' => 'Profile', 'badge' => null],
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
+} else {
+    // Default navigation for any undefined role
+    $nav_sections = [
+        'Core' => [
+            'dashboard.php' => ['icon' => 'home', 'label' => 'Dashboard', 'badge' => null],
+        ],
+        'Communication' => [
+            '../messages.php' => ['icon' => 'comments', 'label' => 'Messages', 'badge' => $unread_count > 0 ? $unread_count : null],
+            '../notices.php' => ['icon' => 'bullhorn', 'label' => 'Notice Board', 'badge' => null],
+        ],
+        'Account' => [
+            'settings.php' => ['icon' => 'cog', 'label' => 'Settings', 'badge' => null],
+        ],
+    ];
 }
 ?>
 
 <!-- Hamburger Menu Button -->
-<button class="hamburger-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
-    <i class="fas fa-bars"></i>
+<button class="hamburger-btn" id="sidebarToggle" aria-label="Toggle Sidebar" aria-expanded="false" aria-controls="cyberSidebar">
+    <i class="fas fa-bars" aria-hidden="true"></i>
 </button>
 
 <!-- Sidebar Overlay for Mobile -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="sidebar-overlay" id="sidebarOverlay" role="presentation"></div>
 
 <!-- Cyberpunk Sidebar -->
-<aside class="cyber-sidebar slide-in" id="cyberSidebar">
+<aside class="cyber-sidebar slide-in" id="cyberSidebar" role="navigation" aria-label="Main Navigation">
     <!-- Brand Section -->
     <div class="sidebar-brand">
-        <div class="brand-orb">
+        <div class="brand-orb" aria-hidden="true">
             <i class="fas fa-graduation-cap"></i>
         </div>
         <h2 class="brand-title">SMS</h2>
@@ -241,17 +662,17 @@ if ($user_role === 'admin') {
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="sidebar-menu">
+    <nav class="sidebar-menu" aria-label="Dashboard Navigation">
         <?php foreach ($nav_sections as $section_name => $items): ?>
-            <div class="menu-section-title"><?php echo $section_name; ?></div>
+            <div class="menu-section-title" role="heading" aria-level="3"><?php echo $section_name; ?></div>
             <?php foreach ($items as $page => $item): ?>
-                <a href="<?php echo $page; ?>" class="menu-item <?php echo $current_page === $page ? 'active' : ''; ?>">
-                    <span class="menu-icon">
+                <a href="<?php echo $page; ?>" class="menu-item <?php echo $current_page === $page ? 'active' : ''; ?>" <?php echo $current_page === $page ? 'aria-current="page"' : ''; ?>>
+                    <span class="menu-icon" aria-hidden="true">
                         <i class="fas fa-<?php echo $item['icon']; ?>"></i>
                     </span>
                     <span class="menu-label"><?php echo $item['label']; ?></span>
                     <?php if ($item['badge']): ?>
-                        <span class="menu-badge"><?php echo $item['badge']; ?></span>
+                        <span class="menu-badge" aria-label="<?php echo $item['badge']; ?> notifications"><?php echo $item['badge']; ?></span>
                     <?php endif; ?>
                 </a>
             <?php endforeach; ?>
@@ -263,6 +684,15 @@ if ($user_role === 'admin') {
                 <i class="fas fa-sign-out-alt"></i>
             </span>
             <span class="menu-label">Logout</span>
+        </a>
+
+        <!-- Theme Selector Button -->
+        <a href="javascript:void(0)" class="menu-item theme-toggle-btn" onclick="openThemeModal()" title="Change Theme">
+            <span class="menu-icon">
+                <i class="fas fa-palette"></i>
+            </span>
+            <span class="menu-label">Theme</span>
+            <span class="menu-badge theme-indicator"><?php echo ucfirst(str_replace('-', ' ', substr(get_user_theme(), 0, 6))); ?></span>
         </a>
     </nav>
 
@@ -280,46 +710,92 @@ if ($user_role === 'admin') {
     </div>
 </aside>
 
+<?php
+// Include Theme Selector Modal (once only)
+include __DIR__ . '/theme-selector.php';
+?>
+
 <!-- Sidebar Toggle Script -->
 <script>
     (function() {
-        const sidebar = document.getElementById('cyberSidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const sidebar = document.getElementById('cyberSidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-        if (sidebarToggle && sidebar && sidebarOverlay) {
-            // Toggle sidebar
-            sidebarToggle.addEventListener('click', function() {
-                const isMobile = window.innerWidth <= 1024;
+            if (sidebarToggle && sidebar && sidebarOverlay) {
+                // Toggle sidebar function
+                function toggleSidebar() {
+                    const isMobile = window.innerWidth <= 1024;
+                    const isExpanded = sidebarToggle.getAttribute('aria-expanded') === 'true';
 
-                if (isMobile) {
-                    // Mobile: use .active class
-                    sidebar.classList.toggle('active');
-                    sidebarOverlay.classList.toggle('active');
-                } else {
-                    // Desktop: use .hidden class
-                    sidebar.classList.toggle('hidden');
+                    if (isMobile) {
+                        sidebar.classList.toggle('active');
+                        sidebarOverlay.classList.toggle('active');
+                    } else {
+                        sidebar.classList.toggle('hidden');
+                    }
+
+                    // Update ARIA state
+                    sidebarToggle.setAttribute('aria-expanded', !isExpanded);
                 }
-            });
 
-            // Close sidebar when clicking overlay (mobile only)
-            sidebarOverlay.addEventListener('click', function() {
-                sidebar.classList.remove('active');
-                sidebarOverlay.classList.remove('active');
-            });
+                // Close sidebar function
+                function closeSidebar() {
+                    sidebar.classList.remove('active');
+                    sidebarOverlay.classList.remove('active');
+                    sidebarToggle.setAttribute('aria-expanded', 'false');
+                }
 
-            // Close sidebar on mobile when clicking a link
-            const menuItems = sidebar.querySelectorAll('.menu-item');
-            menuItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 1024) {
-                        sidebar.classList.remove('active');
-                        sidebarOverlay.classList.remove('active');
+                // Click handler
+                sidebarToggle.addEventListener('click', toggleSidebar);
+
+                // Keyboard handler for toggle button
+                sidebarToggle.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleSidebar();
                     }
                 });
-            });
-        }
-    })();
+
+                // Close sidebar when clicking overlay (mobile only)
+                sidebarOverlay.addEventListener('click', closeSidebar);
+
+                // Escape key to close sidebar
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+                        closeSidebar();
+                        sidebarToggle.focus();
+                    }
+                });
+
+                // Close sidebar on mobile when clicking a link
+                const menuItems = sidebar.querySelectorAll('.menu-item');
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        if (window.innerWidth <= 1024) {
+                            closeSidebar();
+                        }
+                    });
+                });
+
+                // Trap focus in sidebar when open on mobile
+                sidebar.addEventListener('keydown', function(e) {
+                        if (e.key === 'Tab' && sidebar.classList.contains('active')) {
+                            const focusableElements = sidebar.querySelectorAll('a, button');
+                            const firstElement = focusableElements[0];
+                            const lastElement = focusableElements[focusableElements.length - 1];
+
+                            if (e.shiftKey && document.activeElement === firstElement) {
+                                e.preventDefault();
+                                lastElement.focus();
+                            } else if (!e.shiftKey && document.activeElement === lastElement) {
+                                e.preventDefault();
+                                firstElement.focus();
+                            }
+                        }
+                    }
+                }
+            })();
 </script>
 
 <?php

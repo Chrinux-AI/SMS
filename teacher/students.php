@@ -4,10 +4,7 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
-    header('Location: ../login.php');
-    exit;
-}
+require_role('teacher', '../login.php');
 
 $teacher_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];
@@ -27,12 +24,13 @@ $students = db()->fetchAll("
 
 // Unread messages
 $unread_count = db()->fetchOne("
-    SELECT COUNT(*) as count FROM message_recipients 
+    SELECT COUNT(*) as count FROM message_recipients
     WHERE recipient_id = ? AND is_read = 0 AND deleted_at IS NULL
 ", [$teacher_id])['count'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,12 +43,13 @@ $unread_count = db()->fetchOne("
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-layout">
+    <div class="cyber-layout">
         <?php include '../includes/cyber-nav.php'; ?>
 
         <main class="cyber-main">
@@ -136,4 +135,5 @@ $unread_count = db()->fetchOne("
     <script src="../assets/js/pwa-manager.js"></script>
     <script src="../assets/js/pwa-analytics.js"></script>
 </body>
+
 </html>

@@ -26,7 +26,12 @@ class Cache
             return null;
         }
 
-        $data = unserialize(file_get_contents($file));
+        // Use JSON instead of unserialize for security
+        $data = json_decode(file_get_contents($file), true);
+
+        if ($data === null) {
+            return null;
+        }
 
         // Check expiration
         if ($data['expires'] < time()) {
@@ -47,7 +52,8 @@ class Cache
             'expires' => time() + $ttl
         ];
 
-        file_put_contents($file, serialize($data), LOCK_EX);
+        // Use JSON instead of serialize for security
+        file_put_contents($file, json_encode($data), LOCK_EX);
     }
 
     public function remember($key, $ttl, $callback)

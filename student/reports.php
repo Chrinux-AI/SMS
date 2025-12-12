@@ -3,12 +3,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-
-// Check if user is logged in and is a student
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'student') {
-    header('Location: ../login.php');
-    exit();
-}
+require_role('student');
 
 $user_id = $_SESSION['user_id'];
 
@@ -250,7 +245,7 @@ $page_title = "My Reports";
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<?php include '../includes/cyber-nav.php'; ?>
+    <?php include '../includes/cyber-nav.php'; ?>
 
     <div class="reports-container">
         <h1><i class="fas fa-chart-line"></i> My Academic Reports</h1>

@@ -550,3 +550,17 @@ tbody tr:hover {
         padding: 10px;
     }
 }
+
+/* ========================================
+   GLOBAL OVERFLOW FIX - ENSURES SCROLLING
+   ======================================== */
+html {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+}
+
+body {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    max-width: 100vw;
+}

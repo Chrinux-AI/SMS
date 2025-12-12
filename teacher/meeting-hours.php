@@ -5,13 +5,12 @@
  * Set availability for parent meetings
  */
 
-require_once '../includes/session-handler.php';
-require_once '../includes/db.php';
+session_start();
+require_once '../includes/config.php';
+require_once '../includes/functions.php';
+require_once '../includes/database.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
-    header('Location: ../login.php');
-    exit;
-}
+require_role('teacher', '../login.php');
 
 $user_id = $_SESSION['user_id'];
 $page_title = "Meeting Hours";
@@ -66,7 +65,7 @@ $bookings = db()->fetchAll("
 ", [$user_id]);
 
 include '../includes/cyber-header.php';
-<?php include '../includes/cyber-nav.php'; ?>
+include '../includes/cyber-nav.php';
 ?>
 
 <div class="cyber-content">

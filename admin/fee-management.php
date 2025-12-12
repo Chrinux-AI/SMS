@@ -3,7 +3,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-require_admin('../login.php');
+require_role('admin');
 
 $message = '';
 $message_type = '';
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['record_payment'])) {
 // Get all fees with student info
 $fees = db()->fetchAll("
     SELECT f.*, s.student_id, CONCAT(u.first_name, ' ', u.last_name) as student_name,
-           s.grade, s.class
+           s.grade_level, '' as class
     FROM fees f
     LEFT JOIN students s ON f.student_id = s.id
     LEFT JOIN users u ON s.user_id = u.id
@@ -55,7 +55,7 @@ $fees = db()->fetchAll("
 
 // Get all students for dropdown
 $students = db()->fetchAll("
-    SELECT s.id, s.student_id, CONCAT(u.first_name, ' ', u.last_name) as name, s.grade
+    SELECT s.id, s.student_id, CONCAT(u.first_name, ' ', u.last_name) as name, s.grade_level
     FROM students s
     LEFT JOIN users u ON s.user_id = u.id
     ORDER BY s.student_id
@@ -87,12 +87,13 @@ $full_name = $_SESSION['full_name'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>

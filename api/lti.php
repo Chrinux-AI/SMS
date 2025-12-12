@@ -57,6 +57,7 @@ try {
             // Get user details
             $user = db()->fetchOne("SELECT * FROM users WHERE id = ?", [$result['user_id']]);
             $_SESSION['role'] = $user['role'];
+            $_SESSION['user_role'] = $user['role'];  // For compatibility with has_role() function
             $_SESSION['full_name'] = $user['first_name'] . ' ' . $user['last_name'];
             $_SESSION['username'] = $user['username'];
 

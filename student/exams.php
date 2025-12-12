@@ -8,8 +8,7 @@ session_start();
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
-
-require_student();
+require_role('student');
 
 $page_title = "My Examinations";
 $current_page = "exams.php";

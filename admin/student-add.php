@@ -11,7 +11,7 @@ require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
 // Require admin access
-require_admin('../login.php');
+require_role('admin');
 
 $page_title = 'Add New Student';
 $page_icon = 'user-plus';
@@ -109,14 +109,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Send welcome email
                 $to = $email;
                 $subject = "Welcome to School Management System - Your Account Details";
-                $email_message = "
+                $current_year = date('Y');
+                $host = $_SERVER['HTTP_HOST'];
+                $email_message = <<<HTML
                 <html>
                 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/attendance/manifest.json">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
+                    <meta charset='UTF-8'>
                     <title>Welcome to School Management System</title>
                     <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
@@ -128,19 +126,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         .footer { background: #f9f9f9; padding: 20px; text-align: center; color: #666; font-size: 12px; }
                     </style>
                 </head>
-                <body class="cyber-bg">
-    <div class="starfield"></div>
-    <div class="cyber-grid"></div>
-<div class='container'>
+                <body>
+                    <div class='container'>
                         <div class='header'>
-                            <h1>🎓 Welcome to School Management System!</h1>
+                            <h1>Welcome to School Management System!</h1>
                         </div>
                         <div class='content'>
                             <p>Hello <strong>{$first_name} {$last_name}</strong>,</p>
                             <p>Your student account has been created successfully!</p>
 
                             <div class='id-box'>
-                                <h3 style='color: #059669; margin-bottom: 10px;'>📋 Your Student ID</h3>
+                                <h3 style='color: #059669; margin-bottom: 10px;'>Your Student ID</h3>
                                 <div class='student-id'>{$student_id}</div>
                             </div>
 
@@ -151,33 +147,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </ul>
 
                             <p style='text-align: center; margin-top: 30px;'>
-                                <a href='http://{$_SERVER['HTTP_HOST']}/attendance/login.php' style='display: inline-block; background: #10b981; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px;'>Login Now</a>
+                                <a href='http://{$host}/attendance/login.php' style='display: inline-block; background: #10b981; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px;'>Login Now</a>
                             </p>
                         </div>
                         <div class='footer'>
-                            <p>&copy; " . date('Y') . " School Management System. All rights reserved.</p>
+                            <p>&copy; {$current_year} School Management System. All rights reserved.</p>
                         </div>
                     </div>
-                
-    <script src="../assets/js/main.js"></script>
-    <script src="../assets/js/pwa-manager.js"></script>
-    <script src="../assets/js/pwa-analytics.js"></script>
-</body>
+                </body>
                 </html>
-                <script>
-                    function togglePassword(fieldId, btn) {
-                        var input = document.getElementById(fieldId);
-                        if (!input) return;
-                        if (input.type === 'password') {
-                            input.type = 'text';
-                            btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.94 17.94L6.06 6.06" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7 1.7 0 3.31-.33 4.78-.93" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-                        } else {
-                            input.type = 'password';
-                            btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-                        }
-                    }
-                </script>
-                ";
+HTML;
 
                 $headers = "MIME-Version: 1.0" . "\r\n";
                 $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -210,12 +189,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="../assets/css/cyberpunk-ui.css" rel="stylesheet">
-    
+
 </head>
+
 <body class="cyber-bg">
     <div class="starfield"></div>
     <div class="cyber-grid"></div>
-<div class="cyber-bg">
+    <div class="cyber-bg">
         <div class="starfield"></div>
     </div>
     <div class="cyber-grid"></div>
@@ -296,7 +276,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <i class="fas fa-lock"></i> Password *
                                     </label>
                                     <button type="button" class="pw-toggle" aria-label="Toggle password visibility" onclick="togglePassword('password', this)">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                            <circle cx="12" cy="12" r="3" stroke="#10b981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
                                     </button>
                                     <input type="password" id="password" name="password" class="cyber-input pw-input" required>
                                 </div>
@@ -425,4 +408,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 </script>
+
 </html>

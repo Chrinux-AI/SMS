@@ -17,7 +17,7 @@ require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/database.php';
 
-require_parent();
+require_role('parent');
 
 $parent_id = $_SESSION['user_id'];
 $full_name = $_SESSION['full_name'];

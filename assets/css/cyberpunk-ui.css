@@ -57,8 +57,6 @@
 }
 
 html {
-    overflow-y: scroll;
-    overflow-x: hidden;
     scroll-behavior: smooth;
 }
 
@@ -67,8 +65,6 @@ body {
     background: var(--void-black);
     color: var(--text-secondary);
     min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
     position: relative;
 }
 
@@ -87,8 +83,6 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     min-height: 100vh;
     background: var(--void-black);
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 /* Fixed background layer (for use as separate div) */
@@ -132,6 +126,8 @@ h1, h2, h3, h4, h5, h6 {
     background-size: 200px 200px;
     opacity: 0.3;
     animation: starfieldMove 200s linear infinite;
+    pointer-events: none;
+    z-index: -1;
 }
 
 @keyframes hologramShift {
@@ -870,6 +866,36 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--text-muted);
 }
 
+/* Password Toggle Wrapper */
+.pw-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pw-wrapper .cyber-input,
+.pw-wrapper .pw-input {
+    flex: 1;
+    padding-right: 50px;
+}
+
+.pw-wrapper .pw-toggle {
+    position: absolute;
+    right: 12px;
+    background: transparent;
+    border: none;
+    color: var(--cyber-cyan);
+    cursor: pointer;
+    padding: 8px;
+    font-size: 1rem;
+    transition: color 0.3s;
+    z-index: 5;
+}
+
+.pw-wrapper .pw-toggle:hover {
+    color: var(--neon-green);
+}
+
 /* ========================================
    RESPONSIVE DESIGN
    ======================================== */
@@ -1212,4 +1238,72 @@ body.sidebar-hidden .hamburger-btn {
     .holo-card {
         padding: 15px;
     }
+}
+
+/* ========================================
+   MASTER OVERFLOW CONTROL
+   Single source of truth for all scrolling
+   ======================================== */
+html {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Layout containers - NO overflow hidden */
+.cyber-bg,
+.cyber-layout,
+.cyber-main,
+.main-content,
+.content-wrapper,
+.page-wrapper {
+    overflow: visible !important;
+    min-height: auto;
+}
+
+/* Only these should be hidden - decorative elements */
+.starfield,
+.cyber-grid,
+.cyber-bg-layer,
+.bg-animation,
+.grid-overlay {
+    overflow: hidden;
+    pointer-events: none !important;
+    position: fixed;
+    z-index: -1;
+}
+
+/* Cards can have overflow hidden for effects */
+.holo-card,
+.stat-orb,
+.cyber-card {
+    overflow: hidden;
+}
+
+/* ========================================
+   FORM ELEMENTS - ENSURE INTERACTIVITY
+   ======================================== */
+input, select, textarea, button, label, a {
+    position: relative;
+    z-index: 1;
+}
+
+form {
+    position: relative;
+    z-index: 1;
+}
+
+/* Background elements never block clicks */
+.cyber-bg::before,
+.cyber-bg::after,
+.particle,
+.star {
+    pointer-events: none !important;
 }
