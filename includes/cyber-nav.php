@@ -105,6 +105,7 @@ if ($user_role === 'admin') {
         ],
         'Management' => [
             'account-management.php' => ['icon' => 'users-cog', 'label' => 'Account Management', 'badge' => 'NEW'],
+            'exam-management.php' => ['icon' => 'clipboard-list', 'label' => 'Entrance Exams', 'badge' => 'NEW'],
             'users.php' => ['icon' => 'users', 'label' => 'All Users', 'badge' => null],
             'registrations.php' => ['icon' => 'user-plus', 'label' => 'Registrations', 'badge' => null],
             'class-enrollment.php' => ['icon' => 'user-graduate', 'label' => 'Class Enrollment', 'badge' => null],

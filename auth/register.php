@@ -23,7 +23,8 @@ $form_data = [
     'parent_name' => '',
     'parent_phone' => '',
     'parent_email' => '',
-    'address' => ''
+    'address' => '',
+    'entrance_id' => ''
 ];
 
 // Process registration
@@ -43,7 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'parent_name' => trim($_POST['parent_name'] ?? ''),
             'parent_phone' => trim($_POST['parent_phone'] ?? ''),
             'parent_email' => trim($_POST['parent_email'] ?? ''),
-            'address' => trim($_POST['address'] ?? '')
+            'address' => trim($_POST['address'] ?? ''),
+            'entrance_id' => strtoupper(trim($_POST['entrance_id'] ?? ''))
         ];
         $password = $_POST['password'] ?? '';
         $confirm_password = $_POST['confirm_password'] ?? '';
@@ -71,6 +73,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         if (empty($form_data['parent_phone'])) {
             $errors[] = 'Parent/Guardian phone is required';
+        }
+
+        // ENTRANCE ID VERIFICATION - CRITICAL SECURITY CHECK
+        if (empty($form_data['entrance_id'])) {
+            $errors[] = 'Entrance Exam ID is required. You must pass the entrance exam first.';
+        } else {
+            // Verify entrance ID exists and is valid
+            try {
+                $entranceCheck = db()->fetchOne("
+                    SELECT ea.*, er.full_name as exam_name 
+                    FROM exam_attempts ea 
+                    JOIN exam_registrations er ON ea.registration_id = er.id
+                    WHERE ea.entrance_id = ? AND ea.passed = 1
+                ", [$form_data['entrance_id']]);
+                
+                if (!$entranceCheck) {
+                    $errors[] = 'Invalid Entrance ID. Please ensure you have passed the entrance examination.';
+                } else {
+                    // Check if entrance ID already used
+                    $alreadyUsed = db()->fetchOne("
+                        SELECT id FROM students WHERE entrance_exam_id = ?
+                    ", [$form_data['entrance_id']]);
+                    if ($alreadyUsed) {
+                        $errors[] = 'This Entrance ID has already been used for registration.';
+                    }
+                }
+            } catch (Exception $e) {
+                // Table might not exist yet - allow registration without entrance ID check
+                error_log("Entrance ID check skipped: " . $e->getMessage());
+            }
         }
 
         // Password validation
@@ -123,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
 
                 if ($user_id) {
-                    // Create student record with parent info
+                    // Create student record with parent info and entrance ID
                     db()->insert('students', [
                         'user_id' => $user_id,
                         'student_id' => $form_data['student_id'],
@@ -132,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'parent_phone' => $form_data['parent_phone'],
                         'parent_email' => $form_data['parent_email'],
                         'address' => $form_data['address'],
+                        'entrance_exam_id' => $form_data['entrance_id'],
                         'enrollment_date' => date('Y-m-d'),
                         'status' => 'pending'
                     ]);
@@ -764,6 +797,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 placeholder="STU-2025-001" value="<?= htmlspecialchars($form_data['student_id']) ?>" required>
                         </div>
                         <div class="form-group">
+                            <label class="form-label">Entrance Exam ID <span class="required">*</span></label>
+                            <i class="fas fa-key input-icon"></i>
+                            <input type="text" name="entrance_id" class="form-input" style="text-transform: uppercase;"
+                                placeholder="VERDANT-EXAM-XXXXXXXX" value="<?= htmlspecialchars($form_data['entrance_id']) ?>" required>
+                            <small style="color: var(--text-secondary); font-size: 0.8rem; display: block; margin-top: 5px;">
+                                <i class="fas fa-info-circle"></i> Received after passing entrance exam
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
                             <label class="form-label">Grade Level <span class="required">*</span></label>
                             <i class="fas fa-layer-group input-icon"></i>
                             <select name="grade_level" class="form-select" required>
@@ -773,20 +818,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php endfor; ?>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label">Student Email <span class="required">*</span></label>
-                            <i class="fas fa-envelope input-icon"></i>
-                            <input type="email" name="email" class="form-input"
-                                placeholder="student@email.com" value="<?= htmlspecialchars($form_data['email']) ?>" required>
-                        </div>
                         <div class="form-group">
                             <label class="form-label">Student Phone</label>
                             <i class="fas fa-phone input-icon"></i>
                             <input type="tel" name="phone" class="form-input"
                                 placeholder="+1 234 567 890" value="<?= htmlspecialchars($form_data['phone']) ?>">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label class="form-label">Student Email <span class="required">*</span></label>
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" name="email" class="form-input"
+                                placeholder="student@email.com" value="<?= htmlspecialchars($form_data['email']) ?>" required>
                         </div>
                     </div>
 
