@@ -1,4 +1,5 @@
 <?php
+
 /**
  * VERDANT SMS v3.0 — EMAIL + OTP VERIFICATION
  * Verifies user email via token or 6-digit OTP
@@ -17,9 +18,9 @@ $email = '';
 // Handle token verification (from email link)
 if (isset($_GET['token']) && !empty($_GET['token'])) {
     $token = $_GET['token'];
-    
+
     $user = db()->fetchOne("SELECT id, email, email_verified FROM users WHERE verification_token = ?", [$token]);
-    
+
     if ($user) {
         if ($user['email_verified']) {
             $success = 'Your email is already verified. You can now login.';
@@ -35,21 +36,21 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
 // Handle OTP verification
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    
+
     if ($action === 'verify_otp') {
         $email = trim($_POST['email'] ?? '');
         $otp = trim($_POST['otp'] ?? '');
-        
+
         if (empty($email) || empty($otp)) {
             $error = 'Email and OTP are required.';
             $showOtpForm = true;
         } else {
             $user = db()->fetchOne("
-                SELECT id, otp_code, otp_expires_at, email_verified 
-                FROM users 
+                SELECT id, otp_code, otp_expires_at, email_verified
+                FROM users
                 WHERE email = ? AND otp_code = ?
             ", [$email, $otp]);
-            
+
             if (!$user) {
                 $error = 'Invalid OTP code.';
                 $showOtpForm = true;
@@ -65,12 +66,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($action === 'resend_otp') {
         $email = trim($_POST['email'] ?? '');
-        
+
         if (empty($email)) {
             $error = 'Email is required.';
         } else {
             $user = db()->fetchOne("SELECT id, first_name, email_verified FROM users WHERE email = ?", [$email]);
-            
+
             if (!$user) {
                 $error = 'No account found with this email.';
             } elseif ($user['email_verified']) {
@@ -79,19 +80,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Generate new OTP
                 $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
                 $expires = date('Y-m-d H:i:s', strtotime('+15 minutes'));
-                
+
                 db()->query("UPDATE users SET otp_code = ?, otp_expires_at = ? WHERE id = ?", [$otp, $expires, $user['id']]);
-                
+
                 // Send OTP email
                 send_email(
                     $email,
                     'Your Verdant SMS Verification Code',
                     "Hello " . ($user['first_name'] ?? 'User') . ",\n\n" .
-                    "Your verification code is: $otp\n\n" .
-                    "This code expires in 15 minutes.\n\n" .
-                    "If you didn't request this, please ignore this email."
+                        "Your verification code is: $otp\n\n" .
+                        "This code expires in 15 minutes.\n\n" .
+                        "If you didn't request this, please ignore this email."
                 );
-                
+
                 $success = 'A new OTP has been sent to your email.';
                 $showOtpForm = true;
             }
@@ -104,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,9 +123,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             --success: #00ff88;
             --error: #ff4757;
         }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background: var(--dark-bg);
@@ -133,42 +139,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             justify-content: center;
             color: var(--text-primary);
         }
-        
+
         .cyber-grid {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: 
-                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px),
-                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px);
             background-size: 50px 50px;
             z-index: -1;
         }
-        
+
         .container {
             max-width: 450px;
             width: 90%;
             padding: 20px;
         }
-        
+
         .verify-card {
             background: var(--card-bg);
-            border: 1px solid rgba(0,255,136,0.3);
+            border: 1px solid rgba(0, 255, 136, 0.3);
             border-radius: 20px;
             padding: 40px;
             text-align: center;
-            box-shadow: 0 0 40px rgba(0,255,136,0.1);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
         }
-        
+
         .verify-icon {
             font-size: 4rem;
             margin-bottom: 20px;
         }
-        
-        .verify-icon.success { color: var(--success); }
-        .verify-icon.error { color: var(--error); }
-        .verify-icon.pending { color: var(--neon-blue); }
-        
+
+        .verify-icon.success {
+            color: var(--success);
+        }
+
+        .verify-icon.error {
+            color: var(--error);
+        }
+
+        .verify-icon.pending {
+            color: var(--neon-blue);
+        }
+
         h1 {
             font-size: 1.8rem;
             margin-bottom: 15px;
@@ -176,65 +192,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         p {
             color: var(--text-muted);
             margin-bottom: 25px;
             line-height: 1.6;
         }
-        
+
         .alert {
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
-        
+
         .alert-success {
-            background: rgba(0,255,136,0.15);
+            background: rgba(0, 255, 136, 0.15);
             border: 1px solid var(--success);
             color: var(--success);
         }
-        
+
         .alert-error {
-            background: rgba(255,71,87,0.15);
+            background: rgba(255, 71, 87, 0.15);
             border: 1px solid var(--error);
             color: var(--error);
         }
-        
+
         .form-group {
             margin-bottom: 20px;
             text-align: left;
         }
-        
+
         .form-group label {
             display: block;
             color: var(--text-muted);
             margin-bottom: 8px;
             font-size: 0.9rem;
         }
-        
+
         .form-group input {
             width: 100%;
             padding: 14px 16px;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(0,255,136,0.2);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 136, 0.2);
             border-radius: 10px;
             color: var(--text-primary);
             font-size: 1rem;
         }
-        
+
         .form-group input:focus {
             outline: none;
             border-color: var(--neon-green);
         }
-        
+
         .otp-input {
             text-align: center;
             font-size: 2rem;
             letter-spacing: 10px;
             font-weight: bold;
         }
-        
+
         .btn {
             display: inline-block;
             padding: 14px 30px;
@@ -246,42 +262,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transition: all 0.3s;
             text-decoration: none;
         }
-        
+
         .btn-primary {
             background: linear-gradient(135deg, var(--neon-green), #00cc6a);
             color: #000;
             width: 100%;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,255,136,0.4);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
         }
-        
+
         .btn-secondary {
             background: transparent;
             border: 1px solid var(--neon-blue);
             color: var(--neon-blue);
             margin-top: 15px;
         }
-        
+
         .links {
             margin-top: 25px;
         }
-        
+
         .links a {
             color: var(--neon-green);
             text-decoration: none;
         }
-        
+
         .links a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class="cyber-grid"></div>
-    
+
     <div class="container">
         <div class="verify-card">
             <?php if ($success): ?>
@@ -344,11 +361,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </button>
                 </form>
             <?php endif; ?>
-            
+
             <div class="links">
                 <a href="login.php">← Back to Login</a>
             </div>
         </div>
     </div>
 </body>
+
 </html>

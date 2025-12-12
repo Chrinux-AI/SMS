@@ -61,17 +61,17 @@ class BiometricManager {
             // Get registration options from server
             const optionsRes = await fetch(`${this.apiBase}?action=register_options`);
             const optionsData = await optionsRes.json();
-            
+
             if (!optionsData.success) {
                 throw new Error(optionsData.message);
             }
 
             const options = optionsData.options;
-            
+
             // Convert base64url to ArrayBuffer
             options.challenge = this.base64urlToBuffer(options.challenge);
             options.user.id = this.base64urlToBuffer(options.user.id);
-            
+
             if (options.excludeCredentials) {
                 options.excludeCredentials = options.excludeCredentials.map(cred => ({
                     ...cred,
@@ -106,7 +106,7 @@ class BiometricManager {
             });
 
             const registerData = await registerRes.json();
-            
+
             if (!registerData.success) {
                 throw new Error(registerData.message);
             }
@@ -131,16 +131,16 @@ class BiometricManager {
                 body: JSON.stringify({ email })
             });
             const optionsData = await optionsRes.json();
-            
+
             if (!optionsData.success) {
                 throw new Error(optionsData.message);
             }
 
             const options = optionsData.options;
-            
+
             // Convert base64url to ArrayBuffer
             options.challenge = this.base64urlToBuffer(options.challenge);
-            
+
             if (options.allowCredentials && options.allowCredentials.length > 0) {
                 options.allowCredentials = options.allowCredentials.map(cred => ({
                     ...cred,
@@ -161,7 +161,7 @@ class BiometricManager {
                     clientDataJSON: this.bufferToBase64url(credential.response.clientDataJSON),
                     authenticatorData: this.bufferToBase64url(credential.response.authenticatorData),
                     signature: this.bufferToBase64url(credential.response.signature),
-                    userHandle: credential.response.userHandle ? 
+                    userHandle: credential.response.userHandle ?
                         this.bufferToBase64url(credential.response.userHandle) : null
                 }
             };
@@ -174,15 +174,15 @@ class BiometricManager {
             });
 
             const loginData = await loginRes.json();
-            
+
             if (!loginData.success) {
                 throw new Error(loginData.message);
             }
 
-            return { 
-                success: true, 
+            return {
+                success: true,
                 message: 'Login successful!',
-                redirect: loginData.redirect 
+                redirect: loginData.redirect
             };
 
         } catch (error) {
@@ -240,9 +240,9 @@ async function biometricLogin(email = '') {
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
     }
-    
+
     const result = await window.biometricManager.login(email);
-    
+
     if (result.success) {
         window.location.href = result.redirect;
     } else {
@@ -257,22 +257,22 @@ async function biometricLogin(email = '') {
 async function registerBiometric() {
     const name = prompt('Name this device (e.g., "My Laptop", "Phone"):', 'My Device');
     if (!name) return;
-    
+
     const btn = document.querySelector('.biometric-register-btn');
     if (btn) {
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
     }
-    
+
     const result = await window.biometricManager.register(name);
-    
+
     if (btn) {
         btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-fingerprint"></i> Register Biometrics';
     }
-    
+
     alert(result.message);
-    
+
     if (result.success) {
         location.reload();
     }

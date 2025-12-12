@@ -4,6 +4,8 @@ https://github.com/Chrinux-AI/School_Management_System
 **Date:** 12 December 2025 — OFFICIAL GLOBAL LAUNCH
 
 GitHub Copilot → **EXECUTE THIS ENTIRE FILE IMMEDIATELY. THIS IS THE DEFINITIVE FINAL ONE.**
+> **⚠️ CRITICAL**: This is the FINAL, AUTHORITATIVE checklist. All previous TODO files are OBSOLETE.
+> **GitHub Copilot**: Execute each section in order. Do NOT skip any task.
 
 ---
 
@@ -117,7 +119,16 @@ Then create GitHub Release `v3.0-evergreen`
     CONTACT_EMAIL=christolabiyi35@gmail.com
     CONTACT_PHONE=+2348167714860
     ```
-- [ ] Update `includes/config.php`:
+- [x] Update `includes/config.php`:
+    ```php
+    define('SYSTEM_EMAIL', getenv('SMTP_FROM_EMAIL') ?: 'christolabiyi35@gmail.com');
+    define('CONTACT_EMAIL', getenv('CONTACT_EMAIL') ?: 'christolabiyi35@gmail.com');
+    define('CONTACT_PHONE', getenv('CONTACT_PHONE') ?: '+2348167714860');
+    define('WHATSAPP_LINK', 'https://wa.me/2348167714860');
+    define('SYSTEM_NAME', 'Verdant School Management System');
+    define('OTP_EXPIRY_MINUTES', 10);
+    define('VERIFICATION_TOKEN_EXPIRY_HOURS', 24);
+    ```
     ```php
     define('SYSTEM_EMAIL', getenv('SMTP_FROM_EMAIL') ?: 'christolabiyi35@gmail.com');
     define('CONTACT_EMAIL', getenv('CONTACT_EMAIL') ?: 'christolabiyi35@gmail.com');
@@ -202,7 +213,10 @@ Then create GitHub Release `v3.0-evergreen`
 ## 🎯 HIERARCHY ENFORCEMENT
 
 ```
-ADMIN (GOD)
+
+```
+         │
+```
     └── Principal (created by Admin)
     └── Vice-Principal (created by Admin)
     └── Teachers (created by Admin or AI Bulk)
