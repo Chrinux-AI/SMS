@@ -162,30 +162,27 @@
             <div class="contact-method">
                 <i class="fas fa-phone-alt"></i>
                 <h3>Phone</h3>
-                <p>Sales: <a href="tel:+1-800-VERDANT">+1 (800) VERDANT</a></p>
-                <p>Support: <a href="tel:+1-800-SUPPORT">+1 (800) SUPPORT</a></p>
+                <p>Main: <a href="tel:+2348167714860">+234 816 771 4860</a></p>
+                <p>WhatsApp: <a href="https://wa.me/2348167714860">+234 816 771 4860</a></p>
             </div>
 
             <div class="contact-method">
                 <i class="fas fa-envelope"></i>
                 <h3>Email</h3>
-                <p>Sales: <a href="mailto:sales@verdant-sms.com">sales@verdant-sms.com</a></p>
-                <p>Support: <a href="mailto:support@verdant-sms.com">support@verdant-sms.com</a></p>
-                <p>General: <a href="mailto:info@verdant-sms.com">info@verdant-sms.com</a></p>
+                <p>General: <a href="mailto:christolabiyi35@gmail.com">christolabiyi35@gmail.com</a></p>
+                <p>Support: <a href="mailto:christolabiyi35@gmail.com">christolabiyi35@gmail.com</a></p>
             </div>
 
             <div class="contact-method">
                 <i class="fas fa-map-marker-alt"></i>
                 <h3>Head Office</h3>
-                <p>123 Education Boulevard<br>
-                    Silicon Valley, CA 94025<br>
-                    United States</p>
+                <p>Lagos, Nigeria</p>
             </div>
 
             <div class="contact-method">
                 <i class="fab fa-whatsapp"></i>
                 <h3>WhatsApp Business</h3>
-                <p><a href="https://wa.me/18005555555">+1 (800) 555-5555</a></p>
+                <p><a href="https://wa.me/2348167714860">+234 816 771 4860</a></p>
                 <p style="font-size: 0.9rem; margin-top: 0.5rem;">For quick questions and support</p>
             </div>
 
