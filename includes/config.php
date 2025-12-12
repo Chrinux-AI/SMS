@@ -44,6 +44,42 @@ define('TIMEZONE', 'Africa/Lagos');
 define('CONTACT_EMAIL', getenv('CONTACT_EMAIL') ?: 'christolabiyi35@gmail.com');
 define('CONTACT_PHONE', getenv('CONTACT_PHONE') ?: '+2348167714860');
 define('CONTACT_WHATSAPP', getenv('CONTACT_WHATSAPP') ?: '+2348167714860');
+define('WHATSAPP_LINK', 'https://wa.me/2348167714860');
+define('SYSTEM_NAME', 'Verdant School Management System');
+define('SYSTEM_EMAIL', getenv('SMTP_FROM_EMAIL') ?: 'christolabiyi35@gmail.com');
+
+// Nigerian Localization
+define('COUNTRY', 'Nigeria');
+define('CURRENCY', 'NGN');
+define('CURRENCY_SYMBOL', '₦');
+define('DATE_FORMAT', 'd/m/Y');
+define('ACADEMIC_CALENDAR', 'Nigerian'); // 3 terms: First, Second, Third
+
+// OTP & Verification Settings
+define('OTP_EXPIRY_MINUTES', 10);
+define('VERIFICATION_TOKEN_EXPIRY_HOURS', 24);
+
+// Nigerian Class/Grade System
+define('NIGERIAN_CLASSES', [
+    'primary' => [
+        ['name' => 'Primary 1', 'code' => 'P1', 'level' => 1],
+        ['name' => 'Primary 2', 'code' => 'P2', 'level' => 2],
+        ['name' => 'Primary 3', 'code' => 'P3', 'level' => 3],
+        ['name' => 'Primary 4', 'code' => 'P4', 'level' => 4],
+        ['name' => 'Primary 5', 'code' => 'P5', 'level' => 5],
+        ['name' => 'Primary 6', 'code' => 'P6', 'level' => 6],
+    ],
+    'junior_secondary' => [
+        ['name' => 'JSS 1', 'code' => 'JSS1', 'level' => 1],
+        ['name' => 'JSS 2', 'code' => 'JSS2', 'level' => 2],
+        ['name' => 'JSS 3', 'code' => 'JSS3', 'level' => 3],
+    ],
+    'senior_secondary' => [
+        ['name' => 'SSS 1', 'code' => 'SSS1', 'level' => 1],
+        ['name' => 'SSS 2', 'code' => 'SSS2', 'level' => 2],
+        ['name' => 'SSS 3', 'code' => 'SSS3', 'level' => 3],
+    ],
+]);
 
 // TEST MODE - Set to true to bypass login for testing pages
 // WARNING: Set to false in production!
