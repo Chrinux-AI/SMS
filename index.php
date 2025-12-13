@@ -10,7 +10,7 @@ require_once 'includes/theme-loader.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Verdant SMS - Complete 42-Module School Management System with AI Analytics, Biometric Attendance & LMS Integration.">
+    <meta name="description" content="Verdant SMS - Complete 42-Module School Management System for Nigerian Schools. Empowering Education Excellence.">
     <meta name="theme-color" content="#00BFFF">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/images/icons/icon-192x192.png">
@@ -81,13 +81,8 @@ require_once 'includes/theme-loader.php';
         }
 
         @keyframes gridMove {
-            0% {
-                transform: translate(0, 0);
-            }
-
-            100% {
-                transform: translate(50px, 50px);
-            }
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
         }
 
         /* Header */
@@ -189,6 +184,16 @@ require_once 'includes/theme-loader.php';
         .btn-outline:hover {
             background: var(--primary);
             color: var(--dark);
+        }
+
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         /* Hero Section */
@@ -298,17 +303,9 @@ require_once 'includes/theme-loader.php';
             border-radius: 50%;
         }
 
-        .preview-dot.red {
-            background: #ff5f57;
-        }
-
-        .preview-dot.yellow {
-            background: #febc2e;
-        }
-
-        .preview-dot.green {
-            background: #28c840;
-        }
+        .preview-dot.red { background: #ff5f57; }
+        .preview-dot.yellow { background: #febc2e; }
+        .preview-dot.green { background: #28c840; }
 
         .preview-body {
             padding: 1.5rem;
@@ -336,25 +333,10 @@ require_once 'includes/theme-loader.php';
             font-size: 1.2rem;
         }
 
-        .mini-card-icon.blue {
-            background: rgba(0, 191, 255, 0.2);
-            color: var(--primary);
-        }
-
-        .mini-card-icon.purple {
-            background: rgba(138, 43, 226, 0.2);
-            color: var(--secondary);
-        }
-
-        .mini-card-icon.green {
-            background: rgba(0, 255, 127, 0.2);
-            color: var(--accent);
-        }
-
-        .mini-card-icon.yellow {
-            background: rgba(255, 215, 0, 0.2);
-            color: var(--warning);
-        }
+        .mini-card-icon.blue { background: rgba(0, 191, 255, 0.2); color: var(--primary); }
+        .mini-card-icon.purple { background: rgba(138, 43, 226, 0.2); color: var(--secondary); }
+        .mini-card-icon.green { background: rgba(0, 255, 127, 0.2); color: var(--accent); }
+        .mini-card-icon.yellow { background: rgba(255, 215, 0, 0.2); color: var(--warning); }
 
         .mini-card-info h4 {
             font-size: 0.85rem;
@@ -402,271 +384,10 @@ require_once 'includes/theme-loader.php';
             margin: 0 auto;
         }
 
-        /* Role Previews Section */
-        .role-previews {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .role-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s;
-            position: relative;
-        }
-
-        .role-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--glow);
-            border-color: var(--primary);
-        }
-
-        .role-card-header {
-            padding: 1.5rem;
-            background: linear-gradient(135deg, rgba(0, 191, 255, 0.1), rgba(138, 43, 226, 0.1));
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .role-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .role-card-header h3 {
-            font-size: 1.25rem;
-        }
-
-        .role-card-header span {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .role-card-body {
-            padding: 1.5rem;
-        }
-
-        .role-features {
-            list-style: none;
-            margin-bottom: 1.5rem;
-        }
-
-        .role-features li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: rgba(255, 255, 255, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .role-features li i {
-            color: var(--accent);
-            font-size: 0.85rem;
-        }
-
-        .role-card-footer {
-            padding: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        /* Dashboard Showcase */
-        .dashboard-showcase {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 2rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            overflow: hidden;
-            min-height: 600px;
-        }
-
-        .showcase-sidebar {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 1.5rem;
-            border-right: 1px solid var(--border);
-        }
-
-        .showcase-nav {
-            list-style: none;
-        }
-
-        .showcase-nav li {
-            margin-bottom: 0.5rem;
-        }
-
-        .showcase-nav a {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            color: rgba(255, 255, 255, 0.7);
-            text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-        }
-
-        .showcase-nav a:hover,
-        .showcase-nav a.active {
-            background: rgba(0, 191, 255, 0.1);
-            color: var(--primary);
-        }
-
-        .showcase-nav a i {
-            width: 20px;
-            text-align: center;
-        }
-
-        .showcase-content {
-            padding: 2rem;
-        }
-
-        .showcase-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .showcase-header h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-        }
-
-        .showcase-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .showcase-stat {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .showcase-stat:hover {
-            border-color: var(--primary);
-            box-shadow: var(--glow);
-        }
-
-        .showcase-stat i {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .showcase-stat .value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-        }
-
-        .showcase-stat .label {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .showcase-chart {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            height: 200px;
-            display: flex;
-            align-items: flex-end;
-            gap: 0.5rem;
-        }
-
-        .chart-bar {
-            flex: 1;
-            background: linear-gradient(to top, var(--primary), var(--secondary));
-            border-radius: 5px 5px 0 0;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .chart-bar:hover {
-            opacity: 0.8;
-        }
-
-        .chart-bar::after {
-            content: attr(data-label);
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Module Grid */
-        .modules-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .module-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .module-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: var(--glow);
-        }
-
-        .module-card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .module-card h4 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .module-card p {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* Features Section */
+        /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
         }
 
@@ -675,25 +396,36 @@ require_once 'includes/theme-loader.php';
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 2rem;
-            text-align: center;
             transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
         }
 
         .feature-card:hover {
             transform: translateY(-10px);
-            border-color: var(--primary);
             box-shadow: var(--glow);
+            border-color: var(--primary);
         }
 
         .feature-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1.5rem;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
         }
 
         .feature-card h3 {
@@ -706,14 +438,27 @@ require_once 'includes/theme-loader.php';
             font-size: 0.95rem;
         }
 
+        /* Nigeria Badge */
+        .nigeria-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #008751, #00A368);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, rgba(0, 191, 255, 0.1), rgba(138, 43, 226, 0.1));
             border: 1px solid var(--border);
             border-radius: 30px;
-            padding: 4rem;
+            padding: 4rem 2rem;
             text-align: center;
-            margin: 100px auto;
+            margin: 4rem auto;
             max-width: 1000px;
         }
 
@@ -725,8 +470,11 @@ require_once 'includes/theme-loader.php';
 
         .cta-section p {
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 2rem;
             font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .cta-buttons {
@@ -736,9 +484,53 @@ require_once 'includes/theme-loader.php';
             flex-wrap: wrap;
         }
 
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .contact-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .contact-card h4 {
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-card p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .contact-card a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
         /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(5, 5, 10, 0.9);
             border-top: 1px solid var(--border);
             padding: 4rem 2rem 2rem;
         }
@@ -747,70 +539,51 @@ require_once 'includes/theme-loader.php';
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 2fr repeat(4, 1fr);
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 3rem;
+            margin-bottom: 3rem;
         }
 
         .footer-brand p {
             color: rgba(255, 255, 255, 0.6);
             margin-top: 1rem;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .footer-column h4 {
             color: var(--primary);
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
         }
 
         .footer-column ul {
             list-style: none;
         }
 
-        .footer-column li {
-            margin-bottom: 0.5rem;
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
         }
 
-        .footer-column a {
+        .footer-column ul a {
             color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
-            font-size: 0.9rem;
             transition: color 0.3s;
         }
 
-        .footer-column a:hover {
+        .footer-column ul a:hover {
             color: var(--primary);
         }
 
         .footer-bottom {
             max-width: 1400px;
-            margin: 3rem auto 0;
+            margin: 0 auto;
             padding-top: 2rem;
             border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
-        }
-
-        /* Animations */
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
+            font-size: 0.9rem;
         }
 
         /* Responsive */
@@ -836,20 +609,24 @@ require_once 'includes/theme-loader.php';
                 display: none;
             }
 
-            .features-grid {
-                grid-template-columns: 1fr;
+            .mobile-menu-btn {
+                display: block;
             }
 
-            .dashboard-showcase {
-                grid-template-columns: 1fr;
-            }
-
-            .showcase-sidebar {
+            nav {
                 display: none;
             }
 
-            .showcase-grid {
-                grid-template-columns: repeat(2, 1fr);
+            nav.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 15, 0.98);
+                padding: 1rem;
+                border-bottom: 1px solid var(--border);
             }
 
             .footer-content {
@@ -857,17 +634,17 @@ require_once 'includes/theme-loader.php';
             }
         }
 
-        @media (max-width: 768px) {
-            nav {
-                display: none;
+        @media (max-width: 640px) {
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.75rem;
             }
 
             .hero-stats {
                 flex-wrap: wrap;
-            }
-
-            .role-previews {
-                grid-template-columns: 1fr;
             }
 
             .footer-content {
@@ -880,43 +657,30 @@ require_once 'includes/theme-loader.php';
                 text-align: center;
             }
         }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--darker);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
     </style>
 </head>
 
 <body>
+    <!-- Animated Background -->
     <div class="bg-animation"></div>
     <div class="grid-overlay"></div>
 
     <!-- Header -->
     <header>
-        <a href="index.php" class="logo">
-            <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+        <a href="/" class="logo">
+            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
             <span class="logo-text">Verdant SMS</span>
         </a>
-        <nav>
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="mainNav">
+            <a href="#about">About</a>
             <a href="#features">Features</a>
-            <a href="#dashboards">Dashboards</a>
-            <a href="#modules">Modules</a>
-            <a href="#roles">User Roles</a>
-            <button onclick="openThemeModal()" class="btn btn-outline" style="border-color: #a855f7; color: #a855f7;">
-                <i class="fas fa-palette"></i> Theme
-            </button>
-            <a href="login.php" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Login</a>
-            <a href="register.php" class="btn btn-primary"><i class="fas fa-rocket"></i> Get Started</a>
+            <a href="visitor/demo-request.php">Request Demo</a>
+            <a href="#contact">Contact</a>
+            <a href="login.php" class="btn btn-outline">Login</a>
+            <a href="register.php" class="btn btn-primary">Student Registration</a>
         </nav>
     </header>
 
@@ -924,46 +688,43 @@ require_once 'includes/theme-loader.php';
     <section class="hero">
         <div class="hero-content">
             <div class="hero-text">
-                <h1>The Future of <span>School Management</span> is Here</h1>
-                <p>Complete 42-module platform with AI analytics, biometric attendance, LMS integration, and stunning cyberpunk UI. Built for modern educational institutions.</p>
-
+                <div class="nigeria-badge">
+                    <i class="fas fa-flag"></i> Built for Nigerian Schools
+                </div>
+                <h1>Empowering <span>Nigerian Education</span> Excellence</h1>
+                <p>Verdant SMS is a complete 42-module School Management System designed specifically for Nigerian schools. From Primary to Senior Secondary, we've got you covered.</p>
+                
                 <div class="hero-stats">
                     <div class="stat-box">
                         <div class="number">42</div>
                         <div class="label">Modules</div>
                     </div>
                     <div class="stat-box">
-                        <div class="number">25</div>
-                        <div class="label">User Roles</div>
-                    </div>
-                    <div class="stat-box">
                         <div class="number">8</div>
                         <div class="label">Themes</div>
                     </div>
                     <div class="stat-box">
-                        <div class="number">24/7</div>
-                        <div class="label">Support</div>
+                        <div class="number">P1-SSS3</div>
+                        <div class="label">Classes</div>
                     </div>
                 </div>
-
+                
                 <div class="hero-buttons">
-                    <a href="login.php" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Access Portal</a>
-                    <a href="register.php" class="btn btn-outline"><i class="fas fa-user-plus"></i> Register Now</a>
-                </div>
-
-                <div style="margin-top:2rem;display:flex;justify-content:center;">
-                    <!-- Typing SVG indicator -->
-                    <?php include 'assets/svg/typing-indicator.svg'; ?>
+                    <a href="login.php" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                    <a href="register.php" class="btn btn-outline">
+                        <i class="fas fa-user-plus"></i> Student Registration
+                    </a>
                 </div>
             </div>
 
-            <div class="dashboard-preview float-animation">
+            <div class="dashboard-preview">
                 <div class="preview-window">
                     <div class="preview-header">
-                        <span class="preview-dot red"></span>
-                        <span class="preview-dot yellow"></span>
-                        <span class="preview-dot green"></span>
-                        <span style="margin-left: auto; color: rgba(255,255,255,0.5); font-size: 0.8rem;">Admin Dashboard</span>
+                        <div class="preview-dot red"></div>
+                        <div class="preview-dot yellow"></div>
+                        <div class="preview-dot green"></div>
                     </div>
                     <div class="preview-body">
                         <div class="mini-card">
@@ -976,26 +737,59 @@ require_once 'includes/theme-loader.php';
                         <div class="mini-card">
                             <div class="mini-card-icon purple"><i class="fas fa-chalkboard-teacher"></i></div>
                             <div class="mini-card-info">
-                                <h4>Teachers</h4>
-                                <p>186</p>
+                                <h4>Teaching Staff</h4>
+                                <p>156</p>
                             </div>
                         </div>
                         <div class="mini-card">
-                            <div class="mini-card-icon green"><i class="fas fa-check-circle"></i></div>
+                            <div class="mini-card-icon green"><i class="fas fa-percentage"></i></div>
                             <div class="mini-card-info">
-                                <h4>Today's Attendance</h4>
+                                <h4>Attendance Today</h4>
                                 <p>94.2%</p>
                             </div>
                         </div>
                         <div class="mini-card">
-                            <div class="mini-card-icon yellow"><i class="fas fa-dollar-sign"></i></div>
+                            <div class="mini-card-icon yellow"><i class="fas fa-money-bill-wave"></i></div>
                             <div class="mini-card-info">
-                                <h4>Fee Collection</h4>
-                                <p>$124,580</p>
+                                <h4>Fees Collected</h4>
+                                <p>₦12.5M</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header">
+            <span class="section-badge"><i class="fas fa-info-circle"></i> About Us</span>
+            <h2>What is Verdant SMS?</h2>
+            <p>A complete school management solution tailored for Nigerian education</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
+                    <i class="fas fa-school"></i>
+                </div>
+                <h3>Nigerian Curriculum</h3>
+                <p>Fully aligned with Nigerian education system - Primary 1 to SSS 3, WAEC/NECO grading (A1-F9), and 3-term academic calendar.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure & Modern</h3>
+                <p>Bank-grade security with biometric login, OTP verification, and encrypted data. Your students' information is safe with us.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Works Everywhere</h3>
+                <p>Progressive Web App (PWA) that works on any device - desktop, tablet, or phone. Even works offline!</p>
             </div>
         </div>
     </section>
@@ -1003,405 +797,54 @@ require_once 'includes/theme-loader.php';
     <!-- Features Section -->
     <section id="features">
         <div class="section-header">
-            <span class="section-badge"><i class="fas fa-star"></i> Core Features</span>
-            <h2>Powerful Tools for Modern Education</h2>
-            <p>Everything you need to run your educational institution efficiently</p>
+            <span class="section-badge"><i class="fas fa-star"></i> 42 Modules</span>
+            <h2>Everything Your School Needs</h2>
+            <p>Comprehensive tools for every aspect of school management</p>
         </div>
 
         <div class="features-grid">
             <div class="feature-card">
                 <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
-                    <i class="fas fa-fingerprint"></i>
+                    <i class="fas fa-user-plus"></i>
                 </div>
-                <h3>Biometric Attendance</h3>
-                <p>Advanced fingerprint, QR code, and facial recognition with instant parent notifications</p>
+                <h3>Admissions & Enrollment</h3>
+                <p>Online entrance exams, automated enrollment, and digital registration with document uploads.</p>
             </div>
-
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <h3>AI Analytics</h3>
-                <p>Predictive insights, performance trends, and data-driven decision making</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);">
-                    <i class="fas fa-book-reader"></i>
-                </div>
-                <h3>LMS Integration</h3>
-                <p>Full LTI 1.3 compatible learning management with course content & assessments</p>
-            </div>
-
             <div class="feature-card">
                 <div class="feature-icon" style="background: rgba(255, 215, 0, 0.2); color: var(--warning);">
-                    <i class="fas fa-mobile-alt"></i>
+                    <i class="fas fa-clipboard-check"></i>
                 </div>
-                <h3>PWA Support</h3>
-                <p>Works offline, installable on any device with native app-like experience</p>
+                <h3>Attendance Management</h3>
+                <p>Biometric, QR code, and manual attendance. Automatic SMS/email alerts to parents for absences.</p>
             </div>
-
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Grades & Report Cards</h3>
+                <p>Nigerian grading system (A1-F9), CA scores, exam marks, position rankings, and PDF report cards.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <h3>Fee Management</h3>
+                <p>Paystack/Flutterwave integration, installment plans, receipts, and outstanding fee tracking.</p>
+            </div>
             <div class="feature-card">
                 <div class="feature-icon" style="background: rgba(255, 71, 87, 0.2); color: var(--danger);">
-                    <i class="fas fa-shield-alt"></i>
+                    <i class="fas fa-book"></i>
                 </div>
-                <h3>Enterprise Security</h3>
-                <p>Role-based access, audit logs, encryption, and GDPR compliance</p>
+                <h3>Library System</h3>
+                <p>Book cataloging, issue/return tracking, overdue fines, e-books, and past questions repository.</p>
             </div>
-
             <div class="feature-card">
                 <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
-                    <i class="fas fa-comments"></i>
+                    <i class="fas fa-bus"></i>
                 </div>
-                <h3>Real-time Communication</h3>
-                <p>Instant messaging, WhatsApp integration, SMS alerts, and announcements</p>
+                <h3>Transport & Hostel</h3>
+                <p>Bus routes, driver management, hostel allocation, and room assignments.</p>
             </div>
-        </div>
-    </section>
-
-    <!-- Dashboard Showcase Section -->
-    <section id="dashboards">
-        <div class="section-header">
-            <span class="section-badge"><i class="fas fa-desktop"></i> Live Preview</span>
-            <h2>Experience Our Dashboard</h2>
-            <p>Interactive preview of the admin control panel</p>
-        </div>
-
-        <div class="dashboard-showcase">
-            <div class="showcase-sidebar">
-                <ul class="showcase-nav">
-                    <li><a href="#" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                    <li><a href="admin/students.php"><i class="fas fa-user-graduate"></i> Students</a></li>
-                    <li><a href="admin/attendance.php"><i class="fas fa-clipboard-check"></i> Attendance</a></li>
-                    <li><a href="admin/classes.php"><i class="fas fa-chalkboard"></i> Classes</a></li>
-                    <li><a href="admin/fee-management.php"><i class="fas fa-dollar-sign"></i> Finance</a></li>
-                    <li><a href="admin/reports.php"><i class="fas fa-file-alt"></i> Reports</a></li>
-                    <li><a href="admin/analytics.php"><i class="fas fa-brain"></i> Analytics</a></li>
-                    <li><a href="admin/communication.php"><i class="fas fa-comments"></i> Messages</a></li>
-                    <li><a href="admin/settings.php"><i class="fas fa-cog"></i> Settings</a></li>
-                </ul>
-            </div>
-
-            <div class="showcase-content">
-                <div class="showcase-header">
-                    <h3><i class="fas fa-chart-line"></i> Dashboard Overview</h3>
-                    <span style="color: rgba(255,255,255,0.5);">Live Data Preview</span>
-                </div>
-
-                <div class="showcase-grid">
-                    <div class="showcase-stat">
-                        <i class="fas fa-user-graduate" style="color: var(--primary);"></i>
-                        <div class="value" style="color: var(--primary);">2,847</div>
-                        <div class="label">Students</div>
-                    </div>
-                    <div class="showcase-stat">
-                        <i class="fas fa-chalkboard-teacher" style="color: var(--secondary);"></i>
-                        <div class="value" style="color: var(--secondary);">186</div>
-                        <div class="label">Teachers</div>
-                    </div>
-                    <div class="showcase-stat">
-                        <i class="fas fa-door-open" style="color: var(--accent);"></i>
-                        <div class="value" style="color: var(--accent);">124</div>
-                        <div class="label">Classes</div>
-                    </div>
-                    <div class="showcase-stat">
-                        <i class="fas fa-percentage" style="color: var(--warning);"></i>
-                        <div class="value" style="color: var(--warning);">94.2%</div>
-                        <div class="label">Attendance</div>
-                    </div>
-                </div>
-
-                <h4 style="margin-bottom: 1rem; color: rgba(255,255,255,0.8);"><i class="fas fa-chart-bar"></i> Weekly Attendance Trend</h4>
-                <div class="showcase-chart">
-                    <div class="chart-bar" style="height: 85%;" data-label="Mon"></div>
-                    <div class="chart-bar" style="height: 92%;" data-label="Tue"></div>
-                    <div class="chart-bar" style="height: 88%;" data-label="Wed"></div>
-                    <div class="chart-bar" style="height: 95%;" data-label="Thu"></div>
-                    <div class="chart-bar" style="height: 90%;" data-label="Fri"></div>
-                    <div class="chart-bar" style="height: 60%;" data-label="Sat"></div>
-                    <div class="chart-bar" style="height: 0%;" data-label="Sun"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Role-Based Previews -->
-    <section id="roles">
-        <div class="section-header">
-            <span class="section-badge"><i class="fas fa-users"></i> 18 User Roles</span>
-            <h2>Tailored Experience for Everyone</h2>
-            <p>Dedicated dashboards and features for each user type</p>
-        </div>
-
-        <div class="role-previews">
-            <!-- Admin -->
-            <div class="role-card">
-                <div class="role-card-header">
-                    <div class="role-icon" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <div>
-                        <h3>Administrator</h3>
-                        <span>Full system control</span>
-                    </div>
-                </div>
-                <div class="role-card-body">
-                    <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Complete student & staff management</li>
-                        <li><i class="fas fa-check"></i> Financial reports & fee collection</li>
-                        <li><i class="fas fa-check"></i> System configuration & settings</li>
-                        <li><i class="fas fa-check"></i> AI-powered analytics dashboard</li>
-                        <li><i class="fas fa-check"></i> Audit logs & security management</li>
-                    </ul>
-                </div>
-                <div class="role-card-footer">
-                    <a href="admin/dashboard.php" class="btn btn-primary" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-arrow-right"></i> View Admin Dashboard
-                    </a>
-                </div>
-            </div>
-
-            <!-- Teacher -->
-            <div class="role-card">
-                <div class="role-card-header">
-                    <div class="role-icon" style="background: linear-gradient(135deg, var(--accent), var(--primary)); color: white;">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <div>
-                        <h3>Teacher</h3>
-                        <span>Class management</span>
-                    </div>
-                </div>
-                <div class="role-card-body">
-                    <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Take & manage attendance</li>
-                        <li><i class="fas fa-check"></i> Grade assignments & exams</li>
-                        <li><i class="fas fa-check"></i> Communicate with parents</li>
-                        <li><i class="fas fa-check"></i> Create assignments & materials</li>
-                        <li><i class="fas fa-check"></i> Student performance tracking</li>
-                    </ul>
-                </div>
-                <div class="role-card-footer">
-                    <a href="teacher/dashboard.php" class="btn btn-outline" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-arrow-right"></i> View Teacher Dashboard
-                    </a>
-                </div>
-            </div>
-
-            <!-- Student -->
-            <div class="role-card">
-                <div class="role-card-header">
-                    <div class="role-icon" style="background: linear-gradient(135deg, var(--secondary), var(--danger)); color: white;">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <div>
-                        <h3>Student</h3>
-                        <span>Learning portal</span>
-                    </div>
-                </div>
-                <div class="role-card-body">
-                    <ul class="role-features">
-                        <li><i class="fas fa-check"></i> View grades & attendance</li>
-                        <li><i class="fas fa-check"></i> Submit assignments online</li>
-                        <li><i class="fas fa-check"></i> Access course materials</li>
-                        <li><i class="fas fa-check"></i> Check timetable & exams</li>
-                        <li><i class="fas fa-check"></i> Digital ID card</li>
-                    </ul>
-                </div>
-                <div class="role-card-footer">
-                    <a href="student/dashboard.php" class="btn btn-outline" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-arrow-right"></i> View Student Dashboard
-                    </a>
-                </div>
-            </div>
-
-            <!-- Parent -->
-            <div class="role-card">
-                <div class="role-card-header">
-                    <div class="role-icon" style="background: linear-gradient(135deg, var(--warning), #FF6B35); color: white;">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div>
-                        <h3>Parent</h3>
-                        <span>Child monitoring</span>
-                    </div>
-                </div>
-                <div class="role-card-body">
-                    <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Real-time attendance alerts</li>
-                        <li><i class="fas fa-check"></i> View children's grades</li>
-                        <li><i class="fas fa-check"></i> Pay fees online</li>
-                        <li><i class="fas fa-check"></i> Message teachers directly</li>
-                        <li><i class="fas fa-check"></i> Book parent-teacher meetings</li>
-                    </ul>
-                </div>
-                <div class="role-card-footer">
-                    <a href="parent/dashboard.php" class="btn btn-outline" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-arrow-right"></i> View Parent Dashboard
-                    </a>
-                </div>
-            </div>
-
-            <!-- Librarian -->
-            <div class="role-card">
-                <div class="role-card-header">
-                    <div class="role-icon" style="background: linear-gradient(135deg, #6C5CE7, #A29BFE); color: white;">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div>
-                        <h3>Librarian</h3>
-                        <span>Library management</span>
-                    </div>
-                </div>
-                <div class="role-card-body">
-                    <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Book catalog management</li>
-                        <li><i class="fas fa-check"></i> Issue & return tracking</li>
-                        <li><i class="fas fa-check"></i> Overdue fine management</li>
-                        <li><i class="fas fa-check"></i> Digital resource library</li>
-                        <li><i class="fas fa-check"></i> Inventory reports</li>
-                    </ul>
-                </div>
-                <div class="role-card-footer">
-                    <a href="librarian/dashboard.php" class="btn btn-outline" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-arrow-right"></i> View Library Portal
-                    </a>
-                </div>
-            </div>
-
-            <!-- Accountant -->
-            <div class="role-card">
-                <div class="role-card-header">
-                    <div class="role-icon" style="background: linear-gradient(135deg, #00B894, #55EFC4); color: white;">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <div>
-                        <h3>Accountant</h3>
-                        <span>Financial management</span>
-                    </div>
-                </div>
-                <div class="role-card-body">
-                    <ul class="role-features">
-                        <li><i class="fas fa-check"></i> Fee collection & receipts</li>
-                        <li><i class="fas fa-check"></i> Expense tracking</li>
-                        <li><i class="fas fa-check"></i> Payroll processing</li>
-                        <li><i class="fas fa-check"></i> Financial reports</li>
-                        <li><i class="fas fa-check"></i> Budget management</li>
-                    </ul>
-                </div>
-                <div class="role-card-footer">
-                    <a href="accountant/dashboard/index.php" class="btn btn-outline" style="width: 100%; justify-content: center;">
-                        <i class="fas fa-arrow-right"></i> View Finance Portal
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- All Modules Grid -->
-    <section id="modules">
-        <div class="section-header">
-            <span class="section-badge"><i class="fas fa-th"></i> 42 Integrated Modules</span>
-            <h2>Complete School Management Suite</h2>
-            <p>Every tool you need in one unified platform</p>
-        </div>
-
-        <div class="modules-grid">
-            <a href="admin/students.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);"><i class="fas fa-user-graduate"></i></div>
-                <h4>Student Management</h4>
-                <p>Admissions, profiles, documents & IDs</p>
-            </a>
-
-            <a href="admin/attendance.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);"><i class="fas fa-fingerprint"></i></div>
-                <h4>Attendance System</h4>
-                <p>Biometric, QR code & manual tracking</p>
-            </a>
-
-            <a href="admin/classes.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);"><i class="fas fa-chalkboard"></i></div>
-                <h4>Class Management</h4>
-                <p>Sections, subjects & enrollments</p>
-            </a>
-
-            <a href="admin/fee-management.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(255, 215, 0, 0.2); color: var(--warning);"><i class="fas fa-dollar-sign"></i></div>
-                <h4>Fee Management</h4>
-                <p>Invoicing, payments & reports</p>
-            </a>
-
-            <a href="admin/analytics.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(255, 71, 87, 0.2); color: var(--danger);"><i class="fas fa-brain"></i></div>
-                <h4>AI Analytics</h4>
-                <p>Predictive insights & reports</p>
-            </a>
-
-            <a href="admin/communication.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);"><i class="fas fa-comments"></i></div>
-                <h4>Communication</h4>
-                <p>Messaging, SMS & notifications</p>
-            </a>
-
-            <a href="librarian/dashboard.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(108, 92, 231, 0.2); color: #6C5CE7;"><i class="fas fa-book"></i></div>
-                <h4>Library System</h4>
-                <p>Catalog, circulation & e-books</p>
-            </a>
-
-            <a href="transport/dashboard.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(253, 121, 168, 0.2); color: #FD79A8;"><i class="fas fa-bus"></i></div>
-                <h4>Transport</h4>
-                <p>Routes, tracking & management</p>
-            </a>
-
-            <a href="hostel/dashboard.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(116, 185, 255, 0.2); color: #74B9FF;"><i class="fas fa-bed"></i></div>
-                <h4>Hostel Management</h4>
-                <p>Rooms, allocation & mess</p>
-            </a>
-
-            <a href="admin/timetable.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(0, 184, 148, 0.2); color: #00B894;"><i class="fas fa-calendar-alt"></i></div>
-                <h4>Timetable</h4>
-                <p>Auto-generation & scheduling</p>
-            </a>
-
-            <a href="admin/reports.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(9, 132, 227, 0.2); color: #0984E3;"><i class="fas fa-file-alt"></i></div>
-                <h4>Reports & Analytics</h4>
-                <p>Comprehensive data exports</p>
-            </a>
-
-            <a href="admin/events.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(255, 159, 67, 0.2); color: #FF9F43;"><i class="fas fa-calendar-check"></i></div>
-                <h4>Events & Calendar</h4>
-                <p>School events & activities</p>
-            </a>
-
-            <a href="nurse/dashboard.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(234, 84, 85, 0.2); color: #EA5455;"><i class="fas fa-heartbeat"></i></div>
-                <h4>Health Center</h4>
-                <p>Medical records & tracking</p>
-            </a>
-
-            <a href="counselor/dashboard.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(40, 167, 69, 0.2); color: #28A745;"><i class="fas fa-hand-holding-heart"></i></div>
-                <h4>Counseling</h4>
-                <p>Student support & guidance</p>
-            </a>
-
-            <a href="canteen/dashboard.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(255, 193, 7, 0.2); color: #FFC107;"><i class="fas fa-utensils"></i></div>
-                <h4>Canteen</h4>
-                <p>Menu, orders & inventory</p>
-            </a>
-
-            <a href="admin/security-logs.php" class="module-card">
-                <div class="module-card-icon" style="background: rgba(220, 53, 69, 0.2); color: #DC3545;"><i class="fas fa-shield-alt"></i></div>
-                <h4>Security & Audit</h4>
-                <p>Access logs & compliance</p>
-            </a>
         </div>
     </section>
 
@@ -1409,10 +852,41 @@ require_once 'includes/theme-loader.php';
     <section>
         <div class="cta-section">
             <h2>Ready to Transform Your School?</h2>
-            <p>Join 500+ educational institutions already using Verdant SMS to streamline operations and enhance learning outcomes.</p>
+            <p>Join hundreds of Nigerian schools already using Verdant SMS to streamline their operations and enhance student success.</p>
             <div class="cta-buttons">
-                <a href="register.php" class="btn btn-primary"><i class="fas fa-rocket"></i> Start Free Trial</a>
-                <a href="login.php" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Login to Dashboard</a>
+                <a href="visitor/demo-request.php" class="btn btn-primary">
+                    <i class="fas fa-calendar-check"></i> Request a Demo
+                </a>
+                <a href="#contact" class="btn btn-outline">
+                    <i class="fas fa-phone"></i> Contact Us
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="section-header">
+            <span class="section-badge"><i class="fas fa-envelope"></i> Contact</span>
+            <h2>Get in Touch</h2>
+            <p>We're here to help you get started</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-card">
+                <i class="fas fa-envelope"></i>
+                <h4>Email</h4>
+                <p><a href="mailto:christolabiyi35@gmail.com">christolabiyi35@gmail.com</a></p>
+            </div>
+            <div class="contact-card">
+                <i class="fas fa-phone"></i>
+                <h4>Phone</h4>
+                <p><a href="tel:+2348167714860">+234 816 771 4860</a></p>
+            </div>
+            <div class="contact-card">
+                <i class="fab fa-whatsapp"></i>
+                <h4>WhatsApp</h4>
+                <p><a href="https://wa.me/2348167714860" target="_blank">Chat with us</a></p>
             </div>
         </div>
     </section>
@@ -1421,39 +895,28 @@ require_once 'includes/theme-loader.php';
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
-                <a href="index.php" class="logo">
-                    <div class="logo-icon"><i class="fas fa-graduation-cap"></i></div>
+                <a href="/" class="logo">
+                    <div class="logo-icon"><i class="fas fa-leaf"></i></div>
                     <span class="logo-text">Verdant SMS</span>
                 </a>
-                <p>Complete 42-module school management platform with AI analytics, biometric attendance, and LMS integration. Built for the future of education.</p>
+                <p>Empowering Nigerian education with modern technology. From Primary to Senior Secondary, we provide comprehensive school management solutions.</p>
             </div>
 
             <div class="footer-column">
-                <h4>Platform</h4>
+                <h4>Quick Links</h4>
                 <ul>
+                    <li><a href="#about">About Us</a></li>
                     <li><a href="#features">Features</a></li>
-                    <li><a href="#modules">All Modules</a></li>
-                    <li><a href="#dashboards">Dashboards</a></li>
-                    <li><a href="docs/">Documentation</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-column">
-                <h4>Portals</h4>
-                <ul>
-                    <li><a href="admin/dashboard.php">Admin Portal</a></li>
-                    <li><a href="teacher/dashboard.php">Teacher Portal</a></li>
-                    <li><a href="student/dashboard.php">Student Portal</a></li>
-                    <li><a href="parent/dashboard.php">Parent Portal</a></li>
+                    <li><a href="visitor/demo-request.php">Request Demo</a></li>
+                    <li><a href="visitor/faq.php">FAQ</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
                 <h4>Support</h4>
                 <ul>
+                    <li><a href="#contact">Contact Us</a></li>
                     <li><a href="docs/SETUP_GUIDE.md">Setup Guide</a></li>
-                    <li><a href="docs/">Help Center</a></li>
-                    <li><a href="contact.php">Contact Us</a></li>
                     <li><a href="forum/">Community</a></li>
                 </ul>
             </div>
@@ -1461,10 +924,9 @@ require_once 'includes/theme-loader.php';
             <div class="footer-column">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="SECURITY.md">Security</a></li>
+                    <li><a href="visitor/privacy-policy.php">Privacy Policy</a></li>
                     <li><a href="LICENSE">License</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="SECURITY.md">Security</a></li>
                 </ul>
             </div>
         </div>
@@ -1472,14 +934,18 @@ require_once 'includes/theme-loader.php';
         <div class="footer-bottom">
             <p>&copy; 2025 Verdant SMS. All rights reserved. Version 3.0.0</p>
             <div style="display: flex; gap: 1rem;">
-                <a href="#" style="color: var(--primary);"><i class="fab fa-github"></i></a>
-                <a href="#" style="color: var(--primary);"><i class="fab fa-twitter"></i></a>
-                <a href="#" style="color: var(--primary);"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Chrinux-AI/SMS" style="color: var(--primary);"><i class="fab fa-github"></i></a>
+                <a href="https://wa.me/2348167714860" style="color: var(--primary);"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </footer>
 
     <script>
+        // Mobile menu toggle
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+        });
+
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -1507,10 +973,6 @@ require_once 'includes/theme-loader.php';
         });
 
         // Animate elements on scroll
-        const observerOptions = {
-            threshold: 0.1
-        };
-
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1518,9 +980,9 @@ require_once 'includes/theme-loader.php';
                     entry.target.style.transform = 'translateY(0)';
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.feature-card, .role-card, .module-card').forEach(el => {
+        document.querySelectorAll('.feature-card, .contact-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s ease';

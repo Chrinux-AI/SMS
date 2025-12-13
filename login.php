@@ -2,6 +2,7 @@
 
 /**
  * Cyberpunk Login Page - Futuristic Authentication
+ * Security Hardened: Rate limiting, account lockout, generic error messages
  */
 
 session_start();
@@ -13,24 +14,94 @@ require_once 'includes/functions.php';
 $error = '';
 $success = '';
 
+// Security constants
+define('MAX_LOGIN_ATTEMPTS', 5);
+define('LOCKOUT_DURATION_MINUTES', 15);
+
+/**
+ * Check if account is locked
+ */
+function is_account_locked($user) {
+    if (empty($user['locked_until'])) {
+        return false;
+    }
+    return strtotime($user['locked_until']) > time();
+}
+
+/**
+ * Get remaining lockout time in minutes
+ */
+function get_lockout_remaining($user) {
+    if (empty($user['locked_until'])) {
+        return 0;
+    }
+    $remaining = strtotime($user['locked_until']) - time();
+    return max(0, ceil($remaining / 60));
+}
+
+/**
+ * Record failed login attempt
+ */
+function record_failed_attempt($user_id) {
+    $attempts = db()->fetchColumn(
+        "SELECT failed_login_attempts FROM users WHERE id = ?",
+        [$user_id]
+    );
+    $attempts = (int)$attempts + 1;
+    
+    $update_data = ['failed_login_attempts' => $attempts];
+    
+    // Lock account if max attempts reached
+    if ($attempts >= MAX_LOGIN_ATTEMPTS) {
+        $update_data['locked_until'] = date('Y-m-d H:i:s', strtotime('+' . LOCKOUT_DURATION_MINUTES . ' minutes'));
+    }
+    
+    db()->update('users', $update_data, 'id = ?', [$user_id]);
+}
+
+/**
+ * Reset failed login attempts on successful login
+ */
+function reset_failed_attempts($user_id) {
+    db()->update('users', [
+        'failed_login_attempts' => 0,
+        'locked_until' => null
+    ], 'id = ?', [$user_id]);
+}
+
 // Handle login
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+    // Honeypot check - bot detection
+    if (!empty($_POST['website'])) {
+        // Silently reject spam bots
+        sleep(2);
+        $error = 'Invalid email or password. Please try again.';
+    }
     // Verify CSRF token
-    if (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
+    elseif (!verify_csrf_token($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid security token. Please refresh and try again.';
     } else {
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $password = $_POST['password'] ?? '';
 
         if (empty($email) || empty($password)) {
-            $error = 'Please enter both email and password';
+            $error = 'Please enter both email and password.';
         } else {
             $user = db()->fetchOne(
                 "SELECT * FROM users WHERE email = ?",
                 [$email]
             );
 
-            if ($user && password_verify($password, $user['password_hash'])) {
+            // Check if account is locked (even for non-existent users, use generic message)
+            if ($user && is_account_locked($user)) {
+                $remaining = get_lockout_remaining($user);
+                $error = "Account temporarily locked due to too many failed attempts. Please try again in {$remaining} minutes.";
+            }
+            // Validate credentials
+            elseif ($user && password_verify($password, $user['password_hash'])) {
+                // Reset failed attempts on successful password verification
+                reset_failed_attempts($user['id']);
+                
                 // Check user status
                 if ($user['email_verified'] == 0) {
                     // Generate OTP for verification
@@ -70,11 +141,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     // Log the login activity
                     log_activity($user['id'], 'login', 'users', $user['id']);
 
-                    // Redirect based on role - supports all 25 roles
+                    // Redirect based on role
                     $role_redirects = [
                         // Leadership
-                        'superadmin' => 'superadmin/dashboard.php',
-                        'owner' => 'owner/dashboard.php',
                         'principal' => 'principal/dashboard.php',
                         'vice-principal' => 'vice-principal/dashboard.php',
                         // Administration
@@ -105,7 +174,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     exit;
                 }
             } else {
-                $error = 'Invalid credentials - Access denied';
+                // Record failed attempt if user exists
+                if ($user) {
+                    record_failed_attempt($user['id']);
+                    $attempts_left = MAX_LOGIN_ATTEMPTS - (int)($user['failed_login_attempts'] ?? 0) - 1;
+                    if ($attempts_left > 0 && $attempts_left <= 3) {
+                        $error = "Invalid email or password. {$attempts_left} attempts remaining before account lockout.";
+                    } else {
+                        $error = 'Invalid email or password. Please try again.';
+                    }
+                } else {
+                    // Generic error for non-existent users (no information leakage)
+                    $error = 'Invalid email or password. Please try again.';
+                }
             }
         }
     }
@@ -466,6 +547,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     <!-- Login Form -->
                     <form method="POST" action="" class="login-form">
                         <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
+                        
+                        <!-- Honeypot field for bot detection -->
+                        <div style="position: absolute; left: -9999px;">
+                            <input type="text" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+                        
                         <div class="cyber-input-group">
                             <label class="cyber-label" for="email">
                                 <i class="fas fa-envelope"></i> Email Address
