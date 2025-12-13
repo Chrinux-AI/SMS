@@ -412,6 +412,52 @@ $page_title = "Settings";
                 </form>
             </div>
 
+            <!-- Biometric/Passkey Settings -->
+            <div class="settings-card">
+                <h2><i class="fas fa-fingerprint"></i> Passwordless Login</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                    Register your fingerprint, Face ID, or a security key for faster, more secure login.
+                </p>
+
+                <!-- Biometric Registration (Platform Authenticator) -->
+                <div id="biometric-section" style="display: none;">
+                    <button id="registerBiometric" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                        <i class="fas fa-fingerprint"></i> Register Fingerprint / Face ID
+                    </button>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
+                        <i class="fas fa-star" style="color: gold;"></i> Recommended for fastest login
+                    </p>
+                </div>
+
+                <!-- Passkey Registration (Security Key) -->
+                <div id="passkey-section" style="display: none;">
+                    <button id="registerPasskey" class="btn" style="width: 100%; background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary);">
+                        <i class="fas fa-key"></i> Register Security Key / Phone
+                    </button>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">
+                        Use if your device doesn't support biometrics
+                    </p>
+                </div>
+
+                <!-- No WebAuthn Support Message -->
+                <div id="no-webauthn-message" style="display: none; text-align: center; padding: 1rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px;">
+                    <i class="fas fa-exclamation-triangle" style="color: #ef4444; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                    <p style="color: #ef4444;">Your browser doesn't support passwordless login.</p>
+                    <small style="color: var(--text-secondary);">Try using Chrome, Safari, or Edge on a modern device.</small>
+                </div>
+
+                <!-- Registered Methods -->
+                <div id="registered-methods" style="margin-top: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem; color: var(--text-primary);">
+                        <i class="fas fa-shield-alt"></i> Registered Methods
+                    </h4>
+                    <div class="no-credentials" style="text-align: center; padding: 1.5rem; opacity: 0.7;">
+                        <i class="fas fa-shield-alt" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Notification Preferences -->
             <div class="settings-card">
                 <h2><i class="fas fa-bell"></i> Notifications</h2>
@@ -483,6 +529,7 @@ $page_title = "Settings";
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/pwa-manager.js"></script>
     <script src="../assets/js/pwa-analytics.js"></script>
+    <script src="../assets/js/biometric-register.js"></script>
 </body>
 
 </html>
