@@ -367,20 +367,20 @@ $greeting = $greetings[$userRole] ?? $greetings['visitor'];
 
         <div class="ai-suggestions" id="aiSuggestions">
             <?php if ($userRole === 'student'): ?>
-                <span class="ai-suggestion" data-prompt="Help me with my homework">📚 Homework help</span>
-                <span class="ai-suggestion" data-prompt="Explain photosynthesis">🌱 Explain topic</span>
-                <span class="ai-suggestion" data-prompt="Give me a math quiz">📝 Practice quiz</span>
+                <span class="ai-suggestion" data-prompt="Help me with my homework"><i class="fas fa-book-open"></i> Homework help</span>
+                <span class="ai-suggestion" data-prompt="Explain photosynthesis"><i class="fas fa-lightbulb"></i> Explain topic</span>
+                <span class="ai-suggestion" data-prompt="Give me a math quiz"><i class="fas fa-question-circle"></i> Practice quiz</span>
             <?php elseif ($userRole === 'teacher'): ?>
-                <span class="ai-suggestion" data-prompt="Create a lesson plan">📋 Lesson plan</span>
-                <span class="ai-suggestion" data-prompt="Generate quiz questions">❓ Quiz questions</span>
-                <span class="ai-suggestion" data-prompt="NERDC curriculum help">📖 Curriculum</span>
+                <span class="ai-suggestion" data-prompt="Create a lesson plan"><i class="fas fa-clipboard-list"></i> Lesson plan</span>
+                <span class="ai-suggestion" data-prompt="Generate quiz questions"><i class="fas fa-tasks"></i> Quiz questions</span>
+                <span class="ai-suggestion" data-prompt="NERDC curriculum help"><i class="fas fa-graduation-cap"></i> Curriculum</span>
             <?php elseif ($userRole === 'parent'): ?>
-                <span class="ai-suggestion" data-prompt="How is my child doing?">📊 Progress report</span>
-                <span class="ai-suggestion" data-prompt="Home study tips">🏠 Study tips</span>
+                <span class="ai-suggestion" data-prompt="How is my child doing?"><i class="fas fa-chart-line"></i> Progress report</span>
+                <span class="ai-suggestion" data-prompt="Home study tips"><i class="fas fa-home"></i> Study tips</span>
             <?php else: ?>
-                <span class="ai-suggestion" data-prompt="What is Verdant SMS?">ℹ️ About Verdant</span>
-                <span class="ai-suggestion" data-prompt="Show me features">✨ Features</span>
-                <span class="ai-suggestion" data-prompt="Pricing plans">💰 Pricing</span>
+                <span class="ai-suggestion" data-prompt="What is Verdant SMS?"><i class="fas fa-info-circle"></i> About Verdant</span>
+                <span class="ai-suggestion" data-prompt="Show me features"><i class="fas fa-star"></i> Features</span>
+                <span class="ai-suggestion" data-prompt="Pricing plans"><i class="fas fa-tags"></i> Pricing</span>
             <?php endif; ?>
         </div>
 

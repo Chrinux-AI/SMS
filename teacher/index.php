@@ -670,5 +670,7 @@ $pageTitle = "Teacher Dashboard";
         }
         setInterval(updateCountdown, 1000);
     </script>
+
+    <?php include dirname(__DIR__) . '/includes/ai-assistant.php'; ?>
 </body>
 </html>
