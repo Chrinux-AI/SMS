@@ -42,7 +42,7 @@ $pageTitle = "Features - Verdant SMS";
 <body>
     <nav class="navbar">
         <a href="../index.php" class="navbar-brand">
-            <div class="navbar-logo">V</div>
+            <div class="navbar-logo"><i class="fas fa-leaf"></i></div>
             <span class="navbar-title">Verdant SMS</span>
         </a>
         <a href="register-school.php" class="btn btn-primary">Start Free</a>

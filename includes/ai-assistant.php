@@ -439,8 +439,9 @@ $greeting = $greetings[$userRole] ?? $greetings['visitor'];
         // Show typing indicator
         showTyping();
 
-        // Send to AI endpoint
-        fetch('<?= rtrim(dirname($_SERVER['SCRIPT_NAME']), '/') ?>/api/ai-chat.php', {
+        // Send to AI endpoint - use absolute path from root
+        const basePath = window.location.pathname.split('/attendance')[0] + '/attendance';
+        fetch(basePath + '/api/ai-chat.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
