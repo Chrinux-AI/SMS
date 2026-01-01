@@ -497,15 +497,46 @@ $greeting = $greetings[$userRole] ?? $greetings['visitor'];
         });
     });
 
-    // Voice input (Web Speech API)
+    // Voice input (Web Speech API) with punctuation recognition
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
         recognition.continuous = false;
+        recognition.interimResults = false;
         recognition.lang = 'en-NG'; // Nigerian English
 
+        // Add punctuation to transcript
+        function addPunctuation(text) {
+            if (!text) return text;
+
+            // Trim and capitalize first letter
+            text = text.trim();
+            text = text.charAt(0).toUpperCase() + text.slice(1);
+
+            // Question word patterns
+            const questionWords = /^(what|who|where|when|why|how|which|is|are|do|does|did|can|could|would|will|shall|should|have|has|had)/i;
+            const questionPhrases = /(what is|how do|can you|could you|would you|will you|do you|are you|is this|is there|is it|where is|who is|when is|why is|how is|what are|how can)/i;
+
+            // List separators
+            text = text.replace(/\b(first|second|third|then|next|also|and|finally)\b/gi, (m) => ', ' + m);
+            text = text.replace(/^,\s*/g, ''); // Remove leading comma
+            text = text.replace(/,\s*,/g, ','); // Remove double commas
+
+            // Add appropriate ending punctuation
+            if (!text.match(/[.?!,]$/)) {
+                if (questionWords.test(text) || questionPhrases.test(text) || text.includes('please explain') || text.includes('can you')) {
+                    text += '?';
+                } else {
+                    text += '.';
+                }
+            }
+
+            return text;
+        }
+
         recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript;
+            let transcript = event.results[0][0].transcript;
+            transcript = addPunctuation(transcript);
             input.value = transcript;
             sendMessage(transcript);
         };
@@ -513,15 +544,27 @@ $greeting = $greetings[$userRole] ?? $greetings['visitor'];
         recognition.onend = () => {
             isRecording = false;
             voiceBtn.classList.remove('recording');
+            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+        };
+
+        recognition.onerror = (event) => {
+            isRecording = false;
+            voiceBtn.classList.remove('recording');
+            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            if (event.error !== 'no-speech') {
+                addMessage('🎤 Voice not recognized. Please try again or type your question.', 'ai');
+            }
         };
 
         voiceBtn.addEventListener('click', () => {
             if (isRecording) {
                 recognition.stop();
+                voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
             } else {
                 recognition.start();
                 isRecording = true;
                 voiceBtn.classList.add('recording');
+                voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
             }
         });
     } else {

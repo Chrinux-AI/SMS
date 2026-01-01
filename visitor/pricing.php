@@ -39,6 +39,8 @@ $pageTitle = "Pricing - Verdant SMS";
         .plan-features li { padding: 0.6rem 0; font-size: 0.9rem; display: flex; align-items: center; gap: 0.75rem; border-bottom: 1px solid var(--border); }
         .plan-features li:last-child { border-bottom: none; }
         .plan-features li i { color: var(--success); font-size: 0.85rem; }
+        .plan-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(0,212,255,0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; color: var(--primary); }
+        .pricing-card.popular .plan-icon { background: rgba(0,255,135,0.15); color: var(--success); }
         .btn { display: block; padding: 1rem 1.5rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600; text-decoration: none; text-align: center; transition: all 0.3s; border: none; cursor: pointer; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
@@ -72,31 +74,36 @@ $pageTitle = "Pricing - Verdant SMS";
 
     <div class="pricing-grid">
         <div class="pricing-card">
-            <div class="plan-name">Free</div>
+            <div class="plan-icon"><i class="fas fa-seedling"></i></div>
+            <div class="plan-name">Starter</div>
             <div class="plan-desc">For small schools getting started</div>
-            <div class="plan-price">₦0</div>
-            <div class="plan-period">Forever free</div>
+            <div class="plan-price">₦5,000 <span>/year</span></div>
+            <div class="plan-period">Limited features</div>
             <ul class="plan-features">
-                <li><i class="fas fa-check"></i> Unlimited students</li>
-                <li><i class="fas fa-check"></i> All core features</li>
-                <li><i class="fas fa-check"></i> Self-hosted</li>
-                <li><i class="fas fa-check"></i> Community support</li>
-                <li><i class="fas fa-check"></i> Open source</li>
+                <li><i class="fas fa-check"></i> Up to 50 students</li>
+                <li><i class="fas fa-check"></i> Basic attendance & fees</li>
+                <li><i class="fas fa-check"></i> 3 teacher accounts</li>
+                <li><i class="fas fa-check"></i> Basic AI chatbot (10 queries/day)</li>
+                <li><i class="fas fa-times" style="color: #FF4757;"></i> No cloud hosting</li>
+                <li><i class="fas fa-times" style="color: #FF4757;"></i> No SMS notifications</li>
             </ul>
-            <a href="register-school.php" class="btn btn-outline">Get Started Free</a>
+            <a href="register-school.php" class="btn btn-outline"><i class="fas fa-rocket"></i> Start Now</a>
         </div>
 
         <div class="pricing-card popular">
+            <div class="plan-icon"><i class="fas fa-leaf"></i></div>
             <div class="plan-name">Basic Cloud</div>
             <div class="plan-desc">For growing schools</div>
             <div class="plan-price">₦50,000 <span>/year</span></div>
-            <div class="plan-period">Billed annually</div>
+            <div class="plan-period">Most popular choice</div>
             <ul class="plan-features">
-                <li><i class="fas fa-check"></i> Everything in Free</li>
-                <li><i class="fas fa-check"></i> Cloud hosting</li>
+                <li><i class="fas fa-check"></i> Up to 300 students</li>
+                <li><i class="fas fa-check"></i> Full attendance & fee management</li>
+                <li><i class="fas fa-check"></i> 10 staff accounts</li>
+                <li><i class="fas fa-check"></i> AI chatbot (50 queries/day)</li>
+                <li><i class="fas fa-check"></i> Cloud hosting + SSL</li>
                 <li><i class="fas fa-check"></i> Daily backups</li>
-                <li><i class="fas fa-check"></i> Email support</li>
-                <li><i class="fas fa-check"></i> SSL certificate</li>
+                <li><i class="fas fa-times" style="color: #FF4757;"></i> No AI lesson planner</li>
             </ul>
             <button class="btn btn-primary" onclick="payWithFlutterwave('basic', 50000)">
                 <i class="fas fa-credit-card"></i> Pay with Flutterwave
@@ -104,35 +111,43 @@ $pageTitle = "Pricing - Verdant SMS";
         </div>
 
         <div class="pricing-card">
+            <div class="plan-icon"><i class="fas fa-tree"></i></div>
             <div class="plan-name">Pro Cloud</div>
             <div class="plan-desc">For established schools</div>
             <div class="plan-price">₦150,000 <span>/year</span></div>
-            <div class="plan-period">Billed annually</div>
+            <div class="plan-period">Full AI features</div>
             <ul class="plan-features">
-                <li><i class="fas fa-check"></i> Everything in Basic</li>
-                <li><i class="fas fa-check"></i> AI Lesson Planner</li>
+                <li><i class="fas fa-check"></i> Up to 1,000 students</li>
+                <li><i class="fas fa-check"></i> Unlimited staff accounts</li>
+                <li><i class="fas fa-check"></i> <strong>Unlimited AI queries</strong></li>
+                <li><i class="fas fa-check"></i> <strong>AI Lesson Planner (NERDC)</strong></li>
                 <li><i class="fas fa-check"></i> Custom subdomain</li>
+                <li><i class="fas fa-check"></i> SMS notifications (500/month)</li>
                 <li><i class="fas fa-check"></i> Priority support</li>
                 <li><i class="fas fa-check"></i> Advanced analytics</li>
             </ul>
             <button class="btn btn-outline" onclick="payWithFlutterwave('pro', 150000)">
-                <i class="fas fa-credit-card"></i> Pay with Flutterwave
+                <i class="fas fa-crown"></i> Upgrade to Pro
             </button>
         </div>
 
         <div class="pricing-card">
+            <div class="plan-icon"><i class="fas fa-building"></i></div>
             <div class="plan-name">Enterprise</div>
             <div class="plan-desc">For large institutions</div>
             <div class="plan-price">Custom</div>
             <div class="plan-period">Contact for quote</div>
             <ul class="plan-features">
-                <li><i class="fas fa-check"></i> Everything in Pro</li>
+                <li><i class="fas fa-check"></i> <strong>Unlimited students</strong></li>
+                <li><i class="fas fa-check"></i> Unlimited everything</li>
                 <li><i class="fas fa-check"></i> Dedicated server</li>
-                <li><i class="fas fa-check"></i> Custom features</li>
+                <li><i class="fas fa-check"></i> Custom AI training</li>
+                <li><i class="fas fa-check"></i> Unlimited SMS</li>
                 <li><i class="fas fa-check"></i> On-site training</li>
+                <li><i class="fas fa-check"></i> 24/7 phone support</li>
                 <li><i class="fas fa-check"></i> SLA guarantee</li>
             </ul>
-            <a href="contact.php" class="btn btn-outline">Contact Sales</a>
+            <a href="contact.php" class="btn btn-outline"><i class="fas fa-phone"></i> Contact Sales</a>
         </div>
     </div>
 
