@@ -132,5 +132,6 @@ $pageTitle = "Features - Verdant SMS";
         <p>Join schools across Nigeria using Verdant SMS.</p>
         <a href="register-school.php" class="btn btn-primary">Start Your School Free</a>
     </section>
+    <?php include __DIR__ . "/includes/ai-assistant.php"; ?>
 </body>
 </html>

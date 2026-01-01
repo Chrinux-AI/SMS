@@ -167,5 +167,6 @@ $pageTitle = "Class Teacher Portal";
             </div>
         </div>
     </div>
+    <?php include dirname(__DIR__) . "/includes/ai-assistant.php"; ?>
 </body>
 </html>

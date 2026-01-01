@@ -109,5 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p><i class="fab fa-github"></i> <a href="https://github.com/Chrinux-AI/SMS" target="_blank">GitHub</a></p>
         </div>
     </div>
+    <?php include __DIR__ . "/includes/ai-assistant.php"; ?>
 </body>
 </html>

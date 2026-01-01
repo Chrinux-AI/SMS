@@ -708,6 +708,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <script src="assets/js/main.js"></script>
     <script src="assets/js/pwa-manager.js"></script>
     <script src="assets/js/pwa-analytics.js"></script>
+    <?php include __DIR__ . "/includes/ai-assistant.php"; ?>
 </body>
 
 </html>

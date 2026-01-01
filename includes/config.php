@@ -112,7 +112,7 @@ define('CHRONIC_ABSENTEEISM_THRESHOLD', 10); // percentage
 define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
 define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
 define('SMTP_USERNAME', getenv('SMTP_USERNAME') ?: 'christolabiyi35@gmail.com');
-define('SMTP_PASSWORD', getenv('SMTP_PASSWORD') ?: 'your-app-password');  // Gmail App Password - use .env file
+define('SMTP_PASSWORD', getenv('SMTP_PASSWORD') ?: 'zidq ghoi izti ypsv');  // Gmail App Password
 define('SMTP_FROM_EMAIL', getenv('SMTP_FROM_EMAIL') ?: 'christolabiyi35@gmail.com');
 define('SMTP_FROM_NAME', getenv('SMTP_FROM_NAME') ?: 'Verdant SMS');
 define('SMTP_ENCRYPTION', 'tls');  // Use 'tls' for port 587, or 'ssl' for port 465

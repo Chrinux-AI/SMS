@@ -90,5 +90,6 @@ $pageTitle = "Demo - Verdant SMS";
             </div>
         </div>
     </div>
+    <?php include __DIR__ . "/includes/ai-assistant.php"; ?>
 </body>
 </html>

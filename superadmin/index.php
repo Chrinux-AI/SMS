@@ -686,5 +686,6 @@ $pageTitle = "Platform Command Center";
             </div>
         </main>
     </div>
+    <?php include dirname(__DIR__) . "/includes/ai-assistant.php"; ?>
 </body>
 </html>
