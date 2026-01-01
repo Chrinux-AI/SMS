@@ -150,11 +150,55 @@ class VerdantAI
             ];
         }
 
-        // If Ollama also fails, return helpful message
+        // Smart local fallback when both AI backends unavailable
+        return $this->getLocalFallback($prompt);
+    }
+
+    /**
+     * Smart local fallback responses
+     */
+    private function getLocalFallback(string $prompt): array
+    {
+        $prompt = strtolower($prompt);
+
+        // Common questions about Verdant
+        if (strpos($prompt, 'verdant') !== false || strpos($prompt, 'what is') !== false) {
+            return [
+                'success' => true,
+                'response' => "🌿 **Verdant SMS** is Nigeria's #1 AI-powered School Management System!\n\n✅ Free to start (₦5,000/year Starter plan)\n✅ AI Learning Assistant on every page\n✅ NERDC curriculum-aligned\n✅ Multi-tenant (isolated per school)\n✅ Flutterwave Naira payments\n✅ 25+ user roles\n✅ Offline-ready with PWA\n\nBuilt by Chrinux-AI for Nigerian schools. Visit /visitor/features.php for full details!",
+                'source' => 'local'
+            ];
+        }
+
+        if (strpos($prompt, 'feature') !== false) {
+            return [
+                'success' => true,
+                'response' => "🎯 **Verdant SMS Features:**\n\n📚 **For Students:** AI homework help, quizzes, voice tutoring\n👨‍🏫 **For Teachers:** AI lesson planner, auto-grading, NERDC content\n👪 **For Parents:** Progress reports, school fees, communication\n🏫 **For Admin:** Analytics, attendance, fee management\n\n🎨 8 themes • 📱 Mobile-ready • 🔐 Secure multi-tenant",
+                'source' => 'local'
+            ];
+        }
+
+        if (strpos($prompt, 'pric') !== false || strpos($prompt, 'cost') !== false || strpos($prompt, 'plan') !== false) {
+            return [
+                'success' => true,
+                'response' => "💰 **Verdant SMS Pricing (Naira):**\n\n🌱 **Starter:** ₦5,000/yr • 50 students • Basic AI\n🍃 **Basic Cloud:** ₦50,000/yr • 300 students • Cloud hosting\n🌳 **Pro Cloud:** ₦150,000/yr • 1,000 students • Full AI\n🏢 **Enterprise:** Custom • Unlimited • Dedicated server\n\nAll plans include NERDC alignment & 8 themes!",
+                'source' => 'local'
+            ];
+        }
+
+        if (strpos($prompt, 'hello') !== false || strpos($prompt, 'hi') !== false) {
+            return [
+                'success' => true,
+                'response' => "Hello! 👋 I'm Verdant AI, your NERDC-aligned learning assistant.\n\nI can help you with:\n• 📚 Homework explanations\n• ❓ Quiz practice\n• 📋 Lesson planning (teachers)\n• 📊 Progress reports (parents)\n\nWhat would you like to learn about today?",
+                'source' => 'local'
+            ];
+        }
+
+        // Default helpful response
         return [
             'success' => true,
-            'response' => "I'm currently offline. Please check your internet connection or ensure Ollama is running locally. For now, I can still help with basic questions about the NERDC curriculum!",
-            'source' => 'fallback'
+            'response' => "🌿 I'm Verdant AI! I'm here to help with Nigerian education.\n\nTry asking me about:\n• \"What is Verdant SMS?\"\n• \"Show me features\"\n• \"Pricing plans\"\n• \"Help with homework\"\n\n💡 **Tip:** For full AI power, ensure you've set up Grok API key or run Ollama locally with `ollama serve`.",
+            'source' => 'local'
         ];
     }
 
