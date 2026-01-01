@@ -142,7 +142,7 @@ p {
     padding: var(--space-xl);
     margin-bottom: var(--space-xl);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     box-shadow: var(--shadow-card);
 }
 
@@ -256,7 +256,7 @@ p {
     transition: all var(--transition-smooth);
     cursor: pointer;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     min-height: 180px;
     display: flex;
     flex-direction: column;

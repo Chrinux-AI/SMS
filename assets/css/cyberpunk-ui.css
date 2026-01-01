@@ -505,7 +505,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: var(--glass-shadow);
     transition: all var(--transition-smooth);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .holo-card::before {
@@ -550,7 +550,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 20px;
     transition: all var(--transition-smooth);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .stat-orb::after {
@@ -664,7 +664,7 @@ h1, h2, h3, h4, h5, h6 {
     transition: all var(--transition-smooth);
     text-decoration: none;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .cyber-btn::before {
@@ -1115,17 +1115,14 @@ h1, h2, h3, h4, h5, h6 {
     top: 20px;
     left: 20px; /* Position ON the sidebar */
     z-index: 1002; /* Above sidebar (1000) */
-    background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-cyan));
+    background: linear-gradient(135deg, var(--hologram-purple), var(--cyber-cyan));
     border: none;
     border-radius: 8px;
     padding: 12px 15px;
     cursor: pointer;
     transition: all var(--transition-smooth);
     box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
-}
-    cursor: pointer;
-    transition: all var(--transition-smooth);
-    box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+    color: white;
 }
 
 /* Move hamburger to left when sidebar is hidden */
@@ -1274,7 +1271,7 @@ body {
 .cyber-bg-layer,
 .bg-animation,
 .grid-overlay {
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     pointer-events: none !important;
     position: fixed;
     z-index: -1;
@@ -1284,7 +1281,7 @@ body {
 .holo-card,
 .stat-orb,
 .cyber-card {
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 /* ========================================

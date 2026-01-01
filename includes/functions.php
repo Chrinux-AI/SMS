@@ -608,6 +608,8 @@ function send_email($to, $subject, $message, $from_name = null)
         <!DOCTYPE html>
         <html>
         <head>
+            <meta charset='UTF-8'>
+            <title>" . APP_NAME . "</title>
             <style>
                 body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
                 .container { max-width: 600px; margin: 0 auto; padding: 20px; }

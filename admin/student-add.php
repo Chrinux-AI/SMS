@@ -116,6 +116,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <head>
                     <meta charset='UTF-8'>
                     <title>Welcome to School Management System</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon-96x96.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>manifest.json">
+    <meta name="msapplication-TileColor" content="#00BFFF">
+    <meta name="msapplication-TileImage" content="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/mstile-150x150.png">
+    <meta name="theme-color" content="#0a0a0f">
                     <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
                         .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 10px; overflow: hidden; }

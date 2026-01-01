@@ -263,7 +263,7 @@ a:hover {
     padding: var(--space-6);
     box-shadow: var(--shadow-md);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -327,7 +327,7 @@ a:hover {
     cursor: pointer;
     transition: all var(--transition-base);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     text-decoration: none;
 }
 
@@ -444,7 +444,7 @@ a:hover {
         var(--nature-green-600) 0%,
         var(--nature-green-800) 100%);
     color: var(--white);
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -672,7 +672,7 @@ a:hover {
 .fixed { position: fixed; }
 
 /* Overflow */
-.overflow-hidden { overflow: hidden; }
+.overflow-hidden { overflow-y: auto; overflow-x: hidden; }
 .overflow-auto { overflow: auto; }
 
 /* Cursor */
@@ -790,7 +790,7 @@ a:hover {
     height: 1px;
     padding: 0;
     margin: -1px;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;

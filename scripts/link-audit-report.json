@@ -1,0 +1,188 @@
+{
+    "scan_date": "2025-12-30 23:30:25",
+    "total_files_scanned": 420,
+    "total_links_found": 275,
+    "broken_links": [],
+    "missing_pages": [],
+    "navigation_issues": [],
+    "summary": {
+        "admin": {
+            "files": 55,
+            "subdirs": {
+                "academics": 4,
+                "ajax": 1,
+                "api": 2,
+                "career": 0,
+                "certificates": 1,
+                "discipline": 1,
+                "events": 1,
+                "finance": 4,
+                "front-desk": 0,
+                "gamification": 1,
+                "health": 15,
+                "hostel": 16,
+                "hr": 5,
+                "integrations": 0,
+                "inventory": 3,
+                "library": 15,
+                "payroll": 0,
+                "reports": 0,
+                "sustainability": 0,
+                "templates": 0,
+                "transport": 13,
+                "white-label": 0
+            }
+        },
+        "student": {
+            "files": 52,
+            "subdirs": {
+                "achievements": 0,
+                "ajax": 0,
+                "api": 4,
+                "canteen-wallet": 0,
+                "career": 0,
+                "certificates": 0,
+                "discipline": 0,
+                "health": 0,
+                "sports": 0
+            }
+        },
+        "teacher": {
+            "files": 36,
+            "subdirs": {
+                "ajax": 0,
+                "api": 0
+            }
+        },
+        "parent": {
+            "files": 27,
+            "subdirs": {
+                "ajax": 0,
+                "api": 0
+            }
+        },
+        "principal": {
+            "files": 13,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "vice-principal": {
+            "files": 9,
+            "subdirs": {
+                "dashboard": 1,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "accountant": {
+            "files": 10,
+            "subdirs": {
+                "dashboard": 1,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "librarian": {
+            "files": 11,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "transport": {
+            "files": 10,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "hostel": {
+            "files": 8,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "canteen": {
+            "files": 9,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "nurse": {
+            "files": 8,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "counselor": {
+            "files": 8,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "admin-officer": {
+            "files": 8,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "class-teacher": {
+            "files": 10,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "subject-coordinator": {
+            "files": 9,
+            "subdirs": {
+                "dashboard": 0,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "alumni": {
+            "files": 9,
+            "subdirs": {
+                "dashboard": 1,
+                "profile": 0,
+                "settings": 0
+            }
+        },
+        "general": {
+            "files": 7,
+            "subdirs": {
+                "api": 0,
+                "templates": 0
+            }
+        },
+        "visitor": {
+            "files": 8,
+            "subdirs": []
+        },
+        "superadmin": {
+            "files": 8,
+            "subdirs": []
+        },
+        "owner": {
+            "files": 9,
+            "subdirs": []
+        }
+    }
+}

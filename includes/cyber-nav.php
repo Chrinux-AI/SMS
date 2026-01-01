@@ -14,10 +14,17 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once __DIR__ . '/theme-loader.php';
 
 $current_page = basename($_SERVER['PHP_SELF']);
+$current_dir = dirname($_SERVER['PHP_SELF']);
 $user_name = $_SESSION['full_name'] ?? 'User';
 $user_role = $_SESSION['role'] ?? 'user';
 $user_id = $_SESSION['user_id'] ?? 0;
 $user_initials = strtoupper(substr($user_name, 0, 2));
+
+// Determine base path for navigation links
+// If we're in a role folder (e.g., /admin/, /student/), use relative paths
+// If we're in root, use absolute paths
+$is_role_folder = preg_match('/\/(admin|student|teacher|parent|principal|vice-principal|accountant|librarian|transport|hostel|canteen|nurse|counselor|admin-officer|class-teacher|subject-coordinator|alumni|general|superadmin|owner)\//', $current_dir);
+$nav_base = $is_role_folder ? '' : APP_URL;
 
 // Get unread messages count
 $unread_count = 0;
@@ -668,8 +675,28 @@ if ($user_role === 'admin') {
     <nav class="sidebar-menu" aria-label="Dashboard Navigation">
         <?php foreach ($nav_sections as $section_name => $items): ?>
             <div class="menu-section-title" role="heading" aria-level="3"><?php echo $section_name; ?></div>
-            <?php foreach ($items as $page => $item): ?>
-                <a href="<?php echo $page; ?>" class="menu-item <?php echo $current_page === $page ? 'active' : ''; ?>" <?php echo $current_page === $page ? 'aria-current="page"' : ''; ?>>
+            <?php foreach ($items as $page => $item): 
+                // Fix navigation paths
+                $link_url = $page;
+                
+                // If link starts with ../, it's already relative - keep it
+                // If link is just a filename, it's in the same directory
+                // If link starts with /, make it absolute with APP_URL
+                if (strpos($page, '../') === 0) {
+                    // Relative path - keep as is
+                    $link_url = $page;
+                } elseif (strpos($page, '/') === 0) {
+                    // Absolute path - prepend APP_URL
+                    $link_url = APP_URL . $page;
+                } elseif (strpos($page, 'http') === 0) {
+                    // External URL - keep as is
+                    $link_url = $page;
+                } else {
+                    // Relative filename - use as is (will be relative to current directory)
+                    $link_url = $page;
+                }
+            ?>
+                <a href="<?php echo htmlspecialchars($link_url); ?>" class="menu-item <?php echo $current_page === basename($page) ? 'active' : ''; ?>" <?php echo $current_page === basename($page) ? 'aria-current="page"' : ''; ?>>
                     <span class="menu-icon" aria-hidden="true">
                         <i class="fas fa-<?php echo $item['icon']; ?>"></i>
                     </span>
@@ -682,7 +709,7 @@ if ($user_role === 'admin') {
         <?php endforeach; ?>
 
         <!-- Logout -->
-        <a href="../logout.php" class="menu-item" style="margin-top: 20px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+        <a href="<?php echo $is_role_folder ? '../logout.php' : APP_URL . '/logout.php'; ?>" class="menu-item" style="margin-top: 20px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
             <span class="menu-icon">
                 <i class="fas fa-sign-out-alt"></i>
             </span>
@@ -802,6 +829,6 @@ include __DIR__ . '/theme-selector.php';
 </script>
 
 <?php
-// Include School Management System Bot widget on all pages
-include __DIR__ . '/sams-bot.php';
+// Include Unified Verdant Chatbot widget on all pages
+include __DIR__ . '/chatbot-unified.php';
 ?>

@@ -21,7 +21,8 @@ define('LOCKOUT_DURATION_MINUTES', 15);
 /**
  * Check if account is locked
  */
-function is_account_locked($user) {
+function is_account_locked($user)
+{
     if (empty($user['locked_until'])) {
         return false;
     }
@@ -31,7 +32,8 @@ function is_account_locked($user) {
 /**
  * Get remaining lockout time in minutes
  */
-function get_lockout_remaining($user) {
+function get_lockout_remaining($user)
+{
     if (empty($user['locked_until'])) {
         return 0;
     }
@@ -42,27 +44,29 @@ function get_lockout_remaining($user) {
 /**
  * Record failed login attempt
  */
-function record_failed_attempt($user_id) {
+function record_failed_attempt($user_id)
+{
     $attempts = db()->fetchColumn(
         "SELECT failed_login_attempts FROM users WHERE id = ?",
         [$user_id]
     );
     $attempts = (int)$attempts + 1;
-    
+
     $update_data = ['failed_login_attempts' => $attempts];
-    
+
     // Lock account if max attempts reached
     if ($attempts >= MAX_LOGIN_ATTEMPTS) {
         $update_data['locked_until'] = date('Y-m-d H:i:s', strtotime('+' . LOCKOUT_DURATION_MINUTES . ' minutes'));
     }
-    
+
     db()->update('users', $update_data, 'id = ?', [$user_id]);
 }
 
 /**
  * Reset failed login attempts on successful login
  */
-function reset_failed_attempts($user_id) {
+function reset_failed_attempts($user_id)
+{
     db()->update('users', [
         'failed_login_attempts' => 0,
         'locked_until' => null
@@ -101,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             elseif ($user && password_verify($password, $user['password_hash'])) {
                 // Reset failed attempts on successful password verification
                 reset_failed_attempts($user['id']);
-                
+
                 // Check user status
                 if ($user['email_verified'] == 0) {
                     // Generate OTP for verification
@@ -204,6 +208,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Login - <?php echo APP_NAME; ?></title>
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/verdant-icon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00BFFF">
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
@@ -547,12 +558,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
                     <!-- Login Form -->
                     <form method="POST" action="" class="login-form">
                         <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-                        
+
                         <!-- Honeypot field for bot detection -->
                         <div style="position: absolute; left: -9999px;">
                             <input type="text" name="website" tabindex="-1" autocomplete="off">
                         </div>
-                        
+
                         <div class="cyber-input-group">
                             <label class="cyber-label" for="email">
                                 <i class="fas fa-envelope"></i> Email Address

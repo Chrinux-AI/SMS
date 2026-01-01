@@ -376,7 +376,7 @@ $page_title = "My Reports";
         </div>
     </div>
 
-    <?php include '../includes/sams-bot.php'; ?>
+    <?php include '../includes/chatbot-unified.php'; ?>
 
     <script>
         function exportToPDF() {

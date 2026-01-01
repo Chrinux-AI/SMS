@@ -28,10 +28,17 @@ define('BASE_PATH', dirname(__DIR__));
 define('INCLUDES_PATH', BASE_PATH . '/includes');
 
 // Database Configuration
-define('DB_HOST', '/opt/lampp/var/mysql/mysql.sock');  // Socket path
-define('DB_USER', 'root');
-define('DB_PASS', '');
-define('DB_NAME', 'attendance_system');
+// Auto-detect Docker vs Local XAMPP
+if (getenv('DB_HOST')) {
+    define('DB_HOST', getenv('DB_HOST')); // Docker service name 'db'
+} else {
+    // Fallback to local socket if not in Docker
+    define('DB_HOST', '/opt/lampp/var/mysql/mysql.sock');
+}
+
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASSWORD') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: 'attendance_system');
 define('DB_CHARSET', 'utf8mb4');
 
 // Application Settings

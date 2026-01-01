@@ -274,7 +274,7 @@ $page_title = "AI Analytics";
         </div>
     </div>
 
-    <?php include '../includes/sams-bot.php'; ?>
+    <?php include '../includes/chatbot-unified.php'; ?>
 
     <script>
         // Prepare data for charts

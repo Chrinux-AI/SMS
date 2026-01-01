@@ -2,7 +2,7 @@
 
 > **All 25 Valid, Working Login Accounts for Demo and Testing**
 > Last Updated: December 12, 2025
-> Repository: https://github.com/Chrinux-AI/School_Management_System
+> Repository: https://github.com/Chrinux-AI/SMS
 
 ---
 

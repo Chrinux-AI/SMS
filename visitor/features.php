@@ -1,321 +1,136 @@
 <?php
-
 /**
- * Features - Visitor Page
- * Public page showing system features (NO admin-specific details)
+ * Verdant SMS - Visitor Features Page
  */
-$page_title = 'Features - Verdant SMS';
+require_once dirname(__DIR__) . '/includes/config.php';
+$pageTitle = "Features - Verdant SMS";
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore the 42 modules of Verdant SMS - Complete school management for Nigerian schools.">
-    <title><?php echo $page_title; ?></title>
+    <title><?= $pageTitle ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #00BFFF;
-            --secondary: #8A2BE2;
-            --accent: #00FF7F;
-            --dark: #0a0a0f;
-            --darker: #05050a;
-            --border: rgba(0, 191, 255, 0.2);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-y: scroll;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--darker);
-            color: #fff;
-            line-height: 1.6;
-        }
-
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(ellipse at 20% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
-        }
-
-        main {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 120px 2rem 60px;
-        }
-
-        .page-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .page-header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .page-header p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-        }
-
-        .feature-card {
-            background: rgba(20, 20, 30, 0.8);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(0, 191, 255, 0.3);
-            border-color: var(--primary);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-list {
-            list-style: none;
-        }
-
-        .feature-list li {
-            padding: 0.5rem 0;
-            color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .feature-list li i {
-            color: var(--accent);
-            font-size: 0.8rem;
-        }
-
-        @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 2rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        :root { --primary: #00D4FF; --success: #00FF87; --purple: #A855F7; --bg-dark: #0A0E17; --bg-card: #111827; --border: rgba(255,255,255,0.08); --text: #F3F4F6; --text-muted: #9CA3AF; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text); }
+        .navbar { padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .navbar-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+        .navbar-logo { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--success), var(--primary)); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #000; }
+        .navbar-title { font-size: 1.1rem; font-weight: 700; background: linear-gradient(90deg, var(--success), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn { padding: 0.75rem 1.25rem; border-radius: 8px; font-size: 0.9rem; font-weight: 600; text-decoration: none; }
+        .btn-primary { background: linear-gradient(135deg, var(--success), var(--primary)); color: #000; }
+        .hero { padding: 6rem 2rem 4rem; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+        .hero p { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+        .features { padding: 4rem 2rem; max-width: 1000px; margin: 0 auto; }
+        .feature-section { margin-bottom: 4rem; }
+        .feature-section h2 { font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        .feature-section h2 i { color: var(--primary); font-size: 1.25rem; }
+        .feature-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+        .feature-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+        .feature-item h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+        .feature-item p { font-size: 0.85rem; color: var(--text-muted); }
+        .cta { text-align: center; padding: 4rem 2rem; background: linear-gradient(135deg, rgba(0,255,135,0.1), rgba(0,212,255,0.1)); }
+        .cta h2 { margin-bottom: 1rem; }
+        .cta p { color: var(--text-muted); margin-bottom: 1.5rem; }
     </style>
 </head>
-
 <body>
-    <div class="bg-animation"></div>
+    <nav class="navbar">
+        <a href="../index.php" class="navbar-brand">
+            <div class="navbar-logo">V</div>
+            <span class="navbar-title">Verdant SMS</span>
+        </a>
+        <a href="register-school.php" class="btn btn-primary">Start Free</a>
+    </nav>
 
-    <?php include '../includes/visitor-nav.php'; ?>
+    <section class="hero">
+        <h1>Powerful Features for Nigerian Schools</h1>
+        <p>Everything you need to manage your school efficiently, from attendance to AI-powered lesson planning.</p>
+    </section>
 
-    <main>
-        <div class="page-header">
-            <h1>42 Powerful Modules</h1>
-            <p>Everything your school needs in one comprehensive platform. From admission to graduation, we've got you covered.</p>
-        </div>
-
-        <div class="features-grid">
-            <!-- Admissions -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
-                    <i class="fas fa-user-plus"></i>
+    <section class="features">
+        <div class="feature-section">
+            <h2><i class="fas fa-brain"></i> AI-Powered Tools</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>AI Lesson Planner</h4>
+                    <p>Generate NERDC-compliant lesson plans with objectives, activities, and assessments in seconds.</p>
                 </div>
-                <h3>Admissions & Enrollment</h3>
-                <p>Streamlined online admission process from application to enrollment.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Online entrance exams</li>
-                    <li><i class="fas fa-check"></i> Document upload & verification</li>
-                    <li><i class="fas fa-check"></i> Automated student ID generation</li>
-                    <li><i class="fas fa-check"></i> Bulk registration via Google Forms</li>
-                </ul>
-            </div>
-
-            <!-- Attendance -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(255, 215, 0, 0.2); color: #FFD700;">
-                    <i class="fas fa-clipboard-check"></i>
+                <div class="feature-item">
+                    <h4>AI Chatbot Assistant</h4>
+                    <p>24/7 support for staff, students, and parents. Answers questions instantly.</p>
                 </div>
-                <h3>Attendance Management</h3>
-                <p>Track student presence with multiple methods.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Biometric fingerprint/Face ID</li>
-                    <li><i class="fas fa-check"></i> QR code check-in (PWA)</li>
-                    <li><i class="fas fa-check"></i> Automatic parent SMS alerts</li>
-                    <li><i class="fas fa-check"></i> Detailed attendance reports</li>
-                </ul>
-            </div>
-
-            <!-- Grades -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);">
-                    <i class="fas fa-graduation-cap"></i>
+                <div class="feature-item">
+                    <h4>AI Bulk Registration</h4>
+                    <p>Import students from Google Forms. AI extracts and validates data automatically.</p>
                 </div>
-                <h3>Grades & Report Cards</h3>
-                <p>Nigerian grading system with comprehensive reports.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> A1-F9 grading scale</li>
-                    <li><i class="fas fa-check"></i> CA + Exam score management</li>
-                    <li><i class="fas fa-check"></i> Position rankings</li>
-                    <li><i class="fas fa-check"></i> PDF report cards</li>
-                </ul>
-            </div>
-
-            <!-- Fees -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <h3>Fee Management</h3>
-                <p>Complete financial management with online payments.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Paystack & Flutterwave integration</li>
-                    <li><i class="fas fa-check"></i> Installment payment plans</li>
-                    <li><i class="fas fa-check"></i> Automated receipts</li>
-                    <li><i class="fas fa-check"></i> Outstanding fee tracking</li>
-                </ul>
-            </div>
-
-            <!-- Library -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(255, 71, 87, 0.2); color: #FF4757;">
-                    <i class="fas fa-book"></i>
-                </div>
-                <h3>Library Management</h3>
-                <p>Digital and physical resource management.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Book cataloging with ISBN</li>
-                    <li><i class="fas fa-check"></i> Issue/return tracking</li>
-                    <li><i class="fas fa-check"></i> E-books & past questions</li>
-                    <li><i class="fas fa-check"></i> Overdue fine calculation</li>
-                </ul>
-            </div>
-
-            <!-- Communication -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
-                    <i class="fas fa-comments"></i>
-                </div>
-                <h3>Communication Hub</h3>
-                <p>Keep everyone informed and connected.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Internal messaging system</li>
-                    <li><i class="fas fa-check"></i> SMS/Email notifications</li>
-                    <li><i class="fas fa-check"></i> Announcements broadcast</li>
-                    <li><i class="fas fa-check"></i> Parent-teacher chat</li>
-                </ul>
-            </div>
-
-            <!-- Transport -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);">
-                    <i class="fas fa-bus"></i>
-                </div>
-                <h3>Transport Management</h3>
-                <p>Manage school transportation efficiently.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Bus route management</li>
-                    <li><i class="fas fa-check"></i> Student-bus assignment</li>
-                    <li><i class="fas fa-check"></i> Driver/conductor profiles</li>
-                    <li><i class="fas fa-check"></i> Transport fee billing</li>
-                </ul>
-            </div>
-
-            <!-- Hostel -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(255, 215, 0, 0.2); color: #FFD700;">
-                    <i class="fas fa-bed"></i>
-                </div>
-                <h3>Hostel Management</h3>
-                <p>Complete boarding facility management.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Room/bed allocation</li>
-                    <li><i class="fas fa-check"></i> Hostel fee management</li>
-                    <li><i class="fas fa-check"></i> Nightly attendance</li>
-                    <li><i class="fas fa-check"></i> Visitor log system</li>
-                </ul>
-            </div>
-
-            <!-- Timetable -->
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-                <h3>Timetable Management</h3>
-                <p>Efficient class scheduling and planning.</p>
-                <ul class="feature-list">
-                    <li><i class="fas fa-check"></i> Auto timetable generator</li>
-                    <li><i class="fas fa-check"></i> Room conflict detection</li>
-                    <li><i class="fas fa-check"></i> Teacher workload balance</li>
-                    <li><i class="fas fa-check"></i> Substitution management</li>
-                </ul>
             </div>
         </div>
-    </main>
 
-    <?php include '../includes/theme-selector.php'; ?>
+        <div class="feature-section">
+            <h2><i class="fas fa-users"></i> User Management</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>25+ User Roles</h4>
+                    <p>Admin, Teachers, Students, Parents, Accountant, Librarian, Transport, Hostel, and more.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Multi-Tenant Architecture</h4>
+                    <p>Each school is completely isolated. Your data stays secure, always.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Biometric Attendance</h4>
+                    <p>Fingerprint and face recognition for secure check-ins (coming soon).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-section">
+            <h2><i class="fas fa-naira-sign"></i> Finance & Fees</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Fee Management in ₦</h4>
+                    <p>Track fees, generate invoices, send reminders. All in Nigerian Naira.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Flutterwave Payments</h4>
+                    <p>Accept payments online via Flutterwave. Card, bank transfer, USSD.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Financial Reports</h4>
+                    <p>Detailed revenue, expense, and outstanding fee reports.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-section">
+            <h2><i class="fas fa-graduation-cap"></i> Academics</h2>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <h4>Exam Management</h4>
+                    <p>Create exams, auto-grade, generate report cards for students.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>NERDC Compliant</h4>
+                    <p>Aligned with Nigerian Education Research and Development Council standards.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Result Analysis</h4>
+                    <p>Class averages, subject performance, student rankings.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Ready to Get Started?</h2>
+        <p>Join schools across Nigeria using Verdant SMS.</p>
+        <a href="register-school.php" class="btn btn-primary">Start Your School Free</a>
+    </section>
 </body>
-
 </html>

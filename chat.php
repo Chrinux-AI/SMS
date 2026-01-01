@@ -20,10 +20,18 @@ $page_title = 'Chat';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/attendance/manifest.json">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="apple-touch-icon" href="/attendance/assets/images/icons/icon-192x192.png">
-    <title><?php echo $page_title; ?> - SAMS</title>
+    <?php include 'includes/head-meta.php'; ?>
+    <title><?php echo $page_title; ?> - <?php echo APP_NAME; ?></title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/images/icons/favicon-96x96.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="msapplication-TileColor" content="#00BFFF">
+    <meta name="msapplication-TileImage" content="assets/images/icons/mstile-150x150.png">
+    <meta name="theme-color" content="#0a0a0f">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="assets/css/cyberpunk-ui.css" rel="stylesheet">
@@ -529,6 +537,156 @@ $page_title = 'Chat';
             margin-right: 10px;
             color: var(--cyber-cyan);
         }
+
+        /* Voice Note Styles */
+        .voice-note-player {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            min-width: 200px;
+        }
+
+        .voice-play-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--cyber-cyan);
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .voice-play-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .voice-waveform {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 30px;
+        }
+
+        .wave-bar {
+            width: 3px;
+            background: var(--cyber-cyan);
+            border-radius: 2px;
+            transition: height 0.1s;
+        }
+
+        .voice-duration {
+            color: #8892a6;
+            font-size: 0.85rem;
+            min-width: 40px;
+        }
+
+        /* Recording UI */
+        .recording-indicator {
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .recording-dot {
+            position: absolute;
+            inset: -4px;
+            border: 2px solid #ef4444;
+            border-radius: 50%;
+            animation: recording-pulse 1s ease infinite;
+        }
+
+        @keyframes recording-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.5;
+            }
+        }
+
+        /* Call Modal */
+        .call-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .call-container {
+            text-align: center;
+            color: white;
+        }
+
+        .call-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyber-cyan), var(--cyber-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin: 0 auto 20px;
+        }
+
+        .call-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .call-status {
+            color: #8892a6;
+            margin-bottom: 40px;
+        }
+
+        .call-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .call-control-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .call-control-btn:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Message Location */
+        .message-location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
     </style>
 </head>
 
@@ -610,8 +768,14 @@ $page_title = 'Chat';
                         </div>
                     </div>
                     <div class="chat-actions">
-                        <button class="chat-btn" onclick="searchInChat()"><i class="fas fa-search"></i></button>
-                        <button class="chat-btn" onclick="toggleChatInfo()"><i class="fas fa-info-circle"></i></button>
+                        <button class="chat-btn" id="voiceCallBtn" onclick="chatSystem.initiateCall('voice')" title="Voice Call">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                        <button class="chat-btn" id="videoCallBtn" onclick="chatSystem.initiateCall('video')" title="Video Call">
+                            <i class="fas fa-video"></i>
+                        </button>
+                        <button class="chat-btn" onclick="chatSystem.searchInChat()"><i class="fas fa-search"></i></button>
+                        <button class="chat-btn" onclick="chatSystem.toggleChatInfo()"><i class="fas fa-info-circle"></i></button>
                     </div>
                 </div>
 
@@ -629,10 +793,13 @@ $page_title = 'Chat';
                 <div class="chat-input-container">
                     <div class="chat-input-wrapper">
                         <div class="input-actions">
-                            <button class="input-btn" onclick="attachFile()" title="Attach file">
+                            <button class="input-btn" id="voiceNoteBtn" title="Hold to record voice note">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="input-btn" onclick="chatSystem.attachFile()" title="Attach file">
                                 <i class="fas fa-paperclip"></i>
                             </button>
-                            <button class="input-btn" onclick="openEmojiPicker()" title="Emoji">
+                            <button class="input-btn" onclick="chatSystem.openEmojiPicker()" title="Emoji">
                                 <i class="fas fa-smile"></i>
                             </button>
                         </div>
@@ -640,10 +807,8 @@ $page_title = 'Chat';
                             class="chat-input"
                             id="messageInput"
                             placeholder="Type a message..."
-                            rows="1"
-                            onkeydown="handleInputKeydown(event)"
-                            oninput="handleTyping()"></textarea>
-                        <button class="input-btn send-btn" onclick="sendMessage()">
+                            rows="1"></textarea>
+                        <button class="input-btn send-btn" onclick="chatSystem.sendMessage()">
                             <i class="fas fa-paper-plane"></i>
                         </button>
                     </div>
@@ -660,8 +825,16 @@ $page_title = 'Chat';
     <!-- File input (hidden) -->
     <input type="file" id="fileInput" multiple style="display: none;" onchange="handleFileSelect(event)">
 
-    <?php include 'includes/sams-bot.php'; ?>
+    <?php include 'includes/chatbot-unified.php'; ?>
 
+    <script>
+        // Define APP_URL for JavaScript
+        const APP_URL = '<?php echo APP_URL; ?>';
+        const currentUserId = <?php echo $user_id; ?>;
+    </script>
+    <script src="assets/js/voice-recorder.js"></script>
+    <script src="assets/js/webrtc-handler.js"></script>
+    <script src="assets/js/chat.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/pwa-manager.js"></script>
     <script src="assets/js/pwa-analytics.js"></script>

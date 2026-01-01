@@ -542,7 +542,7 @@
         <p style="margin-top: 10px;">
             <a href="docs/README.html" style="color: #00BFFF; text-decoration: none;">Documentation</a> |
             <a href="SECURITY.md" style="color: #00BFFF; text-decoration: none;">Security</a> |
-            <a href="https://github.com/Chrinux-AI/School_Management_System" style="color: #00BFFF; text-decoration: none;">GitHub</a>
+            <a href="https://github.com/Chrinux-AI/SMS" style="color: #00BFFF; text-decoration: none;">GitHub</a>
         </p>
     </footer>
 

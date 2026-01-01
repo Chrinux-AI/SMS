@@ -375,7 +375,7 @@ $page_icon = 'chart-line';
     <?php include '../includes/online-users.php'; ?>
 
     <!-- AI Copilot -->
-    <?php include '../includes/ai-copilot.php'; ?>
+    <?php include '../includes/chatbot-unified.php'; ?>
 
     <!-- Mobile Bottom Nav -->
     <?php include '../includes/mobile-bottom-nav.php'; ?>

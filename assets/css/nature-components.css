@@ -44,7 +44,7 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .nature-header::before {
@@ -258,7 +258,7 @@
     color: var(--gray-700);
     transition: all var(--transition-base);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .sidebar-link::before {
@@ -327,7 +327,7 @@
     border-left: 4px solid var(--nature-green-500);
     transition: all var(--transition-base);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .nature-card::before {
@@ -557,7 +557,7 @@
     padding: var(--space-6);
     box-shadow: var(--shadow-md);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     transition: all var(--transition-base);
 }
 
@@ -705,7 +705,7 @@
     background: var(--white);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-md);
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .tab-nav {
@@ -874,7 +874,7 @@
     margin-bottom: var(--space-4);
     box-shadow: var(--shadow-sm);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .nature-alert::before {
@@ -1002,7 +1002,7 @@
     background: var(--gray-200);
     height: 12px;
     border-radius: var(--radius-full);
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
     position: relative;
 }
 
@@ -1012,7 +1012,7 @@
     border-radius: var(--radius-full);
     transition: width var(--transition-slow);
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .progress-bar::after {
@@ -1057,7 +1057,7 @@
     transition: all var(--transition-base);
     cursor: pointer;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto; overflow-x: hidden;
 }
 
 .icon-card::before {

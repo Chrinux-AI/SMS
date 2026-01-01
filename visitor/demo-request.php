@@ -53,7 +53,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ]);
                 $success = true;
 
-                // TODO: Send notification email to admin
+                // Send notification email to admin
+                require_once '../includes/functions.php';
+
+                $admin_subject = "New Demo Request from {$school_name}";
+                $admin_message = "
+                    <h2>New Demo Request Received</h2>
+                    <div class='info-box'>
+                        <p><strong>School Name:</strong> {$school_name}</p>
+                        <p><strong>Contact Person:</strong> {$contact_name}</p>
+                        <p><strong>Email:</strong> {$email}</p>
+                        <p><strong>Phone:</strong> {$phone}</p>
+                        <p><strong>Student Count:</strong> {$student_count}</p>
+                        <p><strong>Date:</strong> " . date('d/m/Y H:i:s') . "</p>
+                    </div>
+                    <h3>Additional Information:</h3>
+                    <p>" . nl2br(htmlspecialchars($message)) . "</p>
+                    <p><a href='mailto:{$email}' class='button'>Reply to {$contact_name}</a></p>
+                ";
+
+                send_email(
+                    'christolabiyi35@gmail.com',
+                    $admin_subject,
+                    $admin_message,
+                    'Verdant SMS Demo System'
+                );
+
+                // Send confirmation email to requester
+                $requester_subject = "Demo Request Received - Verdant SMS";
+                $requester_message = "
+                    <h2>Thank You for Your Interest!</h2>
+                    <p>Dear {$contact_name},</p>
+                    <p>We have received your demo request for <strong>{$school_name}</strong>.</p>
+                    <div class='info-box'>
+                        <p>Our team will review your request and contact you within <strong>24 hours</strong> to schedule your personalized demo.</p>
+                    </div>
+                    <h3>What happens next?</h3>
+                    <ul>
+                        <li>Our sales team will reach out to you via email or phone</li>
+                        <li>We'll schedule a convenient time for your demo</li>
+                        <li>You'll see all features of Verdant SMS in action</li>
+                        <li>We'll answer all your questions and discuss pricing</li>
+                    </ul>
+                    <p>If you have any urgent questions, feel free to contact us:</p>
+                    <p><strong>Email:</strong> christolabiyi35@gmail.com<br>
+                    <strong>Phone:</strong> +234 816 771 4860<br>
+                    <strong>WhatsApp:</strong> <a href='https://wa.me/2348167714860'>Chat with us</a></p>
+                    <p>Best regards,<br>The Verdant SMS Team</p>
+                ";
+
+                send_email(
+                    $email,
+                    $requester_subject,
+                    $requester_message,
+                    'Verdant SMS'
+                );
             }
         } catch (Exception $e) {
             $error = 'Something went wrong. Please try again later.';
@@ -70,6 +124,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Request a demo of Verdant SMS for your Nigerian school.">
     <title><?php echo $page_title; ?></title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/favicon-96x96.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>manifest.json">
+    <meta name="msapplication-TileColor" content="#00BFFF">
+    <meta name="msapplication-TileImage" content="<?php echo isset($favicon_path) ? $favicon_path : '../'; ?>assets/images/icons/mstile-150x150.png">
+    <meta name="theme-color" content="#0a0a0f">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -290,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="fas fa-check-circle"></i>
                     <h2>Request Received!</h2>
                     <p>Thank you for your interest in Verdant SMS. We'll contact you within 24 hours to schedule your demo.</p>
-                    <a href="/" class="btn-submit" style="text-decoration: none; display: inline-flex; width: auto; padding: 0.8rem 2rem;">
+                    <a href="http://localhost/attendance/" class="btn-submit" style="text-decoration: none; display: inline-flex; width: auto; padding: 0.8rem 2rem;">
                         <i class="fas fa-home"></i> Back to Home
                     </a>
                 </div>

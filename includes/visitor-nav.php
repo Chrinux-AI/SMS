@@ -7,7 +7,7 @@
 ?>
 <header class="visitor-header">
     <nav class="visitor-nav">
-        <a href="/" class="logo">
+        <a href="http://localhost/attendance/" class="logo">
             <div class="logo-icon"><i class="fas fa-leaf"></i></div>
             <span class="logo-text">Verdant SMS</span>
         </a>
@@ -17,19 +17,19 @@
         </button>
 
         <ul class="nav-links" id="navLinks">
-            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="/visitor/about.php"><i class="fas fa-info-circle"></i> About</a></li>
-            <li><a href="/visitor/features.php"><i class="fas fa-star"></i> Features</a></li>
-            <li><a href="/visitor/demo-request.php"><i class="fas fa-calendar-check"></i> Request Demo</a></li>
-            <li><a href="/visitor/faq.php"><i class="fas fa-question-circle"></i> FAQ</a></li>
-            <li><a href="/visitor/contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
+            <li><a href="http://localhost/attendance/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="about.php"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a href="features.php"><i class="fas fa-star"></i> Features</a></li>
+            <li><a href="demo-request.php"><i class="fas fa-calendar-check"></i> Request Demo</a></li>
+            <li><a href="faq.php"><i class="fas fa-question-circle"></i> FAQ</a></li>
+            <li><a href="contact.php"><i class="fas fa-envelope"></i> Contact</a></li>
         </ul>
 
         <div class="nav-auth">
-            <a href="/login.php" class="btn btn-outline">
+            <a href="../login.php" class="btn btn-outline">
                 <i class="fas fa-sign-in-alt"></i> Login
             </a>
-            <a href="/register.php" class="btn btn-primary">
+            <a href="../register.php" class="btn btn-primary">
                 <i class="fas fa-user-plus"></i> Register
             </a>
         </div>

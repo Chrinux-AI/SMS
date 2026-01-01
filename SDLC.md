@@ -1,7 +1,7 @@
 # Verdant School Management System (VSMS) — FULL SDLC DOCUMENT
 
 **Evergreen Edition v3.0 — Chrinux-AI**
-https://github.com/Chrinux-AI/School_Management_System
+https://github.com/Chrinux-AI/SMS
 **Date:** 12 December 2025
 
 ---
@@ -185,7 +185,7 @@ Full list: `/docs/VERDANT-LOGIN-CREDENTIALS.md`
 **Created by:** Chrinux-AI
 **Assisted by:** GitHub Copilot (Claude Opus 4.5)
 **License:** MIT
-**Repository:** https://github.com/Chrinux-AI/School_Management_System
+**Repository:** https://github.com/Chrinux-AI/SMS
 
 ---
 

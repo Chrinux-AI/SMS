@@ -1,611 +1,532 @@
 <?php
-session_start();
-require_once 'includes/config.php';
-require_once 'includes/database.php';
-require_once 'includes/theme-loader.php';
+/**
+ * Verdant SMS v3.0 — National Homepage
+ * Clean, secure visitor gateway with no role exposure
+ */
+
+require_once __DIR__ . '/includes/config.php';
+
+$pageTitle = "Verdant SMS — Nigeria's #1 Free School Management System";
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Verdant SMS - Complete 42-Module School Management System for Nigerian Schools. Empowering Education Excellence.">
-    <meta name="theme-color" content="#00BFFF">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="assets/images/icons/icon-192x192.png">
-    <title>Verdant SMS - Advanced School Management Platform</title>
+    <meta name="description" content="Verdant SMS - Free, AI-powered school management system built for Nigerian schools. Multi-tenant, Naira pricing, NERDC compliant.">
+    <title><?= htmlspecialchars($pageTitle) ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <?php output_theme_css(); ?>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00BFFF;
-            --secondary: #8A2BE2;
-            --accent: #00FF7F;
-            --warning: #FFD700;
+            --primary: #00D4FF;
+            --success: #00FF87;
+            --warning: #FFB800;
             --danger: #FF4757;
-            --dark: #0a0a0f;
-            --darker: #05050a;
-            --card-bg: rgba(20, 20, 30, 0.8);
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(0, 191, 255, 0.2);
-            --glow: 0 0 20px rgba(0, 191, 255, 0.3);
+            --purple: #A855F7;
+            --pink: #EC4899;
+            --bg-dark: #0A0E17;
+            --bg-card: #111827;
+            --bg-surface: #1A1F2E;
+            --border: rgba(255,255,255,0.08);
+            --text: #F3F4F6;
+            --text-muted: #9CA3AF;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            overflow-y: scroll;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background: var(--darker);
-            color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background:
-                radial-gradient(ellipse at 20% 20%, rgba(0, 191, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 255, 127, 0.05) 0%, transparent 70%);
-        }
-
-        .grid-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background-image:
-                linear-gradient(rgba(0, 191, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 191, 255, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
-        }
-
-        @keyframes gridMove {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(50px, 50px); }
-        }
-
-        /* Header */
-        header {
+        /* ===== NAVBAR ===== */
+        .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            padding: 1rem 2rem;
-            background: rgba(10, 10, 15, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
             z-index: 1000;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
         }
 
-        .logo {
+        .navbar-brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 0.75rem;
             text-decoration: none;
         }
 
-        .logo-icon {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .navbar-logo {
+            width: 44px;
+            height: 44px;
             border-radius: 12px;
+            background: linear-gradient(135deg, var(--success), var(--primary));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            color: white;
+            font-size: 1.25rem;
+            color: #000;
+            font-weight: 800;
         }
 
-        .logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+        .navbar-title {
+            font-size: 1.25rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(90deg, var(--success), var(--primary));
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        nav {
+        .navbar-links {
             display: flex;
             gap: 2rem;
-            align-items: center;
+            list-style: none;
         }
 
-        nav a {
-            color: rgba(255, 255, 255, 0.8);
+        .navbar-links a {
+            color: var(--text-muted);
             text-decoration: none;
+            font-size: 0.9rem;
             font-weight: 500;
-            transition: all 0.3s;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            transition: color 0.2s;
         }
 
-        nav a:hover {
+        .navbar-links a:hover {
             color: var(--primary);
-            background: rgba(0, 191, 255, 0.1);
+        }
+
+        .navbar-actions {
+            display: flex;
+            gap: 1rem;
         }
 
         .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            font-weight: 600;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
             transition: all 0.3s;
             border: none;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: var(--glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 191, 255, 0.5);
         }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
+            border: 1px solid var(--border);
+            color: var(--text);
         }
 
         .btn-outline:hover {
-            background: var(--primary);
-            color: var(--dark);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
-        /* Mobile menu */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--success), var(--primary));
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
         .mobile-menu-btn {
             display: none;
             background: none;
             border: none;
-            color: white;
+            color: var(--text);
             font-size: 1.5rem;
             cursor: pointer;
         }
 
-        /* Hero Section */
+        /* ===== HERO ===== */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding: 120px 2rem 60px;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
             position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 255, 135, 0.15) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 60%);
+            pointer-events: none;
         }
 
         .hero-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
         }
 
-        .hero-text h1 {
-            font-family: 'Orbitron', sans-serif;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 255, 135, 0.1);
+            border: 1px solid rgba(0, 255, 135, 0.3);
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--success);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge i {
+            font-size: 0.75rem;
+        }
+
+        .hero-title {
             font-size: 3.5rem;
-            font-weight: 900;
+            font-weight: 800;
             line-height: 1.1;
             margin-bottom: 1.5rem;
         }
 
-        .hero-text h1 span {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+        .hero-title .highlight {
+            background: linear-gradient(90deg, var(--success), var(--primary));
             -webkit-background-clip: text;
-            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-text p {
+        .hero-subtitle {
             font-size: 1.25rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 2rem;
-            max-width: 500px;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
         }
 
         .hero-stats {
             display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-box {
-            text-align: center;
-            padding: 1rem;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .stat-box .number {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .stat-box .label {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
+            justify-content: center;
+            gap: 4rem;
             flex-wrap: wrap;
         }
 
-        /* Dashboard Preview */
-        .dashboard-preview {
-            position: relative;
-            perspective: 1000px;
+        .hero-stat {
+            text-align: center;
         }
 
-        .preview-window {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: var(--glow), 0 25px 50px rgba(0, 0, 0, 0.5);
-            transform: rotateY(-5deg) rotateX(5deg);
-            transition: transform 0.5s;
+        .hero-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
         }
 
-        .preview-window:hover {
-            transform: rotateY(0) rotateX(0);
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
 
-        .preview-header {
-            background: linear-gradient(135deg, rgba(0, 191, 255, 0.2), rgba(138, 43, 226, 0.2));
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .preview-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .preview-dot.red { background: #ff5f57; }
-        .preview-dot.yellow { background: #febc2e; }
-        .preview-dot.green { background: #28c840; }
-
-        .preview-body {
-            padding: 1.5rem;
-            display: grid;
-            gap: 1rem;
-        }
-
-        .mini-card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .mini-card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
-        .mini-card-icon.blue { background: rgba(0, 191, 255, 0.2); color: var(--primary); }
-        .mini-card-icon.purple { background: rgba(138, 43, 226, 0.2); color: var(--secondary); }
-        .mini-card-icon.green { background: rgba(0, 255, 127, 0.2); color: var(--accent); }
-        .mini-card-icon.yellow { background: rgba(255, 215, 0, 0.2); color: var(--warning); }
-
-        .mini-card-info h4 {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .mini-card-info p {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        /* Section Styling */
-        section {
-            padding: 100px 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
+        /* ===== FEATURES SECTION ===== */
+        .section {
+            padding: 6rem 2rem;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            max-width: 700px;
+            margin: 0 auto 4rem;
         }
 
-        .section-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 191, 255, 0.1);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 0.85rem;
-            color: var(--primary);
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
             margin-bottom: 1rem;
         }
 
-        .section-header h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
         }
 
-        .section-header p {
-            color: rgba(255, 255, 255, 0.6);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .feature-card {
-            background: var(--card-bg);
+            background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 2rem;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--glow);
-            border-color: var(--primary);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.95rem;
-        }
-
-        /* Nigeria Badge */
-        .nigeria-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #008751, #00A368);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            color: white;
-            margin-bottom: 1rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            background: linear-gradient(135deg, rgba(0, 191, 255, 0.1), rgba(138, 43, 226, 0.1));
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 4rem 2rem;
-            text-align: center;
-            margin: 4rem auto;
-            max-width: 1000px;
-        }
-
-        .cta-section h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta-section p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Contact Section */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .contact-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 2rem;
-            text-align: center;
             transition: all 0.3s;
         }
 
-        .contact-card:hover {
-            border-color: var(--primary);
+        .feature-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
             transform: translateY(-5px);
         }
 
-        .contact-card i {
-            font-size: 2.5rem;
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(168, 85, 247, 0.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
         }
 
-        .contact-card h4 {
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
         }
 
-        .contact-card p {
-            color: rgba(255, 255, 255, 0.7);
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
         }
 
-        .contact-card a {
-            color: var(--primary);
-            text-decoration: none;
+        /* ===== PRICING SECTION ===== */
+        .pricing-section {
+            background: var(--bg-surface);
         }
 
-        .contact-card a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(5, 5, 10, 0.9);
-            border-top: 1px solid var(--border);
-            padding: 4rem 2rem 2rem;
-        }
-
-        .footer-content {
-            max-width: 1400px;
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
             margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border-color: var(--success);
+            box-shadow: 0 0 40px rgba(0, 255, 135, 0.1);
+        }
+
+        .pricing-card.popular::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            color: #000;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pricing-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 1rem 0;
+        }
+
+        .pricing-card .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .pricing-card .features {
+            list-style: none;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .pricing-card .features li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pricing-card .features li i {
+            color: var(--success);
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            background: linear-gradient(135deg, rgba(0, 255, 135, 0.1), rgba(0, 212, 255, 0.1));
+            border-top: 1px solid rgba(0, 255, 135, 0.2);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .cta-content {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-content p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-grid {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 3rem;
-            margin-bottom: 3rem;
+            max-width: 1200px;
+            margin: 0 auto 3rem;
         }
 
         .footer-brand p {
-            color: rgba(255, 255, 255, 0.6);
+            color: var(--text-muted);
+            font-size: 0.9rem;
             margin-top: 1rem;
-            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        .footer-column h4 {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
+        .footer-links h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text);
         }
 
-        .footer-column ul {
+        .footer-links ul {
             list-style: none;
         }
 
-        .footer-column ul li {
-            margin-bottom: 0.75rem;
+        .footer-links li {
+            margin-bottom: 0.5rem;
         }
 
-        .footer-column ul a {
-            color: rgba(255, 255, 255, 0.6);
+        .footer-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            transition: color 0.3s;
+            font-size: 0.85rem;
+            transition: color 0.2s;
         }
 
-        .footer-column ul a:hover {
+        .footer-links a:hover {
             color: var(--primary);
         }
 
         .footer-bottom {
-            max-width: 1400px;
-            margin: 0 auto;
+            text-align: center;
             padding-top: 2rem;
             border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
 
-        /* Responsive */
+        .footer-bottom .flag {
+            color: var(--success);
+        }
+
+        /* ===== AI CHATBOT ===== */
+        .chatbot-trigger {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--success), var(--primary));
+            border: none;
+            color: #000;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .chatbot-trigger:hover {
+            transform: scale(1.1);
+        }
+
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
             }
+        }
 
-            .hero-text h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-stats {
-                justify-content: center;
-            }
-
-            .hero-buttons {
-                justify-content: center;
-            }
-
-            .dashboard-preview {
+        @media (max-width: 768px) {
+            .navbar-links {
                 display: none;
             }
 
@@ -613,337 +534,266 @@ require_once 'includes/theme-loader.php';
                 display: block;
             }
 
-            nav {
-                display: none;
-            }
-
-            nav.active {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(10, 10, 15, 0.98);
-                padding: 1rem;
-                border-bottom: 1px solid var(--border);
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-
-            .section-header h2 {
-                font-size: 1.75rem;
+            .hero-title {
+                font-size: 2.25rem;
             }
 
             .hero-stats {
-                flex-wrap: wrap;
+                gap: 2rem;
             }
 
-            .footer-content {
+            .hero-stat-value {
+                font-size: 2rem;
+            }
+
+            .footer-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
+                gap: 2rem;
             }
         }
     </style>
 </head>
-
 <body>
-    <!-- Animated Background -->
-    <div class="bg-animation"></div>
-    <div class="grid-overlay"></div>
-
-    <!-- Header -->
-    <header>
-        <a href="/" class="logo">
-            <div class="logo-icon"><i class="fas fa-leaf"></i></div>
-            <span class="logo-text">Verdant SMS</span>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.php" class="navbar-brand">
+            <div class="navbar-logo">V</div>
+            <span class="navbar-title">Verdant SMS</span>
         </a>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">
+
+        <ul class="navbar-links">
+            <li><a href="visitor/features.php">Features</a></li>
+            <li><a href="visitor/pricing.php">Pricing</a></li>
+            <li><a href="visitor/demo.php">Demo</a></li>
+            <li><a href="visitor/contact.php">Contact</a></li>
+        </ul>
+
+        <div class="navbar-actions">
+            <a href="login.php" class="btn btn-outline">Login</a>
+            <a href="visitor/register-school.php" class="btn btn-primary">Start Free</a>
+        </div>
+
+        <button class="mobile-menu-btn">
             <i class="fas fa-bars"></i>
         </button>
-        <nav id="mainNav">
-            <a href="#about">About</a>
-            <a href="#features">Features</a>
-            <a href="visitor/demo-request.php">Request Demo</a>
-            <a href="#contact">Contact</a>
-            <a href="login.php" class="btn btn-outline">Login</a>
-            <a href="register.php" class="btn btn-primary">Student Registration</a>
-        </nav>
-    </header>
+    </nav>
 
-    <!-- Hero Section -->
+    <!-- HERO -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-text">
-                <div class="nigeria-badge">
-                    <i class="fas fa-flag"></i> Built for Nigerian Schools
-                </div>
-                <h1>Empowering <span>Nigerian Education</span> Excellence</h1>
-                <p>Verdant SMS is a complete 42-module School Management System designed specifically for Nigerian schools. From Primary to Senior Secondary, we've got you covered.</p>
-                
-                <div class="hero-stats">
-                    <div class="stat-box">
-                        <div class="number">42</div>
-                        <div class="label">Modules</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="number">8</div>
-                        <div class="label">Themes</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="number">P1-SSS3</div>
-                        <div class="label">Classes</div>
-                    </div>
-                </div>
-                
-                <div class="hero-buttons">
-                    <a href="login.php" class="btn btn-primary">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </a>
-                    <a href="register.php" class="btn btn-outline">
-                        <i class="fas fa-user-plus"></i> Student Registration
-                    </a>
-                </div>
+            <div class="hero-badge">
+                <i class="fas fa-sparkles"></i>
+                Nigeria's #1 Free School System
             </div>
 
-            <div class="dashboard-preview">
-                <div class="preview-window">
-                    <div class="preview-header">
-                        <div class="preview-dot red"></div>
-                        <div class="preview-dot yellow"></div>
-                        <div class="preview-dot green"></div>
-                    </div>
-                    <div class="preview-body">
-                        <div class="mini-card">
-                            <div class="mini-card-icon blue"><i class="fas fa-user-graduate"></i></div>
-                            <div class="mini-card-info">
-                                <h4>Total Students</h4>
-                                <p>2,847</p>
-                            </div>
-                        </div>
-                        <div class="mini-card">
-                            <div class="mini-card-icon purple"><i class="fas fa-chalkboard-teacher"></i></div>
-                            <div class="mini-card-info">
-                                <h4>Teaching Staff</h4>
-                                <p>156</p>
-                            </div>
-                        </div>
-                        <div class="mini-card">
-                            <div class="mini-card-icon green"><i class="fas fa-percentage"></i></div>
-                            <div class="mini-card-info">
-                                <h4>Attendance Today</h4>
-                                <p>94.2%</p>
-                            </div>
-                        </div>
-                        <div class="mini-card">
-                            <div class="mini-card-icon yellow"><i class="fas fa-money-bill-wave"></i></div>
-                            <div class="mini-card-info">
-                                <h4>Fees Collected</h4>
-                                <p>₦12.5M</p>
-                            </div>
-                        </div>
-                    </div>
+            <h1 class="hero-title">
+                The Future of <span class="highlight">School Management</span> is Here
+            </h1>
+
+            <p class="hero-subtitle">
+                Free, AI-powered school management built for Nigerian schools.
+                Multi-tenant architecture, Naira pricing, NERDC compliant,
+                and beautiful from day one.
+            </p>
+
+            <div class="hero-actions">
+                <a href="visitor/register-school.php" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket"></i> Start Your School Free
+                </a>
+                <a href="visitor/demo.php" class="btn btn-outline btn-lg">
+                    <i class="fas fa-play"></i> Watch Demo
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value">100%</div>
+                    <div class="hero-stat-label">Free Forever</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">25+</div>
+                    <div class="hero-stat-label">User Roles</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">AI</div>
+                    <div class="hero-stat-label">Powered</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">₦</div>
+                    <div class="hero-stat-label">Naira Pricing</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about">
+    <!-- FEATURES -->
+    <section class="section">
         <div class="section-header">
-            <span class="section-badge"><i class="fas fa-info-circle"></i> About Us</span>
-            <h2>What is Verdant SMS?</h2>
-            <p>A complete school management solution tailored for Nigerian education</p>
+            <h2 class="section-title">Everything Your School Needs</h2>
+            <p class="section-subtitle">
+                From attendance to AI-powered lesson planning, Verdant has it all.
+            </p>
         </div>
 
         <div class="features-grid">
             <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
-                    <i class="fas fa-school"></i>
-                </div>
-                <h3>Nigerian Curriculum</h3>
-                <p>Fully aligned with Nigerian education system - Primary 1 to SSS 3, WAEC/NECO grading (A1-F9), and 3-term academic calendar.</p>
+                <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                <h3>AI Lesson Planner</h3>
+                <p>Generate NERDC-compliant lesson plans in seconds. Input topic, get objectives, activities, and assessments.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3>Secure & Modern</h3>
-                <p>Bank-grade security with biometric login, OTP verification, and encrypted data. Your students' information is safe with us.</p>
+                <div class="feature-icon"><i class="fas fa-users"></i></div>
+                <h3>Multi-Tenant Architecture</h3>
+                <p>Each school is completely isolated. Your data stays secure, always.</p>
             </div>
             <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);">
-                    <i class="fas fa-mobile-alt"></i>
-                </div>
-                <h3>Works Everywhere</h3>
-                <p>Progressive Web App (PWA) that works on any device - desktop, tablet, or phone. Even works offline!</p>
+                <div class="feature-icon"><i class="fas fa-clipboard-check"></i></div>
+                <h3>Smart Attendance</h3>
+                <p>Mark attendance with biometric support. Real-time tracking for students and staff.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-naira-sign"></i></div>
+                <h3>Fee Management in ₦</h3>
+                <p>Track fees, send reminders, accept payments via Flutterwave. All in Naira.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Exam & Results</h3>
+                <p>Create exams, auto-grade, generate report cards. Parents get instant access.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                <h3>AI Chatbot</h3>
+                <p>24/7 assistant for staff, students, and parents. Answers questions instantly.</p>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features">
+    <!-- PRICING -->
+    <section class="section pricing-section" id="pricing">
         <div class="section-header">
-            <span class="section-badge"><i class="fas fa-star"></i> 42 Modules</span>
-            <h2>Everything Your School Needs</h2>
-            <p>Comprehensive tools for every aspect of school management</p>
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle">
+                Start free. Upgrade when you need more.
+            </p>
         </div>
 
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <h3>Admissions & Enrollment</h3>
-                <p>Online entrance exams, automated enrollment, and digital registration with document uploads.</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Free</h3>
+                <div class="price">₦0 <span>forever</span></div>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> Unlimited users</li>
+                    <li><i class="fas fa-check"></i> All core features</li>
+                    <li><i class="fas fa-check"></i> Self-hosted</li>
+                    <li><i class="fas fa-check"></i> Community support</li>
+                </ul>
+                <a href="visitor/register-school.php" class="btn btn-outline" style="width: 100%;">Get Started</a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(255, 215, 0, 0.2); color: var(--warning);">
-                    <i class="fas fa-clipboard-check"></i>
-                </div>
-                <h3>Attendance Management</h3>
-                <p>Biometric, QR code, and manual attendance. Automatic SMS/email alerts to parents for absences.</p>
+
+            <div class="pricing-card popular">
+                <h3>Basic Cloud</h3>
+                <div class="price">₦50,000 <span>/year</span></div>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> Everything in Free</li>
+                    <li><i class="fas fa-check"></i> Cloud hosting</li>
+                    <li><i class="fas fa-check"></i> Daily backups</li>
+                    <li><i class="fas fa-check"></i> Email support</li>
+                </ul>
+                <a href="visitor/pricing.php" class="btn btn-primary" style="width: 100%;">Choose Plan</a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(138, 43, 226, 0.2); color: var(--secondary);">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <h3>Grades & Report Cards</h3>
-                <p>Nigerian grading system (A1-F9), CA scores, exam marks, position rankings, and PDF report cards.</p>
+
+            <div class="pricing-card">
+                <h3>Pro Cloud</h3>
+                <div class="price">₦150,000 <span>/year</span></div>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> Everything in Basic</li>
+                    <li><i class="fas fa-check"></i> AI Lesson Planner</li>
+                    <li><i class="fas fa-check"></i> Custom subdomain</li>
+                    <li><i class="fas fa-check"></i> Priority support</li>
+                </ul>
+                <a href="visitor/pricing.php" class="btn btn-outline" style="width: 100%;">Choose Plan</a>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 255, 127, 0.2); color: var(--accent);">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <h3>Fee Management</h3>
-                <p>Paystack/Flutterwave integration, installment plans, receipts, and outstanding fee tracking.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(255, 71, 87, 0.2); color: var(--danger);">
-                    <i class="fas fa-book"></i>
-                </div>
-                <h3>Library System</h3>
-                <p>Book cataloging, issue/return tracking, overdue fines, e-books, and past questions repository.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon" style="background: rgba(0, 191, 255, 0.2); color: var(--primary);">
-                    <i class="fas fa-bus"></i>
-                </div>
-                <h3>Transport & Hostel</h3>
-                <p>Bus routes, driver management, hostel allocation, and room assignments.</p>
+
+            <div class="pricing-card">
+                <h3>Enterprise</h3>
+                <div class="price">Custom</div>
+                <ul class="features">
+                    <li><i class="fas fa-check"></i> Everything in Pro</li>
+                    <li><i class="fas fa-check"></i> Dedicated server</li>
+                    <li><i class="fas fa-check"></i> Custom features</li>
+                    <li><i class="fas fa-check"></i> On-site training</li>
+                </ul>
+                <a href="visitor/contact.php" class="btn btn-outline" style="width: 100%;">Contact Sales</a>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section>
-        <div class="cta-section">
+    <!-- CTA -->
+    <section class="section cta-section">
+        <div class="cta-content">
             <h2>Ready to Transform Your School?</h2>
-            <p>Join hundreds of Nigerian schools already using Verdant SMS to streamline their operations and enhance student success.</p>
-            <div class="cta-buttons">
-                <a href="visitor/demo-request.php" class="btn btn-primary">
-                    <i class="fas fa-calendar-check"></i> Request a Demo
-                </a>
-                <a href="#contact" class="btn btn-outline">
-                    <i class="fas fa-phone"></i> Contact Us
-                </a>
-            </div>
+            <p>Join schools across Nigeria using Verdant to manage attendance, fees, exams, and more.</p>
+            <a href="visitor/register-school.php" class="btn btn-primary btn-lg">
+                <i class="fas fa-rocket"></i> Start Free Today
+            </a>
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="section-header">
-            <span class="section-badge"><i class="fas fa-envelope"></i> Contact</span>
-            <h2>Get in Touch</h2>
-            <p>We're here to help you get started</p>
-        </div>
-
-        <div class="contact-grid">
-            <div class="contact-card">
-                <i class="fas fa-envelope"></i>
-                <h4>Email</h4>
-                <p><a href="mailto:christolabiyi35@gmail.com">christolabiyi35@gmail.com</a></p>
-            </div>
-            <div class="contact-card">
-                <i class="fas fa-phone"></i>
-                <h4>Phone</h4>
-                <p><a href="tel:+2348167714860">+234 816 771 4860</a></p>
-            </div>
-            <div class="contact-card">
-                <i class="fab fa-whatsapp"></i>
-                <h4>WhatsApp</h4>
-                <p><a href="https://wa.me/2348167714860" target="_blank">Chat with us</a></p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
             <div class="footer-brand">
-                <a href="/" class="logo">
-                    <div class="logo-icon"><i class="fas fa-leaf"></i></div>
-                    <span class="logo-text">Verdant SMS</span>
+                <a href="index.php" class="navbar-brand">
+                    <div class="navbar-logo">V</div>
+                    <span class="navbar-title">Verdant SMS</span>
                 </a>
-                <p>Empowering Nigerian education with modern technology. From Primary to Senior Secondary, we provide comprehensive school management solutions.</p>
+                <p>Free, AI-powered school management system built for Nigerian schools. Open source, secure, and beautiful.</p>
             </div>
 
-            <div class="footer-column">
-                <h4>Quick Links</h4>
+            <div class="footer-links">
+                <h4>Product</h4>
                 <ul>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="visitor/demo-request.php">Request Demo</a></li>
+                    <li><a href="visitor/features.php">Features</a></li>
+                    <li><a href="visitor/pricing.php">Pricing</a></li>
+                    <li><a href="visitor/demo.php">Demo</a></li>
                     <li><a href="visitor/faq.php">FAQ</a></li>
                 </ul>
             </div>
 
-            <div class="footer-column">
-                <h4>Support</h4>
+            <div class="footer-links">
+                <h4>Company</h4>
                 <ul>
-                    <li><a href="#contact">Contact Us</a></li>
-                    <li><a href="docs/SETUP_GUIDE.md">Setup Guide</a></li>
-                    <li><a href="forum/">Community</a></li>
+                    <li><a href="visitor/about.php">About</a></li>
+                    <li><a href="visitor/contact.php">Contact</a></li>
+                    <li><a href="visitor/blog.php">Blog</a></li>
+                    <li><a href="https://github.com/Chrinux-AI/SMS" target="_blank">GitHub</a></li>
                 </ul>
             </div>
 
-            <div class="footer-column">
+            <div class="footer-links">
                 <h4>Legal</h4>
                 <ul>
-                    <li><a href="visitor/privacy-policy.php">Privacy Policy</a></li>
-                    <li><a href="LICENSE">License</a></li>
-                    <li><a href="SECURITY.md">Security</a></li>
+                    <li><a href="visitor/privacy.php">Privacy Policy</a></li>
+                    <li><a href="visitor/terms.php">Terms of Service</a></li>
                 </ul>
             </div>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2025 Verdant SMS. All rights reserved. Version 3.0.0</p>
-            <div style="display: flex; gap: 1rem;">
-                <a href="https://github.com/Chrinux-AI/SMS" style="color: var(--primary);"><i class="fab fa-github"></i></a>
-                <a href="https://wa.me/2348167714860" style="color: var(--primary);"><i class="fab fa-whatsapp"></i></a>
-            </div>
+            <p>&copy; <?= date('Y') ?> Verdant SMS by Chrinux-AI. Built with <i class="fas fa-heart" style="color: var(--danger);"></i> for <span class="flag">Nigeria 🇳🇬</span></p>
         </div>
     </footer>
 
+    <!-- AI CHATBOT TRIGGER -->
+    <button class="chatbot-trigger" id="chatbotTrigger" title="Chat with AI Assistant">
+        <i class="fas fa-leaf"></i>
+    </button>
+
     <script>
-        // Mobile menu toggle
-        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
-            document.getElementById('mainNav').classList.toggle('active');
+        // Chatbot trigger
+        document.getElementById('chatbotTrigger').addEventListener('click', function() {
+            alert('AI Chatbot coming soon! For now, contact us at hello@verdantsms.com');
         });
 
         // Smooth scroll for anchor links
@@ -952,45 +802,10 @@ require_once 'includes/theme-loader.php';
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
-        });
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.style.background = 'rgba(5, 5, 10, 0.98)';
-                header.style.boxShadow = '0 0 30px rgba(0, 191, 255, 0.2)';
-            } else {
-                header.style.background = 'rgba(10, 10, 15, 0.9)';
-                header.style.boxShadow = 'none';
-            }
-        });
-
-        // Animate elements on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.feature-card, .contact-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
         });
     </script>
-
-    <?php include 'includes/theme-selector.php'; ?>
 </body>
-
 </html>

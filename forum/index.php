@@ -343,7 +343,7 @@ $trending = db()->fetchAll($trending_query, [$user_role]);
     }
     ?>
 
-    <?php include '../includes/sams-bot.php'; ?>
+    <?php include '../includes/chatbot-unified.php'; ?>
 
     <script src="../assets/js/main.js"></script>
     <script src="../assets/js/pwa-manager.js"></script>

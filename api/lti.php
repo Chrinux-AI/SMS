@@ -13,6 +13,15 @@ require_once '../includes/database.php';
 require_once '../includes/functions.php';
 require_once '../includes/lti.php';
 
+// Ensure environment variables are loaded if not using config.php directly
+if (!defined('DB_HOST') && getenv('DB_HOST')) {
+    // Fallback for Docker environment if config.php doesn't handle it
+    define('DB_HOST', getenv('DB_HOST'));
+    define('DB_NAME', getenv('DB_NAME') ?? 'verdant_sms');
+    define('DB_USER', getenv('DB_USER') ?? 'root');
+    define('DB_PASSWORD', getenv('DB_PASSWORD') ?? '');
+}
+
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
 try {
@@ -35,6 +44,11 @@ try {
                 throw new Exception('Missing ID token');
             }
 
+            // Security: Rate Limiting Check (Placeholder)
+            // if (is_rate_limited($_SERVER['REMOTE_ADDR'])) {
+            //    throw new Exception('Too many requests');
+            // }
+
             // Validate JWT token
             $payload = lti_validate_jwt($id_token, $lti_config_id);
 
@@ -56,6 +70,11 @@ try {
 
             // Get user details
             $user = db()->fetchOne("SELECT * FROM users WHERE id = ?", [$result['user_id']]);
+
+            if (!$user) {
+                throw new Exception('User created but not found in database retrieval');
+            }
+
             $_SESSION['role'] = $user['role'];
             $_SESSION['user_role'] = $user['role'];  // For compatibility with has_role() function
             $_SESSION['full_name'] = $user['first_name'] . ' ' . $user['last_name'];

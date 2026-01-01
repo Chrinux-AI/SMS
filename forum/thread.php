@@ -388,7 +388,7 @@ $posts = db()->fetchAll("
     }
 </script>
 
-<?php include '../includes/sams-bot.php'; ?>
+<?php include '../includes/chatbot-unified.php'; ?>
 
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/pwa-manager.js"></script>

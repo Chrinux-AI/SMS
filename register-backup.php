@@ -124,6 +124,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register']) && $regis
                 <head>
                     <meta charset='UTF-8'>
                     <title>Email Verification</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="assets/images/icons/favicon-96x96.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="msapplication-TileColor" content="#00BFFF">
+    <meta name="msapplication-TileImage" content="assets/images/icons/mstile-150x150.png">
+    <meta name="theme-color" content="#0a0a0f">
                     <style>
                         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; }
                         .container { max-width: 600px; margin: 20px auto; background: white; border-radius: 10px; overflow: hidden; }

@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # The PHP/Apache Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: verdant-sms-app
+    container_name: verdant_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - DB_HOST=db
+      - DB_NAME=verdant_sms
+      - DB_USER=verdant_user
+      - DB_PASSWORD=secure_password_123
+      - REDIS_HOST=redis
+      - SMTP_HOST=mailhog
+      - SMTP_PORT=1025
+    depends_on:
+      db:
+        condition: service_healthy
+      - redis
+    networks:
+      - verdant-network
+
+  # The Database
+  db:
+    image: mysql:8.0
+    container_name: verdant_db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: verdant_sms
+      MYSQL_USER: verdant_user
+      MYSQL_PASSWORD: secure_password_123
+      MYSQL_ROOT_PASSWORD: root_secure_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      # Auto-import existing schemas on first start
+      - ./database:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - verdant-network
+
+  # Redis for Caching & Sessions
+  redis:
+    image: redis:alpine
+    container_name: verdant_redis
+    networks:
+      - verdant-network
+
+  # Mailhog for Email Testing
+  mailhog:
+    image: mailhog/mailhog
+    container_name: verdant_mailhog
+    ports:
+      - "8025:8025" # Web UI for emails
+    networks:
+      - verdant-network
+
+networks:
+  verdant-network:
+    driver: bridge
+
+volumes:
+  db_data:

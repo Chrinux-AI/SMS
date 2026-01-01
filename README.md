@@ -171,8 +171,8 @@ Click the **🎨 Theme** button in the sidebar to open the theme selector. Previ
 ### Option 1: One-Line Install (Recommended)
 
 ```bash
-git clone https://github.com/Chrinux-AI/School_Management_System.git
-cd School_Management_System
+git clone https://github.com/Chrinux-AI/SMS.git
+cd SMS
 # Import database/verdant-sms-schema.sql
 # Visit: http://yourserver/create-default-admin.php
 ```
@@ -185,7 +185,7 @@ sudo /opt/lampp/lampp start
 
 # 2. Clone to htdocs
 cd /opt/lampp/htdocs/
-git clone https://github.com/Chrinux-AI/School_Management_System.git attendance
+git clone https://github.com/Chrinux-AI/SMS.git attendance
 
 # 3. Create database
 mysql -u root --socket=/opt/lampp/var/mysql/mysql.sock << EOF
@@ -418,8 +418,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 | Channel            | Link                                                                                     |
 | ------------------ | ---------------------------------------------------------------------------------------- |
-| 🐛 **Bug Reports** | [GitHub Issues](https://github.com/Chrinux-AI/School_Management_System/issues)           |
-| 💬 **Discussions** | [GitHub Discussions](https://github.com/Chrinux-AI/School_Management_System/discussions) |
+| 🐛 **Bug Reports** | [GitHub Issues](https://github.com/Chrinux-AI/SMS/issues)           |
+| 💬 **Discussions** | [GitHub Discussions](https://github.com/Chrinux-AI/SMS/discussions) |
 | 📧 **Email**       | support@verdantsms.com                                                                   |
 | 🌐 **Website**     | https://verdantsms.com                                                                   |
 
@@ -427,10 +427,10 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 📊 Stats
 
-![GitHub Stars](https://img.shields.io/github/stars/Chrinux-AI/School_Management_System?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/Chrinux-AI/School_Management_System?style=social)
-![GitHub Issues](https://img.shields.io/github/issues/Chrinux-AI/School_Management_System)
-![Last Commit](https://img.shields.io/github/last-commit/Chrinux-AI/School_Management_System)
+![GitHub Stars](https://img.shields.io/github/stars/Chrinux-AI/SMS?style=social)
+![GitHub Forks](https://img.shields.io/github/forks/Chrinux-AI/SMS?style=social)
+![GitHub Issues](https://img.shields.io/github/issues/Chrinux-AI/SMS)
+![Last Commit](https://img.shields.io/github/last-commit/Chrinux-AI/SMS)
 
 ---
 
