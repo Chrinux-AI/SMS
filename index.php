@@ -785,17 +785,10 @@ $pageTitle = "Verdant SMS — Nigeria's #1 Free School Management System";
         </div>
     </footer>
 
-    <!-- AI CHATBOT TRIGGER -->
-    <button class="chatbot-trigger" id="chatbotTrigger" title="Chat with AI Assistant">
-        <i class="fas fa-leaf"></i>
-    </button>
+    <!-- AI LEARNING ASSISTANT -->
+    <?php include __DIR__ . '/includes/ai-assistant.php'; ?>
 
     <script>
-        // Chatbot trigger
-        document.getElementById('chatbotTrigger').addEventListener('click', function() {
-            alert('AI Chatbot coming soon! For now, contact us at hello@verdantsms.com');
-        });
-
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
