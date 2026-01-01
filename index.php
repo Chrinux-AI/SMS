@@ -608,7 +608,7 @@ $pageTitle = "Verdant SMS — Nigeria's #1 Free School Management System";
             <div class="hero-stats">
                 <div class="hero-stat">
                     <div class="hero-stat-value">100%</div>
-                    <div class="hero-stat-label">Free Forever</div>
+                    <div class="hero-stat-label">From ₦5K/yr</div>
                 </div>
                 <div class="hero-stat">
                     <div class="hero-stat-value">25+</div>
@@ -674,48 +674,52 @@ $pageTitle = "Verdant SMS — Nigeria's #1 Free School Management System";
         <div class="section-header">
             <h2 class="section-title">Simple, Transparent Pricing</h2>
             <p class="section-subtitle">
-                Start free. Upgrade when you need more.
+                Start small. Scale as you grow. All in Naira.
             </p>
         </div>
 
         <div class="pricing-grid">
             <div class="pricing-card">
-                <h3>Free</h3>
-                <div class="price">₦0 <span>forever</span></div>
+                <div class="plan-icon"><i class="fas fa-seedling"></i></div>
+                <h3>Starter</h3>
+                <div class="price">₦5,000 <span>/year</span></div>
                 <ul class="features">
-                    <li><i class="fas fa-check"></i> Unlimited users</li>
-                    <li><i class="fas fa-check"></i> All core features</li>
-                    <li><i class="fas fa-check"></i> Self-hosted</li>
-                    <li><i class="fas fa-check"></i> Community support</li>
+                    <li><i class="fas fa-check"></i> Up to 50 students</li>
+                    <li><i class="fas fa-check"></i> Basic attendance & fees</li>
+                    <li><i class="fas fa-check"></i> Offline PWA</li>
+                    <li><i class="fas fa-times" style="color: #FF4757;"></i> <span style="color: #9CA3AF;">No AI features</span></li>
                 </ul>
                 <a href="visitor/register-school.php" class="btn btn-outline" style="width: 100%;">Get Started</a>
             </div>
 
             <div class="pricing-card popular">
-                <h3>Basic Cloud</h3>
-                <div class="price">₦50,000 <span>/year</span></div>
+                <div class="plan-icon"><i class="fas fa-leaf"></i></div>
+                <h3>Standard</h3>
+                <div class="price">₦75,000 <span>/year</span></div>
                 <ul class="features">
-                    <li><i class="fas fa-check"></i> Everything in Free</li>
-                    <li><i class="fas fa-check"></i> Cloud hosting</li>
-                    <li><i class="fas fa-check"></i> Daily backups</li>
-                    <li><i class="fas fa-check"></i> Email support</li>
+                    <li><i class="fas fa-check"></i> Up to 500 students</li>
+                    <li><i class="fas fa-check"></i> Full management + Reports</li>
+                    <li><i class="fas fa-check"></i> Parent portal</li>
+                    <li><i class="fas fa-check"></i> Basic AI (50 queries/day)</li>
                 </ul>
                 <a href="visitor/pricing.php" class="btn btn-primary" style="width: 100%;">Choose Plan</a>
             </div>
 
             <div class="pricing-card">
-                <h3>Pro Cloud</h3>
-                <div class="price">₦150,000 <span>/year</span></div>
+                <div class="plan-icon"><i class="fas fa-tree"></i></div>
+                <h3>Pro AI</h3>
+                <div class="price">₦180,000 <span>/year</span></div>
                 <ul class="features">
-                    <li><i class="fas fa-check"></i> Everything in Basic</li>
-                    <li><i class="fas fa-check"></i> AI Lesson Planner</li>
-                    <li><i class="fas fa-check"></i> Custom subdomain</li>
+                    <li><i class="fas fa-check"></i> Unlimited students</li>
+                    <li><i class="fas fa-check"></i> Full AI Learning Assistant</li>
+                    <li><i class="fas fa-check"></i> Voice & Image input</li>
                     <li><i class="fas fa-check"></i> Priority support</li>
                 </ul>
                 <a href="visitor/pricing.php" class="btn btn-outline" style="width: 100%;">Choose Plan</a>
             </div>
 
             <div class="pricing-card">
+                <div class="plan-icon"><i class="fas fa-building"></i></div>
                 <h3>Enterprise</h3>
                 <div class="price">Custom</div>
                 <ul class="features">

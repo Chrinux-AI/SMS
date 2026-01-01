@@ -1,27 +1,30 @@
 <?php
 /**
  * Verdant AI Core - Unified AI Handler
- * Grok API primary + Ollama local fallback
+ * Gemini API primary + Grok + Ollama fallback
  * NERDC curriculum-aligned for Nigerian education
  */
 
 class VerdantAI
 {
     private static $instance = null;
+    private $geminiApiKey;
     private $grokApiKey;
     private $ollamaUrl;
     private $model;
-    private $useOffline;
 
     // NERDC curriculum context for prompts
-    private const NERDC_CONTEXT = "You are Verdant AI, an educational assistant for Nigerian schools following the NERDC (Nigerian Educational Research and Development Council) curriculum. You help students learn, teachers plan lessons, and parents understand their children's progress. Always align responses with Nigerian Basic Education Curriculum (BEC) and Senior Secondary Education Curriculum (SSEC). Be encouraging, clear, and culturally appropriate for Nigerian students.";
+    private const NERDC_CONTEXT = "You are Verdant AI, an educational assistant for Nigerian schools following the NERDC (Nigerian Educational Research and Development Council) curriculum. You help students learn, teachers plan lessons, and parents understand their children's progress. Always align responses with Nigerian Basic Education Curriculum (BEC) and Senior Secondary Education Curriculum (SSEC). Be encouraging, clear, and culturally appropriate for Nigerian students. Provide helpful, detailed answers.";
 
     private function __construct()
     {
+        // Gemini API (Primary - Google AI)
+        $this->geminiApiKey = getenv('GEMINI_API_KEY') ?: 'AIzaSyBBLiXbn_UBR6sTYlI_hn8JKJFz9vmbkhk';
+        // Grok API (Secondary - xAI)
         $this->grokApiKey = getenv('GROK_API_KEY') ?: '';
+        // Ollama (Tertiary - Local)
         $this->ollamaUrl = getenv('OLLAMA_URL') ?: 'http://localhost:11434';
         $this->model = getenv('AI_MODEL') ?: 'llama3.2:3b';
-        $this->useOffline = empty($this->grokApiKey);
     }
 
     public static function getInstance(): self
@@ -42,19 +45,25 @@ class VerdantAI
         $subject = $options['subject'] ?? '';
 
         // Build context-aware prompt
-        $contextPrompt = self::NERDC_CONTEXT . "\n\n";
-
+        $contextPrompt = "";
         if ($role === 'student' && $class) {
             $contextPrompt .= "Student is in {$class}. ";
         }
         if ($subject) {
             $contextPrompt .= "Subject focus: {$subject}. ";
         }
+        $contextPrompt .= "\n\nQuestion: {$prompt}";
 
-        $contextPrompt .= "\n\nUser ({$role}): {$prompt}\n\nVerdant AI:";
+        // Try Gemini first
+        if (!empty($this->geminiApiKey)) {
+            $response = $this->callGemini($contextPrompt);
+            if ($response['success']) {
+                return $response;
+            }
+        }
 
-        // Try Grok first, fallback to Ollama
-        if (!$this->useOffline) {
+        // Fallback to Grok
+        if (!empty($this->grokApiKey)) {
             $response = $this->callGrok($contextPrompt);
             if ($response['success']) {
                 return $response;
@@ -62,11 +71,70 @@ class VerdantAI
         }
 
         // Fallback to Ollama
-        return $this->callOllama($contextPrompt);
+        $response = $this->callOllama($contextPrompt);
+        if ($response['success']) {
+            return $response;
+        }
+
+        // Final fallback - local responses
+        return $this->getLocalFallback($prompt);
     }
 
     /**
-     * Call Grok API (cloud)
+     * Call Google Gemini API (primary)
+     */
+    private function callGemini(string $prompt): array
+    {
+        // Use gemini-2.0-flash (available in v1beta)
+        $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' . $this->geminiApiKey;
+
+        $data = [
+            'contents' => [
+                [
+                    'parts' => [
+                        ['text' => self::NERDC_CONTEXT . "\n\n" . $prompt]
+                    ]
+                ]
+            ],
+            'generationConfig' => [
+                'temperature' => 0.7,
+                'maxOutputTokens' => 1024,
+            ]
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_SSL_VERIFYPEER => true
+        ]);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        curl_close($ch);
+
+        if ($httpCode === 200 && $response) {
+            $result = json_decode($response, true);
+            $text = $result['candidates'][0]['content']['parts'][0]['text'] ?? null;
+            if ($text) {
+                return [
+                    'success' => true,
+                    'response' => $text,
+                    'source' => 'gemini'
+                ];
+            }
+        }
+
+        error_log("Gemini API error: HTTP $httpCode - $error - Response: " . substr($response ?? '', 0, 500));
+        return ['success' => false, 'error' => 'Gemini API failed'];
+    }
+
+    /**
+     * Call Grok API (xAI - secondary)
      */
     private function callGrok(string $prompt): array
     {
@@ -111,7 +179,7 @@ class VerdantAI
     }
 
     /**
-     * Call Ollama API (local/offline)
+     * Call Ollama API (local/offline - tertiary)
      */
     private function callOllama(string $prompt): array
     {
@@ -119,7 +187,7 @@ class VerdantAI
 
         $data = [
             'model' => $this->model,
-            'prompt' => $prompt,
+            'prompt' => self::NERDC_CONTEXT . "\n\n" . $prompt,
             'stream' => false,
             'options' => [
                 'temperature' => 0.7,
@@ -133,12 +201,12 @@ class VerdantAI
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => json_encode($data),
             CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
-            CURLOPT_TIMEOUT => 60
+            CURLOPT_TIMEOUT => 60,
+            CURLOPT_CONNECTTIMEOUT => 5
         ]);
 
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
         curl_close($ch);
 
         if ($httpCode === 200) {
@@ -150,8 +218,7 @@ class VerdantAI
             ];
         }
 
-        // Smart local fallback when both AI backends unavailable
-        return $this->getLocalFallback($prompt);
+        return ['success' => false, 'error' => 'Ollama unavailable'];
     }
 
     /**
@@ -165,7 +232,7 @@ class VerdantAI
         if (strpos($prompt, 'verdant') !== false || strpos($prompt, 'what is') !== false) {
             return [
                 'success' => true,
-                'response' => "🌿 **Verdant SMS** is Nigeria's #1 AI-powered School Management System!\n\n✅ Free to start (₦5,000/year Starter plan)\n✅ AI Learning Assistant on every page\n✅ NERDC curriculum-aligned\n✅ Multi-tenant (isolated per school)\n✅ Flutterwave Naira payments\n✅ 25+ user roles\n✅ Offline-ready with PWA\n\nBuilt by Chrinux-AI for Nigerian schools. Visit /visitor/features.php for full details!",
+                'response' => "🌿 **Verdant SMS** is Nigeria's #1 AI-powered School Management System!\n\n✅ From ₦5,000/year (Starter plan)\n✅ AI Learning Assistant on every page\n✅ NERDC curriculum-aligned\n✅ Multi-tenant (isolated per school)\n✅ Flutterwave Naira payments\n✅ 25+ user roles\n✅ Offline-ready with PWA\n\nBuilt by Chrinux-AI for Nigerian schools!",
                 'source' => 'local'
             ];
         }
@@ -178,10 +245,10 @@ class VerdantAI
             ];
         }
 
-        if (strpos($prompt, 'pric') !== false || strpos($prompt, 'cost') !== false || strpos($prompt, 'plan') !== false) {
+        if (strpos($prompt, 'price') !== false || strpos($prompt, 'cost') !== false || strpos($prompt, 'plan') !== false) {
             return [
                 'success' => true,
-                'response' => "💰 **Verdant SMS Pricing (Naira):**\n\n🌱 **Starter:** ₦5,000/yr • 50 students • Basic AI\n🍃 **Basic Cloud:** ₦50,000/yr • 300 students • Cloud hosting\n🌳 **Pro Cloud:** ₦150,000/yr • 1,000 students • Full AI\n🏢 **Enterprise:** Custom • Unlimited • Dedicated server\n\nAll plans include NERDC alignment & 8 themes!",
+                'response' => "💰 **Verdant SMS Pricing:**\n\n🌱 **Starter:** ₦5,000/year (50 students, basic features)\n🍃 **Standard:** ₦75,000/year (500 students, AI, reports)\n🌳 **Pro AI:** ₦180,000/year (Unlimited, full AI, voice/image)\n🏢 **Enterprise:** Custom pricing\n\nAll plans include NERDC curriculum alignment!",
                 'source' => 'local'
             ];
         }
@@ -189,111 +256,123 @@ class VerdantAI
         if (strpos($prompt, 'hello') !== false || strpos($prompt, 'hi') !== false) {
             return [
                 'success' => true,
-                'response' => "Hello! 👋 I'm Verdant AI, your NERDC-aligned learning assistant.\n\nI can help you with:\n• 📚 Homework explanations\n• ❓ Quiz practice\n• 📋 Lesson planning (teachers)\n• 📊 Progress reports (parents)\n\nWhat would you like to learn about today?",
+                'response' => "Hello! 👋 I'm Verdant AI, your Nigerian educational assistant!\n\nI can help you with:\n📚 Homework and explanations\n📝 Quizzes and tests\n📖 Lesson planning (for teachers)\n📊 Academic progress\n\nWhat would you like to learn about today?",
                 'source' => 'local'
             ];
         }
 
-        // Default helpful response
+        // Generic helpful response
         return [
             'success' => true,
-            'response' => "🌿 I'm Verdant AI! I'm here to help with Nigerian education.\n\nTry asking me about:\n• \"What is Verdant SMS?\"\n• \"Show me features\"\n• \"Pricing plans\"\n• \"Help with homework\"\n\n💡 **Tip:** For full AI power, ensure you've set up Grok API key or run Ollama locally with `ollama serve`.",
+            'response' => "🤖 I'm Verdant AI, ready to help with your education!\n\nTry asking me:\n• \"Explain photosynthesis\"\n• \"Solve 2x + 5 = 15\"\n• \"Create a quiz on Nigerian history\"\n• \"Help me with my English essay\"\n\nI'm aligned with the NERDC Nigerian curriculum. What can I help you learn today?",
             'source' => 'local'
         ];
     }
 
+    // ==================== EDUCATIONAL FEATURES ====================
+
     /**
-     * Generate lesson plan (NERDC-aligned)
+     * Generate NERDC-aligned lesson plan
      */
-    public function generateLessonPlan(string $class, string $subject, string $topic, int $duration = 40): array
+    public function generateLessonPlan(string $subject, string $topic, string $class, int $duration = 40): array
     {
-        $prompt = "Create a detailed {$duration}-minute lesson plan for {$class} {$subject} on the topic: {$topic}.
+        $prompt = "Create a detailed NERDC-aligned lesson plan for:
+Subject: {$subject}
+Topic: {$topic}
+Class: {$class}
+Duration: {$duration} minutes
 
 Include:
-1. Learning Objectives (3-4, measurable)
-2. Materials Needed
-3. Introduction (5 min)
-4. Main Teaching Activity (20 min)
-5. Student Practice (10 min)
-6. Assessment Questions (3-5)
+1. Learning Objectives (3-5 specific goals)
+2. Required Materials/Resources
+3. Introduction/Warm-up Activity (5 min)
+4. Main Teaching Activities (step-by-step)
+5. Student Practice Activities
+6. Assessment Methods
 7. Homework Assignment
+8. Differentiation for slower/faster learners
 
-Align with NERDC Nigerian curriculum standards. Use simple English suitable for Nigerian students.";
+Format clearly with headings.";
 
-        return $this->generate($prompt, ['role' => 'teacher', 'class' => $class, 'subject' => $subject]);
+        return $this->generate($prompt, ['role' => 'teacher', 'subject' => $subject, 'class' => $class]);
     }
 
     /**
-     * Solve homework/explain concept
+     * Help solve homework with explanations
      */
     public function solveHomework(string $question, string $subject, string $class = ''): array
     {
-        $prompt = "A Nigerian student asks: {$question}
+        $prompt = "A Nigerian student needs help with this homework:
 
+Question: {$question}
 Subject: {$subject}
 " . ($class ? "Class: {$class}" : "") . "
 
 Please:
-1. Solve/explain step-by-step
-2. Use simple language
-3. Give 1-2 practice problems
-4. Encourage the student";
+1. Solve the problem step-by-step
+2. Explain each step clearly in simple English
+3. Give a final answer
+4. Suggest a similar practice problem
 
-        return $this->generate($prompt, ['role' => 'student', 'class' => $class, 'subject' => $subject]);
+Use Nigerian examples where relevant.";
+
+        return $this->generate($prompt, ['role' => 'student', 'subject' => $subject, 'class' => $class]);
     }
 
     /**
      * Generate quiz questions
      */
-    public function generateQuiz(string $class, string $subject, string $topic, int $count = 5): array
+    public function generateQuiz(string $subject, string $topic, string $class, int $numQuestions = 5): array
     {
-        $prompt = "Generate {$count} multiple-choice quiz questions for {$class} {$subject} on topic: {$topic}.
+        $prompt = "Create a quiz for Nigerian students:
+
+Subject: {$subject}
+Topic: {$topic}
+Class: {$class}
+Number of Questions: {$numQuestions}
 
 Format each question as:
-Q1. [Question]
-A) [Option]
-B) [Option]
-C) [Option]
-D) [Option]
-Answer: [Letter]
+- Question text
+- 4 options (A, B, C, D)
+- Correct answer
+- Brief explanation
 
-Align with NERDC curriculum.";
+Align with NERDC curriculum standards.";
 
-        return $this->generate($prompt, ['role' => 'teacher', 'class' => $class, 'subject' => $subject]);
+        return $this->generate($prompt, ['role' => 'teacher', 'subject' => $subject, 'class' => $class]);
     }
 
     /**
-     * Get student progress summary (for parents)
+     * Generate progress summary for parents
      */
-    public function getProgressSummary(array $studentData): array
+    public function generateProgressSummary(array $studentData): array
     {
-        $name = $studentData['name'] ?? 'Your child';
-        $class = $studentData['class'] ?? '';
-        $attendance = $studentData['attendance'] ?? 90;
-        $avgGrade = $studentData['avg_grade'] ?? 75;
-        $weakSubjects = $studentData['weak_subjects'] ?? [];
+        $name = $studentData['name'] ?? 'Student';
+        $attendance = $studentData['attendance'] ?? 'N/A';
+        $grades = $studentData['grades'] ?? [];
 
-        $prompt = "Summarize this student's progress for their parent:
+        $gradeString = !empty($grades) ? implode(', ', array_map(fn($s, $g) => "$s: $g%", array_keys($grades), $grades)) : 'No grades yet';
+
+        $prompt = "Create a parent-friendly progress summary:
 
 Student: {$name}
-Class: {$class}
-Attendance: {$attendance}%
-Average Grade: {$avgGrade}%
-Weak Areas: " . implode(', ', $weakSubjects) . "
+Attendance Rate: {$attendance}%
+Recent Grades: {$gradeString}
 
-Provide:
-1. Brief summary (2-3 sentences)
-2. Strengths
-3. Areas to improve
-4. Tips for parents to help at home
+Include:
+1. Overall performance assessment
+2. Strengths observed
+3. Areas needing improvement
+4. Suggestions for parents to help at home
+5. Encouraging message
 
-Be encouraging and culturally appropriate for Nigerian parents.";
+Write in a warm, supportive tone.";
 
         return $this->generate($prompt, ['role' => 'parent']);
     }
 }
 
-// Helper function for quick access
+// Quick access function
 function verdant_ai(): VerdantAI
 {
     return VerdantAI::getInstance();
