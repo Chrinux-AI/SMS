@@ -1,230 +1,154 @@
 <?php
-
 /**
- * VERDANT SMS v3.0 — EMAIL + OTP VERIFICATION
- * Verifies user email via token or 6-digit OTP
+ * Email Verification Page
+ * Handles OTP code entry and token-based verification
  */
 
-session_start();
-require_once 'includes/config.php';
-require_once 'includes/database.php';
-require_once 'includes/functions.php';
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/database.php';
+require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/includes/otp-helper.php';
 
-$success = '';
-$error = '';
-$showOtpForm = false;
-$email = '';
+$message = '';
+$messageType = 'info';
+$verified = false;
+$showForm = true;
 
-// Handle token verification (from email link)
+// Handle token-based verification (from email link)
 if (isset($_GET['token']) && !empty($_GET['token'])) {
-    $token = $_GET['token'];
-
-    $user = db()->fetchOne("SELECT id, email, email_verified FROM users WHERE verification_token = ?", [$token]);
-
-    if ($user) {
-        if ($user['email_verified']) {
-            $success = 'Your email is already verified. You can now login.';
-        } else {
-            db()->query("UPDATE users SET email_verified = 1, email_verified_at = NOW(), verification_token = NULL WHERE id = ?", [$user['id']]);
-            $success = 'Email verified successfully! You can now login.';
-        }
-    } else {
-        $error = 'Invalid or expired verification link.';
-    }
+    $result = verify_by_token($_GET['token']);
+    $message = $result['message'];
+    $messageType = $result['success'] ? 'success' : 'error';
+    $verified = $result['success'];
+    $showForm = !$result['success'];
 }
 
-// Handle OTP verification
+// Handle OTP form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = $_POST['action'] ?? '';
+    if (isset($_POST['action'])) {
 
-    if ($action === 'verify_otp') {
-        $email = trim($_POST['email'] ?? '');
-        $otp = trim($_POST['otp'] ?? '');
+        // Verify OTP code
+        if ($_POST['action'] === 'verify' && isset($_POST['otp']) && isset($_POST['email'])) {
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $otp = preg_replace('/\D/', '', $_POST['otp']); // Numbers only
 
-        if (empty($email) || empty($otp)) {
-            $error = 'Email and OTP are required.';
-            $showOtpForm = true;
-        } else {
-            $user = db()->fetchOne("
-                SELECT id, otp_code, otp_expires_at, email_verified
-                FROM users
-                WHERE email = ? AND otp_code = ?
-            ", [$email, $otp]);
-
-            if (!$user) {
-                $error = 'Invalid OTP code.';
-                $showOtpForm = true;
-            } elseif ($user['email_verified']) {
-                $success = 'Your email is already verified.';
-            } elseif (strtotime($user['otp_expires_at']) < time()) {
-                $error = 'OTP has expired. Please request a new one.';
-                $showOtpForm = true;
+            if (strlen($otp) !== 6) {
+                $message = 'Please enter a valid 6-digit code.';
+                $messageType = 'error';
             } else {
-                db()->query("UPDATE users SET email_verified = 1, email_verified_at = NOW(), otp_code = NULL, otp_expires_at = NULL WHERE id = ?", [$user['id']]);
-                $success = 'Email verified successfully! You can now login.';
+                $result = verify_otp($otp, null, $email);
+                $message = $result['message'];
+                $messageType = $result['success'] ? 'success' : 'error';
+                $verified = $result['success'];
+                $showForm = !$result['success'];
             }
         }
-    } elseif ($action === 'resend_otp') {
-        $email = trim($_POST['email'] ?? '');
 
-        if (empty($email)) {
-            $error = 'Email is required.';
-        } else {
-            $user = db()->fetchOne("SELECT id, first_name, email_verified FROM users WHERE email = ?", [$email]);
-
-            if (!$user) {
-                $error = 'No account found with this email.';
-            } elseif ($user['email_verified']) {
-                $success = 'Your email is already verified.';
-            } else {
-                // Generate new OTP
-                $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-                $expires = date('Y-m-d H:i:s', strtotime('+15 minutes'));
-
-                db()->query("UPDATE users SET otp_code = ?, otp_expires_at = ? WHERE id = ?", [$otp, $expires, $user['id']]);
-
-                // Send OTP email
-                send_email(
-                    $email,
-                    'Your Verdant SMS Verification Code',
-                    "Hello " . ($user['first_name'] ?? 'User') . ",\n\n" .
-                        "Your verification code is: $otp\n\n" .
-                        "This code expires in 15 minutes.\n\n" .
-                        "If you didn't request this, please ignore this email."
-                );
-
-                $success = 'A new OTP has been sent to your email.';
-                $showOtpForm = true;
-            }
+        // Resend OTP
+        if ($_POST['action'] === 'resend' && isset($_POST['email'])) {
+            $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+            $result = resend_otp($email);
+            $message = $result['message'];
+            $messageType = $result['success'] ? 'success' : 'error';
         }
-    } elseif ($action === 'show_otp') {
-        $email = trim($_POST['email'] ?? '');
-        $showOtpForm = true;
     }
 }
+
+$pageTitle = "Verify Your Email";
 ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Email — Verdant SMS</title>
-    <!-- Favicons -->
-    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/icons/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/icons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="assets/images/icons/favicon-96x96.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/icons/apple-touch-icon.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="msapplication-TileColor" content="#00BFFF">
-    <meta name="msapplication-TileImage" content="assets/images/icons/mstile-150x150.png">
-    <meta name="theme-color" content="#0a0a0f">
+    <title><?= htmlspecialchars($pageTitle) ?> - <?= APP_NAME ?></title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --neon-green: #00ff88;
-            --neon-blue: #00d4ff;
-            --dark-bg: #0a0a0f;
-            --card-bg: rgba(15, 25, 35, 0.95);
-            --text-primary: #e0e6ed;
-            --text-muted: #8892a0;
-            --success: #00ff88;
-            --error: #ff4757;
+            --primary: #00D4FF;
+            --success: #00FF87;
+            --warning: #FFB800;
+            --danger: #FF4757;
+            --bg-dark: #0B0F19;
+            --bg-card: #111827;
+            --border: rgba(255,255,255,0.1);
+            --text: #E5E7EB;
+            --text-muted: #9CA3AF;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: var(--dark-bg);
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-primary);
-        }
-
-        .cyber-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-        }
-
-        .container {
-            max-width: 450px;
-            width: 90%;
             padding: 20px;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 135, 0.1) 0%, transparent 50%);
         }
 
-        .verify-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 20px;
+        .verify-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
             padding: 40px;
+            max-width: 440px;
+            width: 100%;
             text-align: center;
-            box-shadow: 0 0 40px rgba(0, 255, 136, 0.1);
         }
 
-        .verify-icon {
-            font-size: 4rem;
+        .logo {
+            font-size: 3rem;
             margin-bottom: 20px;
         }
 
-        .verify-icon.success {
-            color: var(--success);
-        }
-
-        .verify-icon.error {
-            color: var(--error);
-        }
-
-        .verify-icon.pending {
-            color: var(--neon-blue);
-        }
-
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            background: linear-gradient(135deg, var(--neon-green), var(--neon-blue));
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--success));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        p {
+        .subtitle {
             color: var(--text-muted);
-            margin-bottom: 25px;
-            line-height: 1.6;
+            margin-bottom: 30px;
         }
 
         .alert {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
         }
 
-        .alert-success {
-            background: rgba(0, 255, 136, 0.15);
-            border: 1px solid var(--success);
+        .alert.success {
+            background: rgba(0, 255, 135, 0.15);
+            border: 1px solid rgba(0, 255, 135, 0.3);
             color: var(--success);
         }
 
-        .alert-error {
+        .alert.error {
             background: rgba(255, 71, 87, 0.15);
-            border: 1px solid var(--error);
-            color: var(--error);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            color: var(--danger);
+        }
+
+        .alert.info {
+            background: rgba(0, 212, 255, 0.15);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: var(--primary);
         }
 
         .form-group {
@@ -234,149 +158,203 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .form-group label {
             display: block;
-            color: var(--text-muted);
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text);
         }
 
         .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 10px;
-            color: var(--text-primary);
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
             font-size: 1rem;
+            transition: all 0.3s;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: var(--neon-green);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2);
         }
 
         .otp-input {
             text-align: center;
-            font-size: 2rem;
-            letter-spacing: 10px;
-            font-weight: bold;
+            font-size: 2rem !important;
+            letter-spacing: 12px;
+            font-weight: 700;
         }
 
         .btn {
-            display: inline-block;
-            padding: 14px 30px;
+            width: 100%;
+            padding: 16px;
             border: none;
-            border-radius: 10px;
-            cursor: pointer;
+            border-radius: 12px;
             font-size: 1rem;
             font-weight: 600;
+            cursor: pointer;
             transition: all 0.3s;
-            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--neon-green), #00cc6a);
-            color: #000;
-            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--success));
+            color: #0B0F19;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
         }
 
         .btn-secondary {
             background: transparent;
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
+            border: 1px solid var(--border);
+            color: var(--text);
             margin-top: 15px;
         }
 
-        .links {
-            margin-top: 25px;
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.05);
         }
 
-        .links a {
-            color: var(--neon-green);
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        .timer span {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        .footer-links {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-links a {
+            color: var(--primary);
             text-decoration: none;
+            font-size: 0.9rem;
         }
 
-        .links a:hover {
+        .footer-links a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
-
 <body>
-    <div class="cyber-grid"></div>
+    <div class="verify-container">
+        <?php if ($verified): ?>
+            <!-- Success State -->
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Email Verified!</h1>
+            <p class="subtitle">Your account has been successfully verified.</p>
 
-    <div class="container">
-        <div class="verify-card">
-            <?php if ($success): ?>
-                <div class="verify-icon success"><i class="fas fa-check-circle"></i></div>
-                <h1>Verified!</h1>
-                <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
-                <a href="login.php" class="btn btn-primary">
-                    <i class="fas fa-sign-in-alt"></i> Login Now
-                </a>
-            <?php elseif ($error && !$showOtpForm): ?>
-                <div class="verify-icon error"><i class="fas fa-times-circle"></i></div>
-                <h1>Verification Failed</h1>
-                <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
-                <form method="POST">
-                    <input type="hidden" name="action" value="show_otp">
-                    <div class="form-group">
-                        <label>Enter your email to verify with OTP</label>
-                        <input type="email" name="email" placeholder="your@email.com" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-key"></i> Verify with OTP
-                    </button>
-                </form>
-            <?php elseif ($showOtpForm): ?>
-                <div class="verify-icon pending"><i class="fas fa-envelope-open-text"></i></div>
-                <h1>Enter OTP</h1>
-                <?php if ($error): ?>
-                    <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
-                <?php endif; ?>
-                <p>Enter the 6-digit code sent to your email</p>
-                <form method="POST">
-                    <input type="hidden" name="action" value="verify_otp">
-                    <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
-                    <div class="form-group">
-                        <input type="text" name="otp" class="otp-input" maxlength="6" placeholder="000000" pattern="[0-9]{6}" required autofocus>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-check"></i> Verify OTP
-                    </button>
-                </form>
-                <form method="POST" style="margin-top: 15px;">
-                    <input type="hidden" name="action" value="resend_otp">
-                    <input type="hidden" name="email" value="<?= htmlspecialchars($email) ?>">
-                    <button type="submit" class="btn btn-secondary">
-                        <i class="fas fa-redo"></i> Resend OTP
-                    </button>
-                </form>
-            <?php else: ?>
-                <div class="verify-icon pending"><i class="fas fa-envelope"></i></div>
-                <h1>Verify Your Email</h1>
-                <p>Enter your email address to receive a verification code.</p>
-                <form method="POST">
-                    <input type="hidden" name="action" value="resend_otp">
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" placeholder="your@email.com" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-paper-plane"></i> Send Verification Code
-                    </button>
-                </form>
+            <a href="login.php" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i>
+                Continue to Login
+            </a>
+
+        <?php else: ?>
+            <!-- Verification Form -->
+            <div class="logo">🔐</div>
+            <h1>Verify Your Email</h1>
+            <p class="subtitle">Enter the 6-digit code sent to your email</p>
+
+            <?php if ($message): ?>
+                <div class="alert <?= $messageType ?>">
+                    <i class="fas fa-<?= $messageType === 'success' ? 'check-circle' : ($messageType === 'error' ? 'exclamation-circle' : 'info-circle') ?>"></i>
+                    <?= htmlspecialchars($message) ?>
+                </div>
             <?php endif; ?>
 
-            <div class="links">
-                <a href="login.php">← Back to Login</a>
-            </div>
+            <?php if ($showForm): ?>
+                <form method="POST" action="">
+                    <input type="hidden" name="action" value="verify">
+
+                    <div class="form-group">
+                        <label for="email"><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" name="email" id="email" placeholder="your@email.com" required
+                               value="<?= htmlspecialchars($_POST['email'] ?? $_GET['email'] ?? '') ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="otp"><i class="fas fa-key"></i> Verification Code</label>
+                        <input type="text" name="otp" id="otp" class="otp-input"
+                               placeholder="000000" maxlength="6" pattern="\d{6}" required
+                               autocomplete="one-time-code" inputmode="numeric">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-check"></i>
+                        Verify Code
+                    </button>
+                </form>
+
+                <form method="POST" action="" style="display: inline;">
+                    <input type="hidden" name="action" value="resend">
+                    <input type="hidden" name="email" id="resend-email" value="">
+                    <button type="submit" class="btn btn-secondary" onclick="document.getElementById('resend-email').value = document.getElementById('email').value;">
+                        <i class="fas fa-redo"></i>
+                        Resend Code
+                    </button>
+                </form>
+
+                <p class="timer">
+                    Code expires in <span id="countdown"><?= defined('OTP_EXPIRY_MINUTES') ? OTP_EXPIRY_MINUTES : 10 ?>:00</span>
+                </p>
+            <?php endif; ?>
+        <?php endif; ?>
+
+        <div class="footer-links">
+            <a href="login.php"><i class="fas fa-arrow-left"></i> Back to Login</a>
         </div>
     </div>
-</body>
 
+    <script>
+        // Auto-focus OTP input
+        document.getElementById('otp')?.focus();
+
+        // Format OTP input (numbers only)
+        document.getElementById('otp')?.addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').substring(0, 6);
+        });
+
+        // Countdown timer
+        let timeLeft = <?= (defined('OTP_EXPIRY_MINUTES') ? OTP_EXPIRY_MINUTES : 10) * 60 ?>;
+        const countdown = document.getElementById('countdown');
+
+        if (countdown) {
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdown.textContent = 'Expired';
+                    countdown.style.color = '#FF4757';
+                } else {
+                    const mins = Math.floor(timeLeft / 60);
+                    const secs = timeLeft % 60;
+                    countdown.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
 </html>
